@@ -2,7 +2,7 @@
 
 Phone-friendly browser companion for the editable FigCraft prototype.
 
-The screens are vector exports of the approved FigCraft artwork. A lightweight browser layer adds section navigation, the sticky index, sleeve switching, and inline audio/video playback. Choose Mobile or Desktop using the View control at the bottom.
+The screens are vector exports of the approved FigCraft artwork. A lightweight browser layer adds section navigation, the sticky index, sleeve switching, and inline audio/video playback. The layout adapts automatically to the screen width. Each section’s logo returns to the home page.
 
 This is a design preview, not a checkout or production storefront. Root Cellar is the available record preview. Other archive selections remain in progress.
 
