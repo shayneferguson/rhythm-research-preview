@@ -2,3 +2,6 @@
 @media(max-width:420px){.hero-art{height:260px}.disc{width:330px;height:330px;left:-100px;top:-35px}.art-bars{left:70%;right:5%;height:125px;gap:5px}.art-caption{right:12px;bottom:14px;font-size:7px}}
 
 .contact-line{margin-top:28px;font-size:16px}.contact-line a{text-decoration:underline;text-underline-offset:4px;overflow-wrap:anywhere}
+
+/* Working interfaces inside the six-tool accordion. */
+.tool-detail{max-width:none}.tool-detail>p{max-width:680px}.interface-view{width:100%;margin:4px 0 8px}.interface-view a{display:block;border:1px solid var(--rule);background:var(--charcoal);overflow:hidden}.interface-view img{display:block;width:100%;height:auto;border:0}.interface-view a:hover{border-color:var(--lime)}.interface-view figcaption{margin-top:12px;font-size:10px;letter-spacing:.055em;line-height:1.5}.interface-view figcaption span{color:var(--lime);font-size:16px}.interface-view a:focus-visible{outline:2px solid var(--lime);outline-offset:4px}@media(max-width:800px){.tool-detail{margin-left:0}.tool-detail>p,.tool-detail>.tool-note,.tool-detail>a{margin-left:85px}.interface-view{margin-top:10px}.interface-view figcaption{font-size:9px}}@media(max-width:420px){.tool-detail>p,.tool-detail>.tool-note,.tool-detail>a{margin-left:0}}
