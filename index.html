@@ -176,7 +176,8 @@
 @media(prefers-reduced-motion:reduce){#rr-crate-preview .rr-inner{transition:none}}
 
 #rr-crate-preview .rr-transport{display:flex;align-items:center;gap:14px;padding:0 36px 24px;min-height:68px}#rr-crate-preview .rr-pause{background:#202623;color:#f5f7f4;border:1px solid #434b44;padding:12px;min-width:88px;min-height:44px}#rr-crate-preview .rr-pause:disabled{opacity:.45}#rr-crate-preview .rr-seek{flex:1;min-width:0;accent-color:#c5f354;height:44px}#rr-crate-preview .rr-time{font-size:12px;color:#a9b1ac;font-variant-numeric:tabular-nums;white-space:nowrap}@media(max-width:767px){#rr-crate-preview .rr-transport{padding:0 20px 20px;gap:10px}}
-html,body,#rr-crate-preview,#rr-crate-preview *{touch-action:pan-x pan-y}html{-webkit-text-size-adjust:100%;text-size-adjust:100%}</style><script src="no-zoom.js?v=1" defer></script></head><body>
+html,body,#rr-crate-preview,#rr-crate-preview *{touch-action:pan-x pan-y}html{-webkit-text-size-adjust:100%;text-size-adjust:100%}#rr-crate-preview .rr-front:has(.rr-cover-video:not([hidden])) > img{visibility:hidden}#rr-crate-preview .rr-cover-video{z-index:2}#rr-crate-preview .rr-cover-video[hidden]{display:none}
+</style><script src="no-zoom.js?v=1" defer></script></head><body>
 <div id="rr-crate-preview">
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><clipPath id="rr-crate-front-cutout" clipPathUnits="objectBoundingBox"><path clip-rule="evenodd" fill-rule="evenodd" transform="scale(0.00078125 0.001172332943)" d="M184 614 Q380 625 640 629 Q900 633 1045 628 Q1065 624 1081 624 Q1091 624 1095 630 L1091 639 L1090 710 L1090 853 L190 853 L190 710 L187 630 Z M485 740 L795 740 Q816 740 802 761 L702 853 L578 853 L478 761 Q464 740 485 740 Z M365 853 L459 762 Q465 755 472 763 L553 853 Z M915 853 L821 762 Q815 755 808 763 L727 853 Z"/></clipPath></defs></svg>
   <div class="rr-hero">
@@ -276,6 +277,39 @@ let renderedListening=-1;
 buttons.forEach(b=>b.addEventListener('animationend',e=>{
   if(e.animationName==='rr-slot-drop'){b.classList.remove('rr-return-drop');shadows[buttons.indexOf(b)].classList.remove('rr-return-drop');}
 }));
+// Animate only the inspected front cover. Stack/listening sleeves always use stills.
+let coverVideo=null,coverVideoAttempt=0,coverVideoPending=false;
+const reducedCoverMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+function syncCoverVideo(){
+  const active=coverOpen&&!coverMoving&&!flipped&&selected===1&&!document.hidden&&!reducedCoverMotion.matches;
+  if(coverVideo&&!held.contains(coverVideo)){
+    coverVideo.pause();coverVideo.removeAttribute('src');coverVideo.load();
+    coverVideo=null;coverVideoAttempt++;coverVideoPending=false;
+  }
+  if(!active){
+    coverVideoAttempt++;coverVideoPending=false;
+    if(coverVideo){coverVideo.pause();coverVideo.hidden=true;}
+    return;
+  }
+  if(!coverVideo){
+    coverVideo=document.createElement('video');
+    coverVideo.className='rr-cover-image rr-cover-video';
+    coverVideo.muted=true;coverVideo.defaultMuted=true;coverVideo.loop=true;coverVideo.playsInline=true;
+    coverVideo.setAttribute('muted','');coverVideo.setAttribute('playsinline','');
+    coverVideo.setAttribute('aria-hidden','true');coverVideo.preload='none';coverVideo.hidden=true;
+    coverVideo.src='remix-video/puerto-rico-cover.mp4';
+    held.querySelector('.rr-front').appendChild(coverVideo);
+  }
+  if(coverVideoPending||!coverVideo.paused)return;
+  const video=coverVideo,attempt=++coverVideoAttempt;coverVideoPending=true;
+  video.play().then(()=>{
+    if(attempt!==coverVideoAttempt)return;
+    coverVideoPending=false;video.hidden=false;
+  }).catch(()=>{if(attempt===coverVideoAttempt){coverVideoPending=false;video.hidden=true;}});
+}
+document.addEventListener('visibilitychange',syncCoverVideo);
+reducedCoverMotion.addEventListener('change',syncCoverVideo);
+
 function render(){
   if(selected<0||selected===listening)coverOpen=false;
   root.dataset.coverOpen=String(coverOpen);
@@ -324,6 +358,7 @@ function render(){
   root.querySelector('.rr-selected h2').textContent=selected<0?(browseIndex>=0?names[browseIndex]:'Keep digging'):names[selected];
   root.querySelector('.rr-selected .rr-eyebrow').textContent=selected<0?(browseIndex>=0?String(browseIndex+1).padStart(2,'0')+' / 16':'THE COLLECTION'):String(selected+1).padStart(2,'0')+' / 16';
   root.querySelector('.rr-selected p').textContent=selected<0?(browseIndex<0?'Choose a sleeve or browse with Next.':'Place saved · Continue with Next or Previous.'):selected===listening?'Parked at the back · keep browsing':(selected===2?'Fine China Remix v2 · '+(flipped?'Back':'Front'):selected>=2&&selected<10&&!flipped?'Cover artwork · Textured front':selected===1&&!flipped?'Red artwork · Textured front':selected===0&&!flipped?'Suffocate artwork · Textured front':'Blank sleeve · '+(flipped?'Back':'Front'));
+  syncCoverVideo();
 }
 function save(){if(window.openai?.setWidgetState)window.openai.setWidgetState({modelContent:{selectedRecord:selected<0?null:names[selected],listeningRecord:listening<0?null:names[listening],audioConnected:true,side:flipped?'back':'front',recordCount:16},privateContent:{version:5,selected,flipped,listening,browseIndex,coverOpen}}).catch(()=>{});}
 function choose(i){if(coverMoving)return;if(!Number.isInteger(i)||i< -1||i>=16)return;selected=i;if(i>=0)browseIndex=i;flipped=false;render();save();}
@@ -331,7 +366,7 @@ function toggleFlip(){if(coverMoving||selected<0||selected===listening)return;fl
 let coverMoving=false;
 async function moveCover(open,after){
   if(coverMoving||selected<0||selected===listening)return;
-  coverMoving=true;
+  coverMoving=true;syncCoverVideo();
   const card=buttons[selected],cardShadow=shadows[selected];
   let slot,angle;
   const measure=()=>{slot=card.getBoundingClientRect();const m=new DOMMatrixReadOnly(getComputedStyle(card).transform);angle=Math.atan2(m.b,m.a)*180/Math.PI;};
@@ -403,7 +438,7 @@ async function moveCover(open,after){
 }
 async function returnPlaying(){
   if(listening<0)return;
-  coverMoving=true;
+  coverMoving=true;syncCoverVideo();
   const b=buttons[listening],s=shadows[listening],cs=getComputedStyle(b);
   const x=b.offsetLeft,y=b.offsetTop,w=b.offsetWidth,m=cs.transform;
   const controls=[viewCover,flip,back,prev,next,listen,picker,stop];
@@ -442,7 +477,7 @@ async function returnPlaying(){
 }
 async function listenFromCover(park){
   if(coverMoving)return;
-  coverMoving=true;
+  coverMoving=true;syncCoverVideo();
   const card=buttons[selected],shade=shadows[selected],host=coverView.getBoundingClientRect();
   const controls=[viewCover,flip,back,prev,next,listen,picker,stop];
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -482,14 +517,14 @@ async function listenFromCover(park){
 viewCover.addEventListener('click',()=>moveCover(!coverOpen));
 listen.addEventListener('click',async()=>{
   if(coverMoving||!audioTracks[selected]||selected===listening)return;
-  coverMoving=true;audioError='';
+  coverMoving=true;syncCoverVideo();audioError='';
   if(audioIndex!==selected){audioIndex=selected;audio.src=audioTracks[selected].src;audio.currentTime=0;}
   try{await audio.play();audioStarted=true;syncAudio();}
   catch(e){audioError='Playback could not start. Press Listen to try again.';syncAudio();coverMoving=false;render();return;}
   coverMoving=false;
   const target=selected,swapping=listening>=0;
   if(coverOpen&&flipped){
-    coverMoving=true;
+    coverMoving=true;syncCoverVideo();
     const inner=held.querySelector('.rr-inner'),pose=getComputedStyle(inner).transform;
     flipped=false;render();
     const locked=[viewCover,flip,back,prev,next,listen,picker,stop];locked.forEach(c=>c.disabled=true);
@@ -501,7 +536,7 @@ listen.addEventListener('click',async()=>{
   }
   const park=()=>{listening=target;browseIndex=target;selected=-1;flipped=false;coverOpen=false;render();save();};
   if(!swapping){if(coverOpen)listenFromCover(park);else park();return;}
-  coverMoving=true;
+  coverMoving=true;syncCoverVideo();
   const incoming=coverOpen?held:buttons[target],shadow=shadows[target];
   const controls=[viewCover,flip,back,prev,next,listen,picker,stop];controls.forEach(c=>c.disabled=true);
   let lift,shade;
