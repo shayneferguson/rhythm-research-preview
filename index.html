@@ -482,7 +482,7 @@ listen.addEventListener('click',async()=>{
     if(lift)lift.cancel();if(shade)shade.cancel();
   }
 });
-stop.addEventListener('click',()=>{if(coverMoving)return;listening=-1;render();save();});
+stop.addEventListener('click',async()=>{if(coverMoving)return;await returnPlaying();save();});
 picker.addEventListener('change',()=>choose(Number(picker.value)));flip.addEventListener('click',toggleFlip);back.addEventListener('click',()=>{if(coverOpen)moveCover(false);else choose(-1);});
 prev.addEventListener('click',()=>choose(Math.max(0,(selected>=0?selected:(browseIndex>=0?browseIndex:16))-1)));
 next.addEventListener('click',()=>choose(((selected>=0?selected:browseIndex)+1)%buttons.length));
