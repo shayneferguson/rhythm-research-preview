@@ -398,10 +398,22 @@ async function returnPlaying(){
   try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
     const lift=Math.max(45,n*.52),top=new DOMMatrix().translate(0,-lift);
     const frames=[{transform:start.toString(),offset:0},{transform:top.multiply(start).toString(),offset:.32},{transform:top.multiply(end).toString(),offset:.72},{transform:end.toString(),offset:1}].map(f=>({...f,easing:'cubic-bezier(.42,0,.58,1)'}));
-    const t={duration:2900,easing:'linear',fill:'both'};
-    a=b.animate(frames,t);z=s.animate(frames.map((f,i)=>({...f,opacity:i===3?0:1})),t);
-    a.startTime=z.startTime=document.timeline.currentTime;
-    await Promise.all([a.finished,z.finished]);
+    const layer=b.parentElement,depth=layer.style.zIndex;
+    layer.style.zIndex='10';
+    try{
+      const first=frames.slice(0,2).map((f,i)=>({...f,offset:i}));
+      const t={duration:928,easing:'linear',fill:'both'};
+      a=b.animate(first,t);z=s.animate(first.map(f=>({...f,opacity:1})),t);
+      a.startTime=z.startTime=document.timeline.currentTime;
+      await Promise.all([a.finished,z.finished]);
+      layer.style.zIndex=depth;
+      const rest=frames.slice(1).map(f=>({...f,offset:(f.offset-.32)/.68}));
+      const prior=a,priorShadow=z,t2={duration:1972,easing:'linear',fill:'both'};
+      a=b.animate(rest,t2);z=s.animate(rest.map((f,i)=>({...f,opacity:i===2?0:1})),t2);
+      a.startTime=z.startTime=document.timeline.currentTime;
+      prior.cancel();priorShadow.cancel();
+      await Promise.all([a.finished,z.finished]);
+    }finally{layer.style.zIndex=depth;}
   }}catch(e){}
   if(a)a.cancel();if(z)z.cancel();
   b.style.transformOrigin=old[2];s.style.transformOrigin=old[3];b.style.zIndex=old[4];
