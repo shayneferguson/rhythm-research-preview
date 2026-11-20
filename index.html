@@ -247,7 +247,7 @@ const shadows=buttons.map(b=>{
   const shape=document.createElement('span');shape.className='rr-shadow-shape';
   shadow.appendChild(shape);slot.appendChild(shadow);wall.appendChild(slot);return shadow;
 });
-let selected=2,flipped=false,listening=-1,coverOpen=false,heldIndex=-1,browseIndex=2;
+let selected=-1,flipped=false,listening=-1,coverOpen=false,heldIndex=-1,browseIndex=-1;
 const viewCover=root.querySelector('.rr-view-cover'),coverView=root.querySelector('.rr-cover-view'),held=root.querySelector('.rr-held-record');
 const flip=root.querySelector('.rr-flip'),back=root.querySelector('.rr-return');
 const prev=root.querySelector('.rr-prev'),next=root.querySelector('.rr-next');
@@ -300,10 +300,10 @@ function render(){
   listen.textContent=selected===listening&&listening>=0?'At the back ♫':'Listen ▶';
   stop.disabled=listening<0;
   root.querySelector('.rr-now-playing').textContent=listening<0?'Choose a record, then Listen':'Listening position · '+names[listening];
-  prev.disabled=(selected>=0?selected:browseIndex)===0;next.disabled=false;
+  prev.disabled=(selected>=0?selected:browseIndex)<=0;next.disabled=false;
   root.querySelector('.rr-selected h2').textContent=selected<0?(browseIndex>=0?names[browseIndex]:'Keep digging'):names[selected];
   root.querySelector('.rr-selected .rr-eyebrow').textContent=selected<0?(browseIndex>=0?String(browseIndex+1).padStart(2,'0')+' / 16':'THE COLLECTION'):String(selected+1).padStart(2,'0')+' / 16';
-  root.querySelector('.rr-selected p').textContent=selected<0?'Place saved · Continue with Next or Previous.':selected===listening?'Parked at the back · keep browsing':(selected>=2&&selected<10&&!flipped?'Cover artwork · Textured front':selected===1&&!flipped?'Red artwork · Textured front':selected===0&&!flipped?'Suffocate artwork · Textured front':'Blank sleeve · '+(flipped?'Back':'Front'));
+  root.querySelector('.rr-selected p').textContent=selected<0?(browseIndex<0?'Choose a sleeve or browse with Next.':'Place saved · Continue with Next or Previous.'):selected===listening?'Parked at the back · keep browsing':(selected>=2&&selected<10&&!flipped?'Cover artwork · Textured front':selected===1&&!flipped?'Red artwork · Textured front':selected===0&&!flipped?'Suffocate artwork · Textured front':'Blank sleeve · '+(flipped?'Back':'Front'));
 }
 function save(){if(window.openai?.setWidgetState)window.openai.setWidgetState({modelContent:{selectedRecord:selected<0?null:names[selected],listeningRecord:listening<0?null:names[listening],audioConnected:false,side:flipped?'back':'front',recordCount:16},privateContent:{version:5,selected,flipped,listening,browseIndex,coverOpen}}).catch(()=>{});}
 function choose(i){if(coverMoving)return;if(!Number.isInteger(i)||i< -1||i>=16)return;selected=i;if(i>=0)browseIndex=i;flipped=false;render();save();}
