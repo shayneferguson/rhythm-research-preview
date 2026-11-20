@@ -320,7 +320,7 @@ function render(){
   listen.textContent=selected===listening&&listening>=0?'At the back ♫':!audioTracks[selected]&&selected>=0?'Audio coming soon':'Listen ▶';
   stop.disabled=listening<0;
   root.querySelector('.rr-now-playing').textContent=listening<0?'Choose a record, then Listen':'Listening position · '+names[listening];
-  prev.disabled=(selected>=0?selected:browseIndex)<=0;next.disabled=false;
+  prev.disabled=(selected<0&&browseIndex<0)||browseTarget(-1)<0;next.disabled=false;
   root.querySelector('.rr-selected h2').textContent=selected<0?(browseIndex>=0?names[browseIndex]:'Keep digging'):names[selected];
   root.querySelector('.rr-selected .rr-eyebrow').textContent=selected<0?(browseIndex>=0?String(browseIndex+1).padStart(2,'0')+' / 16':'THE COLLECTION'):String(selected+1).padStart(2,'0')+' / 16';
   root.querySelector('.rr-selected p').textContent=selected<0?(browseIndex<0?'Choose a sleeve or browse with Next.':'Place saved · Continue with Next or Previous.'):selected===listening?'Parked at the back · keep browsing':(selected===2?'Fine China Remix v2 · '+(flipped?'Back':'Front'):selected>=2&&selected<10&&!flipped?'Cover artwork · Textured front':selected===1&&!flipped?'Red artwork · Textured front':selected===0&&!flipped?'Suffocate artwork · Textured front':'Blank sleeve · '+(flipped?'Back':'Front'));
@@ -521,8 +521,19 @@ listen.addEventListener('click',async()=>{
 });
 stop.addEventListener('click',async()=>{if(coverMoving)return;stopAudio();await returnPlaying();save();});
 picker.addEventListener('change',()=>choose(Number(picker.value)));flip.addEventListener('click',toggleFlip);back.addEventListener('click',()=>{if(coverOpen)moveCover(false);else choose(-1);});
-prev.addEventListener('click',()=>choose(Math.max(0,(selected>=0?selected:(browseIndex>=0?browseIndex:16))-1)));
-next.addEventListener('click',()=>choose(((selected>=0?selected:browseIndex)+1)%buttons.length));
+function browseTarget(direction){
+  const index=selected>=0?selected:browseIndex;
+  let candidate=index;
+  for(let step=0;step<buttons.length;step++){
+    candidate=direction>0?(candidate+1)%buttons.length:(candidate<0?buttons.length:candidate)-1;
+    if(candidate<0)return -1;
+    if(candidate!==listening)return candidate;
+  }
+  return -1;
+}
+function browse(direction){const target=browseTarget(direction);if(target>=0)choose(target);}
+prev.addEventListener('click',()=>browse(-1));
+next.addEventListener('click',()=>browse(1));
 
 // Desktop gestures use the same selection, cover and return state as the buttons.
 const mouseScene=root.querySelector('.rr-scene-crop');
@@ -533,7 +544,7 @@ mouseScene.addEventListener('wheel',e=>{
   const delta=Math.abs(e.deltaY)>=Math.abs(e.deltaX)?e.deltaY:e.deltaX;
   if(!delta)return;
   const index=selected>=0?selected:browseIndex;
-  if(delta<0&&index===0)return;
+  if(delta<0&&browseTarget(-1)<0)return;
   e.preventDefault();
   const now=performance.now();
   if(now-lastWheelAt>180||Math.sign(delta)!==Math.sign(wheelSum))wheelSum=0;
@@ -542,7 +553,7 @@ mouseScene.addEventListener('wheel',e=>{
   wheelSum+=delta*(e.deltaMode===1?16:e.deltaMode===2?mouseScene.clientHeight:1);
   if(Math.abs(wheelSum)<32)return;
   const direction=Math.sign(wheelSum);wheelSum=0;lastWheelStep=now;
-  choose(direction>0?(index+1)%buttons.length:Math.max(0,(index<0?buttons.length:index)-1));
+  browse(direction);
 },{passive:false});
 held.addEventListener('click',e=>{e.stopPropagation();if(coverOpen&&!coverMoving)toggleFlip();});
 root.addEventListener('click',e=>{
