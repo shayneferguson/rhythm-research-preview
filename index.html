@@ -282,7 +282,7 @@ buttons.forEach(b=>b.addEventListener('animationend',e=>{
   if(e.animationName==='rr-slot-drop'){b.classList.remove('rr-return-drop');shadows[buttons.indexOf(b)].classList.remove('rr-return-drop');}
 }));
 // Animate only the inspected front cover. Stack/listening sleeves always use stills.
-const animatedCovers={0:'remix-video/record-01-suffocate.mp4',1:'remix-video/puerto-rico-cover.mp4',2:'remix-video/record-03-shadows.mp4',3:'remix-video/record-04-downtown.mp4',4:'remix-video/record-05-perspective.mp4',5:'remix-video/record-06-boardwalk.mp4',6:'remix-video/record-07-speakers.mp4',7:'remix-video/record-08-microphones.mp4',8:'remix-video/record-09-turntables.mp4',9:'remix-video/record-10-skatepark.mp4',10:'remix-video/record-11-court.mp4',11:'remix-video/record-12-pool.mp4'};
+const animatedCovers={0:'remix-video/record-01-suffocate.mp4',1:'remix-video/puerto-rico-cover.mp4',2:'remix-video/record-03-shadows.mp4',3:'remix-video/record-04-downtown.mp4',4:'remix-video/record-05-perspective.mp4',5:'remix-video/record-06-boardwalk.mp4',6:'remix-video/record-07-speakers.mp4',7:'remix-video/record-08-microphones.mp4',8:'remix-video/record-09-turntables.mp4',9:'remix-video/record-10-skatepark.mp4',10:'remix-video/record-11-court.mp4',11:'remix-video/record-12-pool.mp4',14:'remix-video/record-15-building.mp4'};
 let coverVideo=null,coverVideoAttempt=0,coverVideoPending=false;
 const reducedCoverMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 let coverVideoFade=null,coverVideoVisible=false;
