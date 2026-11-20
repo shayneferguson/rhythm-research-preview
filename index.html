@@ -282,7 +282,7 @@ buttons.forEach(b=>b.addEventListener('animationend',e=>{
   if(e.animationName==='rr-slot-drop'){b.classList.remove('rr-return-drop');shadows[buttons.indexOf(b)].classList.remove('rr-return-drop');}
 }));
 // Animate only the inspected front cover. Stack/listening sleeves always use stills.
-const animatedCovers={1:'remix-video/puerto-rico-cover.mp4',3:'remix-video/record-04-downtown.mp4',6:'remix-video/record-07-speakers.mp4',7:'remix-video/record-08-microphones.mp4'};
+const animatedCovers={1:'remix-video/puerto-rico-cover.mp4',3:'remix-video/record-04-downtown.mp4',4:'remix-video/record-05-perspective.mp4',6:'remix-video/record-07-speakers.mp4',7:'remix-video/record-08-microphones.mp4'};
 let coverVideo=null,coverVideoAttempt=0,coverVideoPending=false;
 const reducedCoverMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 let coverVideoFade=null,coverVideoVisible=false;
