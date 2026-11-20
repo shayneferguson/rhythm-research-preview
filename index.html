@@ -498,6 +498,45 @@ async function returnPlaying(){
   void b.offsetWidth;void s.offsetWidth;b.style.transition=old[0];s.style.transition=old[1];
   coverMoving=false;controls.forEach(c=>c.disabled=false);render();
 }
+async function listenFromStack(park){
+  if(coverMoving)return;
+  coverMoving=true;syncCoverVideo();
+  const card=buttons[selected],shade=shadows[selected];
+  const controls=[viewCover,flip,back,prev,next,listen,picker,stop];
+  controls.forEach(c=>c.disabled=true);
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let flight,shadowLift,landing,shadowLanding;
+  try{
+    if(reduced){park();return;}
+    const pose=getComputedStyle(card).transform;
+    const origin=getComputedStyle(card).transformOrigin.split(' ').map(parseFloat);
+    const width=card.offsetWidth,parent=card.parentElement.getBoundingClientRect();
+    const x=parent.left+card.offsetLeft,y=parent.top+card.offsetTop;
+    const stackTop=Math.min(...buttons.filter(b=>b!==card).map(b=>b.getBoundingClientRect().top));
+    const lift=Math.max(24,card.getBoundingClientRect().bottom-stackTop+12);
+    const raised='translateY('+(-lift)+'px) '+pose;
+    const timing={duration:1100,easing:'cubic-bezier(.25,.55,.25,1)',fill:'both'};
+    flight=card.animate([{transform:pose},{transform:raised}],timing);
+    const shadowPose=getComputedStyle(shade).transform;
+    shadowLift=shade.animate([{transform:shadowPose},{transform:'translateY('+(-lift)+'px) '+shadowPose}],timing);
+    flight.startTime=shadowLift.startTime=document.timeline.currentTime;
+    await Promise.all([flight.finished,shadowLift.finished]);
+    // Change depth only after clearing the stack; preserve the lifted world pose.
+    card.style.animation=shade.style.animation='none';park();controls.forEach(c=>c.disabled=true);
+    flight.cancel();shadowLift.cancel();
+    const dest=card.parentElement.getBoundingClientRect();
+    const start=new DOMMatrix().translate(x-dest.left-card.offsetLeft,y-dest.top-card.offsetTop-lift)
+      .translate(origin[0],origin[1]).multiply(new DOMMatrix(pose)).translate(-origin[0],-origin[1]).scale(width/card.offsetWidth);
+    const settle={duration:1300,easing:'cubic-bezier(.25,.55,.25,1)',fill:'both'};
+    landing=card.animate([{transform:start.toString()},{transform:getComputedStyle(card).transform}],settle);
+    shadowLanding=shade.animate([{transform:start.toString()},{transform:getComputedStyle(shade).transform}],settle);
+    landing.startTime=shadowLanding.startTime=document.timeline.currentTime;
+    await Promise.all([landing.finished,shadowLanding.finished]);
+  }finally{
+    for(const motion of [flight,shadowLift,landing,shadowLanding])if(motion)motion.cancel();
+    coverMoving=false;controls.forEach(c=>c.disabled=false);render();save();
+  }
+}
 async function listenFromCover(park){
   if(coverMoving)return;
   coverMoving=true;syncCoverVideo();
@@ -558,7 +597,7 @@ listen.addEventListener('click',async()=>{
     }}finally{if(turn)turn.cancel();coverMoving=false;locked.forEach(c=>c.disabled=false);render();}
   }
   const park=()=>{listening=target;browseIndex=target;selected=-1;flipped=false;coverOpen=false;render();save();};
-  if(!swapping){if(coverOpen)listenFromCover(park);else park();return;}
+  if(!swapping){if(coverOpen)await listenFromCover(park);else await listenFromStack(park);return;}
   coverMoving=true;syncCoverVideo();
   const incoming=coverOpen?held:buttons[target],shadow=shadows[target];
   const controls=[viewCover,flip,back,prev,next,listen,picker,stop];controls.forEach(c=>c.disabled=true);
