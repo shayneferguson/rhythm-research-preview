@@ -282,6 +282,7 @@ buttons.forEach(b=>b.addEventListener('animationend',e=>{
   if(e.animationName==='rr-slot-drop'){b.classList.remove('rr-return-drop');shadows[buttons.indexOf(b)].classList.remove('rr-return-drop');}
 }));
 // Animate only the inspected front cover. Stack/listening sleeves always use stills.
+const animatedCovers={1:'remix-video/puerto-rico-cover.mp4',7:'remix-video/record-08-microphones.mp4'};
 let coverVideo=null,coverVideoAttempt=0,coverVideoPending=false;
 const reducedCoverMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 let coverVideoFade=null,coverVideoVisible=false;
@@ -307,7 +308,7 @@ function fadeCoverVideo(show,immediate=false){
   return motion.done;
 }
 function syncCoverVideo(){
-  const active=coverOpen&&!coverMoving&&!flipped&&selected===1&&!document.hidden&&!reducedCoverMotion.matches;
+  const active=coverOpen&&!coverMoving&&!flipped&&!!animatedCovers[selected]&&!document.hidden&&!reducedCoverMotion.matches;
   if(coverVideo&&!held.contains(coverVideo)){
     coverVideo.pause();coverVideo.removeAttribute('src');coverVideo.load();
     if(coverVideoFade){coverVideoFade.video.cancel();coverVideoFade.still.cancel();coverVideoFade=null;}
@@ -323,7 +324,7 @@ function syncCoverVideo(){
     coverVideo.muted=true;coverVideo.defaultMuted=true;coverVideo.loop=true;coverVideo.playsInline=true;
     coverVideo.setAttribute('muted','');coverVideo.setAttribute('playsinline','');
     coverVideo.setAttribute('aria-hidden','true');coverVideo.preload='none';coverVideo.hidden=true;coverVideo.style.opacity='0';
-    coverVideo.src='remix-video/puerto-rico-cover.mp4';
+    coverVideo.src=animatedCovers[selected];
     held.querySelector('.rr-front').appendChild(coverVideo);
   }
   if(coverVideoPending)return;
