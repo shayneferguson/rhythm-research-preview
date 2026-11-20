@@ -262,7 +262,7 @@ const buttons=names.map((name,i)=>{
     }
     inner.appendChild(f);
   });
-  b.appendChild(inner);b.addEventListener('click',e=>{if(coverMoving)return;if(selected===i){if(e.pointerType==='touch'||(e.detail!==0&&!window.matchMedia('(hover: hover) and (pointer: fine)').matches))toggleFlip();else moveCover(true);}else selectRecord(i)});const slot=document.createElement('div');slot.className='rr-slot';slot.appendChild(b);stack.appendChild(slot);return b;
+  b.appendChild(inner);b.addEventListener('click',()=>{if(coverMoving)return;if(selected===i)moveCover(true);else selectRecord(i)});const slot=document.createElement('div');slot.className='rr-slot';slot.appendChild(b);stack.appendChild(slot);return b;
 });
 const wall=root.querySelector('.rr-wall-shadows');
 const shadows=buttons.map(b=>{
