@@ -628,7 +628,13 @@ function browseTarget(direction){
   }
   return -1;
 }
-function browse(direction){const target=browseTarget(direction);if(target>=0)choose(target);}
+async function browse(direction){
+  if(coverMoving)return;
+  const target=browseTarget(direction);
+  if(target<0)return;
+  if(coverOpen)await moveCover(false);
+  choose(target);
+}
 prev.addEventListener('click',()=>browse(-1));
 next.addEventListener('click',()=>browse(1));
 
