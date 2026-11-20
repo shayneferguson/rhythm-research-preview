@@ -221,7 +221,7 @@ pauseAudio.addEventListener('click',async()=>{
 seek.addEventListener('input',()=>{if(Number.isFinite(audio.duration))audio.currentTime=Number(seek.value);syncAudio();});
 
 const photos=["remix-assets/8ac5f644229146327142.jpg", "remix-assets/5ca88a15e94ac073b9bf.jpg", "remix-assets/fe366810d7cd70317c6d.jpg", "remix-assets/c8350a00347d668bfb30.jpg"];
-const addedCoverArt=["remix-assets/db49d0fab5d25b6d4517.jpg", "remix-assets/9e3134658658ca60c892.jpg", "remix-assets/602230910841bf4f41f0.jpg", "remix-assets/ac962e52579da18978cf.jpg", "remix-assets/21bfcb0e67fe6e178ee7.jpg", "remix-assets/6c30baa42fa6892b61f9.jpg", "remix-assets/ba28f84c2da6041619a2.jpg", "remix-assets/0efa69bc64a9e4263fe8.jpg", "remix-assets/record-11-cover.jpg", "remix-assets/record-12-cover.jpg", "remix-assets/record-13-cover.jpg", "remix-assets/record-14-cover.jpg", "remix-assets/record-15-cover.jpg"];
+const addedCoverArt=["remix-assets/db49d0fab5d25b6d4517.jpg", "remix-assets/9e3134658658ca60c892.jpg", "remix-assets/602230910841bf4f41f0.jpg", "remix-assets/ac962e52579da18978cf.jpg", "remix-assets/21bfcb0e67fe6e178ee7.jpg", "remix-assets/6c30baa42fa6892b61f9.jpg", "remix-assets/ba28f84c2da6041619a2.jpg", "remix-assets/0efa69bc64a9e4263fe8.jpg", "remix-assets/record-11-cover.jpg", "remix-assets/record-12-cover.jpg", "remix-assets/record-13-cover.jpg", "remix-assets/record-14-cover.jpg", "remix-assets/record-15-cover.jpg", "remix-assets/record-16-cover.jpg"];
 const names=Array.from({length:16},(_,i)=>'Record '+String(i+1).padStart(2,'0'));
 names[0]='Matt Black — Suffocate';names[1]='Puerto Rico — Three Beat Remix';names[2]='Benny The Butcher — Last of My Kind';
 const restTilts=[-.55,.8,-.35,-.7,.45,.15,-.85,.6,-.2,.75,-.5,.3,-.65,.1,.55,-.4];
@@ -254,7 +254,7 @@ const buttons=names.map((name,i)=>{
   ['front','back'].forEach(side=>{
     const f=document.createElement('span');f.className='rr-face rr-'+side+(i%4<3?' rr-needs-paper':'');
     f.style.backgroundImage='url("'+photos[i%4]+'")';f.style.backgroundSize=crops[i%4][0];f.style.backgroundPosition=crops[i%4][1];
-    if(i<15&&side==='front'){
+    if(i<16&&side==='front'){
       f.classList.add('rr-has-art');
       const cover=document.createElement('img');cover.className='rr-cover-image';cover.src=i>=2?addedCoverArt[i-2]:i===1?'remix-assets/e96f62cbbc571e22dd4b.jpg':'remix-assets/b03c2e1c786bc7712eef.jpg';cover.alt=names[i]+' cover artwork';if(i>=10){cover.style.objectFit='cover';cover.style.objectPosition=i===10?'50% 0%':'50% 50%';}
       const grain=document.createElement('span');grain.className='rr-paper-grain';grain.setAttribute('aria-hidden','true');
@@ -282,7 +282,7 @@ buttons.forEach(b=>b.addEventListener('animationend',e=>{
   if(e.animationName==='rr-slot-drop'){b.classList.remove('rr-return-drop');shadows[buttons.indexOf(b)].classList.remove('rr-return-drop');}
 }));
 // Animate only the inspected front cover. Stack/listening sleeves always use stills.
-const animatedCovers={0:'remix-video/record-01-suffocate.mp4',1:'remix-video/puerto-rico-cover.mp4',2:'remix-video/record-03-shadows.mp4',3:'remix-video/record-04-downtown.mp4',4:'remix-video/record-05-perspective.mp4',5:'remix-video/record-06-boardwalk.mp4',6:'remix-video/record-07-speakers.mp4',7:'remix-video/record-08-microphones.mp4',8:'remix-video/record-09-turntables.mp4',9:'remix-video/record-10-skatepark.mp4',10:'remix-video/record-11-court.mp4',11:'remix-video/record-12-pool.mp4',14:'remix-video/record-15-building.mp4'};
+const animatedCovers={0:'remix-video/record-01-suffocate.mp4',1:'remix-video/puerto-rico-cover.mp4',2:'remix-video/record-03-shadows.mp4',3:'remix-video/record-04-downtown.mp4',4:'remix-video/record-05-perspective.mp4',5:'remix-video/record-06-boardwalk.mp4',6:'remix-video/record-07-speakers.mp4',7:'remix-video/record-08-microphones.mp4',8:'remix-video/record-09-turntables.mp4',9:'remix-video/record-10-skatepark.mp4',10:'remix-video/record-11-court.mp4',11:'remix-video/record-12-pool.mp4',14:'remix-video/record-15-building.mp4',15:'remix-video/record-16-street.mp4'};
 let coverVideo=null,coverVideoAttempt=0,coverVideoPending=false;
 const reducedCoverMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 let coverVideoFade=null,coverVideoVisible=false;
@@ -387,7 +387,7 @@ function render(){
   prev.disabled=(selected<0&&browseIndex<0)||browseTarget(-1)<0;next.disabled=false;
   root.querySelector('.rr-selected h2').textContent=selected<0?(browseIndex>=0?names[browseIndex]:'Keep digging'):names[selected];
   root.querySelector('.rr-selected .rr-eyebrow').textContent=selected<0?(browseIndex>=0?String(browseIndex+1).padStart(2,'0')+' / 16':'THE COLLECTION'):String(selected+1).padStart(2,'0')+' / 16';
-  root.querySelector('.rr-selected p').textContent=selected<0?(browseIndex<0?'Choose a sleeve or browse with Next.':'Place saved · Continue with Next or Previous.'):selected===listening?'Parked at the back · keep browsing':(selected===2?'Fine China Remix v2 · '+(flipped?'Back':'Front'):selected>=2&&selected<15&&!flipped?'Cover artwork · Textured front':selected===1&&!flipped?'Red artwork · Textured front':selected===0&&!flipped?'Suffocate artwork · Textured front':'Blank sleeve · '+(flipped?'Back':'Front'));
+  root.querySelector('.rr-selected p').textContent=selected<0?(browseIndex<0?'Choose a sleeve or browse with Next.':'Place saved · Continue with Next or Previous.'):selected===listening?'Parked at the back · keep browsing':(selected===2?'Fine China Remix v2 · '+(flipped?'Back':'Front'):selected>=2&&selected<16&&!flipped?'Cover artwork · Textured front':selected===1&&!flipped?'Red artwork · Textured front':selected===0&&!flipped?'Suffocate artwork · Textured front':'Blank sleeve · '+(flipped?'Back':'Front'));
   syncCoverVideo();
   if(!coverMoving){settlingScene=false;if(pendingAudioRecovery&&!startingAudio&&!recoveringAudio)queueMicrotask(recoverAudioFailure);}
 }
