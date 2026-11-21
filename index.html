@@ -197,7 +197,7 @@ html,body,#rr-crate-preview,#rr-crate-preview *{touch-action:pan-x pan-y}html{-w
     <span class="rr-rim-highlight-fade" aria-hidden="true"></span>
   </div></div></div>
   <section class="rr-player"><div class="rr-selected" aria-live="polite"><span class="rr-eyebrow">IN THE CRATE</span><h2>16 records in the crate</h2><p>Choose a record to take a closer look.</p></div><div class="rr-actions"><div class="rr-browse"><button type="button" class="rr-prev">← Previous</button><button type="button" class="rr-next">Next →</button></div><button type="button" class="rr-view-cover" disabled>View cover ↗</button><button type="button" class="rr-listen">Listen ▶</button><button class="rr-flip" disabled>View back ↻</button><button class="rr-return" disabled>Return to crate ↓</button></div></section>
-  <div class="rr-audio" aria-live="polite"><button type="button" class="rr-stop" disabled aria-label="Return listening record to stack">■</button><span class="rr-now-playing">Choose a record, then Listen</span><span class="rr-audio-note">Audio available on records 1–5</span></div>
+  <div class="rr-audio" aria-live="polite"><button type="button" class="rr-stop" disabled aria-label="Return listening record to stack">■</button><span class="rr-now-playing">Choose a record, then Listen</span><span class="rr-audio-note">Audio available on records 1–6</span></div>
   <div class="rr-transport"><button type="button" class="rr-pause" disabled aria-label="Pause audio">Pause</button><input class="rr-seek" type="range" min="0" max="204.5" step="0.1" value="0" aria-label="Playback position" disabled><span class="rr-time">0:00 / 3:24</span></div><audio class="rr-track" preload="none" src="remix-audio/suffocate-v9.mp3"></audio><footer><span>RHYTHM RESEARCH</span><span>BRING BACK THE REMIX.</span></footer>
 </div>
 
@@ -205,7 +205,7 @@ html,body,#rr-crate-preview,#rr-crate-preview *{touch-action:pan-x pan-y}html{-w
 (()=>{
 const root=document.getElementById('rr-crate-preview');
 const audio=root.querySelector('.rr-track'),pauseAudio=root.querySelector('.rr-pause'),seek=root.querySelector('.rr-seek'),audioTime=root.querySelector('.rr-time'),audioNote=root.querySelector('.rr-audio-note');
-const audioTracks={0:{src:'remix-audio/suffocate-v9.mp3',title:'Matt Black — Suffocate Remix',duration:204.5},1:{src:'remix-audio/puerto-rico-three-beat-v1.mp3',title:'Puerto Rico — Three Beat Remix',duration:339.096},2:{src:'remix-audio/last-of-my-kind-fine-china-v2.mp3',title:'Benny The Butcher — Last of My Kind · Fine China Remix v2',duration:328.569229},3:{src:'remix-audio/reach-us-detuned-cadillac-v4.mp3',title:'Dilated Peoples — Reach Us · Detuned Cadillac Remix v4',duration:302.76483333333334},4:{src:'remix-audio/nokia-fulton-voices-v2.mp3',title:'Fred The Godson — Nokia · Fulton Voices Remix v2',duration:251.21960416666667}};
+const audioTracks={0:{src:'remix-audio/suffocate-v9.mp3',title:'Matt Black — Suffocate Remix',duration:204.5},1:{src:'remix-audio/puerto-rico-three-beat-v1.mp3',title:'Puerto Rico — Three Beat Remix',duration:339.096},2:{src:'remix-audio/last-of-my-kind-fine-china-v2.mp3',title:'Benny The Butcher — Last of My Kind · Fine China Remix v2',duration:328.569229},3:{src:'remix-audio/reach-us-detuned-cadillac-v4.mp3',title:'Dilated Peoples — Reach Us · Detuned Cadillac Remix v4',duration:302.76483333333334},4:{src:'remix-audio/nokia-fulton-voices-v2.mp3',title:'Fred The Godson — Nokia · Fulton Voices Remix v2',duration:251.21960416666667},5:{src:'remix-audio/cheers-circles-v4.mp3',title:'Rihanna — Cheers · Circles Remix v4',duration:256.078375}};
 let audioStarted=false,audioError='',audioIndex=0;
 const stamp=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
 function syncAudio(){
@@ -214,7 +214,7 @@ function syncAudio(){
   audioTime.textContent=stamp(audio.currentTime)+' / '+stamp(duration);
   seek.disabled=!audioStarted;pauseAudio.disabled=!audioStarted;
   pauseAudio.textContent=audio.ended?'Replay':audio.paused?'Resume':'Pause';pauseAudio.setAttribute('aria-label',audio.ended?'Replay audio':audio.paused?'Resume audio':'Pause audio');
-  audioNote.textContent=audioError||(audioStarted?(audio.ended?'Finished':audio.paused?'Paused':'Playing')+' · '+audioTracks[audioIndex].title:'Audio available on records 1–5');
+  audioNote.textContent=audioError||(audioStarted?(audio.ended?'Finished':audio.paused?'Paused':'Playing')+' · '+audioTracks[audioIndex].title:'Audio available on records 1–6');
 }
 function stopAudio(){audio.pause();audio.currentTime=0;audioStarted=false;audioError='';syncAudio();}
 for(const event of ['timeupdate','durationchange','play','pause','ended','loadedmetadata'])audio.addEventListener(event,syncAudio);
@@ -229,7 +229,7 @@ seek.addEventListener('input',()=>{if(Number.isFinite(audio.duration))audio.curr
 const photos=["remix-assets/8ac5f644229146327142.jpg", "remix-assets/5ca88a15e94ac073b9bf.jpg", "remix-assets/fe366810d7cd70317c6d.jpg", "remix-assets/c8350a00347d668bfb30.jpg"];
 const addedCoverArt=["remix-assets/db49d0fab5d25b6d4517.jpg", "remix-assets/9e3134658658ca60c892.jpg", "remix-assets/602230910841bf4f41f0.jpg", "remix-assets/ac962e52579da18978cf.jpg", "remix-assets/21bfcb0e67fe6e178ee7.jpg", "remix-assets/6c30baa42fa6892b61f9.jpg", "remix-assets/ba28f84c2da6041619a2.jpg", "remix-assets/0efa69bc64a9e4263fe8.jpg", "remix-assets/record-11-cover.jpg", "remix-assets/record-12-cover.jpg", "remix-assets/record-13-cover.jpg", "remix-assets/record-14-cover.jpg", "remix-assets/record-15-cover.jpg", "remix-assets/record-16-cover.jpg"];
 const names=Array.from({length:16},(_,i)=>'Record '+String(i+1).padStart(2,'0'));
-names[0]='Matt Black — Suffocate';names[1]='Puerto Rico — Three Beat Remix';names[2]='Benny The Butcher — Last of My Kind';names[3]='Dilated Peoples — Reach Us';names[4]='Fred The Godson — Nokia';
+names[0]='Matt Black — Suffocate';names[1]='Puerto Rico — Three Beat Remix';names[2]='Benny The Butcher — Last of My Kind';names[3]='Dilated Peoples — Reach Us';names[4]='Fred The Godson — Nokia';names[5]='Rihanna — Cheers';
 const restTilts=[-.55,.8,-.35,-.7,.45,.15,-.85,.6,-.2,.75,-.5,.3,-.65,.1,.55,-.4];
 const raisedTilts=[-2,1.4,-1,2,-1.5,.8,-2.2,1.8,-.6,2.1,-1.7,1.1,-1.2,1.6,-.9,.7];
 const crops=[['184.173% 121.857%','58.120% 58.824%'],['177.285% 117.818%','50.896% 55.814%'],['180.282% 117.981%','58.772% 51.538%'],['178.771% 117.981%','51.241% 58.462%']];
