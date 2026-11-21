@@ -28,7 +28,7 @@
   #rr-crate-preview .rr-record.rr-active{bottom:calc(-32% - 40px)}
 }
 @media(max-width:550px){#rr-crate-preview .rr-actions{max-width:none;width:100%}#rr-crate-preview .rr-actions>button{flex:1}}
-#rr-crate-preview .rr-front.rr-has-art{isolation:isolate}
+#rr-crate-preview .rr-face.rr-has-art{isolation:isolate}
 #rr-crate-preview .rr-cover-image{position:absolute;inset:.7%;width:98.6%;height:98.6%;object-fit:contain;z-index:2;mix-blend-mode:multiply;opacity:.94;pointer-events:none}
 #rr-crate-preview .rr-paper-grain{position:absolute;inset:0;z-index:3;background-image:var(--rr-blank-paper);background-size:178.771% 117.981%;background-position:51.241% 58.462%;mix-blend-mode:soft-light;opacity:.38;pointer-events:none}
 /* Let the lifted sleeve cross the photo's upper edge while retaining the bottom crop. */
@@ -254,9 +254,9 @@ const buttons=names.map((name,i)=>{
   ['front','back'].forEach(side=>{
     const f=document.createElement('span');f.className='rr-face rr-'+side+(i%4<3?' rr-needs-paper':'');
     f.style.backgroundImage='url("'+photos[i%4]+'")';f.style.backgroundSize=crops[i%4][0];f.style.backgroundPosition=crops[i%4][1];
-    if(i<16&&side==='front'){
+    if(i<16){
       f.classList.add('rr-has-art');
-      const cover=document.createElement('img');cover.className='rr-cover-image';cover.src=i>=2?addedCoverArt[i-2]:i===1?'remix-assets/e96f62cbbc571e22dd4b.jpg':'remix-assets/b03c2e1c786bc7712eef.jpg';cover.alt=names[i]+' cover artwork';if(i>=10){cover.style.objectFit='cover';cover.style.objectPosition=i===10?'50% 0%':'50% 50%';}
+      const cover=document.createElement('img');cover.className='rr-cover-image';cover.src=side==='back'?'remix-assets/record-'+String(i+1).padStart(2,'0')+'-back.jpg':i>=2?addedCoverArt[i-2]:i===1?'remix-assets/e96f62cbbc571e22dd4b.jpg':'remix-assets/b03c2e1c786bc7712eef.jpg';cover.alt=names[i]+(side==='back'?' back cover artwork':' cover artwork');if(i>=10){cover.style.objectFit='cover';cover.style.objectPosition=i===10?'50% 0%':'50% 50%';}
       const grain=document.createElement('span');grain.className='rr-paper-grain';grain.setAttribute('aria-hidden','true');
       f.appendChild(cover);f.appendChild(grain);
     }
@@ -387,7 +387,7 @@ function render(){
   prev.disabled=(selected<0&&browseIndex<0)||browseTarget(-1)<0;next.disabled=false;
   root.querySelector('.rr-selected h2').textContent=selected<0?(browseIndex>=0?names[browseIndex]:'Keep digging'):names[selected];
   root.querySelector('.rr-selected .rr-eyebrow').textContent=selected<0?(browseIndex>=0?String(browseIndex+1).padStart(2,'0')+' / 16':'THE COLLECTION'):String(selected+1).padStart(2,'0')+' / 16';
-  root.querySelector('.rr-selected p').textContent=selected<0?(browseIndex<0?'Choose a sleeve or browse with Next.':'Place saved · Continue with Next or Previous.'):selected===listening?'Parked at the back · keep browsing':(selected===2?'Fine China Remix v2 · '+(flipped?'Back':'Front'):selected>=2&&selected<16&&!flipped?'Cover artwork · Textured front':selected===1&&!flipped?'Red artwork · Textured front':selected===0&&!flipped?'Suffocate artwork · Textured front':'Blank sleeve · '+(flipped?'Back':'Front'));
+  root.querySelector('.rr-selected p').textContent=selected<0?(browseIndex<0?'Choose a sleeve or browse with Next.':'Place saved · Continue with Next or Previous.'):selected===listening?'Parked at the back · keep browsing':(selected===2?'Fine China Remix v2 · '+(flipped?'Back':'Front'):selected>=2&&selected<16&&!flipped?'Cover artwork · Textured front':selected===1&&!flipped?'Red artwork · Textured front':selected===0&&!flipped?'Suffocate artwork · Textured front':'Cover artwork · Textured '+(flipped?'back':'front'));
   syncCoverVideo();
   if(!coverMoving){settlingScene=false;if(pendingAudioRecovery&&!startingAudio&&!recoveringAudio)queueMicrotask(recoverAudioFailure);}
 }
