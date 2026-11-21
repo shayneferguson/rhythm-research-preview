@@ -256,7 +256,7 @@ const buttons=names.map((name,i)=>{
     f.style.backgroundImage='url("'+photos[i%4]+'")';f.style.backgroundSize=crops[i%4][0];f.style.backgroundPosition=crops[i%4][1];
     if(i<16){
       f.classList.add('rr-has-art');
-      const cover=document.createElement('img');cover.className='rr-cover-image';cover.src=side==='back'?'remix-assets/record-'+String(i+1).padStart(2,'0')+'-back.jpg':i>=2?addedCoverArt[i-2]:i===1?'remix-assets/e96f62cbbc571e22dd4b.jpg':'remix-assets/b03c2e1c786bc7712eef.jpg';cover.alt=names[i]+(side==='back'?' back cover artwork':' cover artwork');if(i>=10){cover.style.objectFit='cover';cover.style.objectPosition=i===10?'50% 0%':'50% 50%';}
+      const cover=document.createElement('img');cover.className='rr-cover-image';const artworkSrc=side==='back'?'remix-assets/record-'+String(i+1).padStart(2,'0')+'-back.jpg':i>=2?addedCoverArt[i-2]:i===1?'remix-assets/e96f62cbbc571e22dd4b.jpg':'remix-assets/b03c2e1c786bc7712eef.jpg';cover.decoding='async';if(side==='back')cover.dataset.artworkSrc=artworkSrc;else cover.src=artworkSrc;cover.alt=names[i]+(side==='back'?' back cover artwork':' cover artwork');if(i>=10){cover.style.objectFit='cover';cover.style.objectPosition=i===10?'50% 0%':'50% 50%';}
       const grain=document.createElement('span');grain.className='rr-paper-grain';grain.setAttribute('aria-hidden','true');
       f.appendChild(cover);f.appendChild(grain);
     }
@@ -341,6 +341,13 @@ document.addEventListener('visibilitychange',syncCoverVideo);
 reducedCoverMotion.addEventListener('change',syncCoverVideo);
 
 function render(){
+  // Hidden backs do not need decoded images or GPU textures at startup.
+  buttons.forEach((button,i)=>{
+    const image=button.querySelector('.rr-back img');
+    if(!image)return;
+    if(i===selected){if(!image.getAttribute('src'))image.src=image.dataset.artworkSrc;}
+    else image.removeAttribute('src');
+  });
   if(selected<0||selected===listening)coverOpen=false;
   root.dataset.coverOpen=String(coverOpen);
   coverView.hidden=!coverOpen;
