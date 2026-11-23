@@ -243,10 +243,17 @@ html,body{background:#b2b1b0}
 #rr-crate-preview .rr-record:focus{outline:none}
 #rr-crate-preview[data-input="keyboard"] .rr-record:focus-visible{outline:3px solid var(--rr-lime);outline-offset:4px}
 @media(max-width:767px){
- #rr-crate-preview .rr-hero{background:radial-gradient(ellipse at 45% 10%,#c6c4c5,#b9b7b8 75%)}
+ #rr-crate-preview .rr-hero{background:#b9b7b8}
  #rr-crate-preview .rr-header,#rr-crate-preview .rr-intro{background:transparent;color:#171918;border:0}
  #rr-crate-preview .rr-wordmark>span,#rr-crate-preview .rr-intro .rr-eyebrow{color:#283027}
 }
+
+/* Extend the photographed wall upward behind the mobile typography. */
+@media(max-width:767px){
+ #rr-crate-preview .rr-hero{background-image:url("remix-assets/room-wall.svg");background-size:100% 100%;background-position:center top;background-repeat:no-repeat}
+ #rr-crate-preview .rr-header,#rr-crate-preview .rr-intro{background:none;border:0}
+}
+@media(max-width:767px){#rr-crate-preview .rr-base{mask-image:linear-gradient(transparent 17.4%,#000 21%);-webkit-mask-image:linear-gradient(transparent 17.4%,#000 21%)}}
 </style><script src="no-zoom.js?v=1" defer></script></head><body>
 <div id="rr-crate-preview">
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><clipPath id="rr-crate-front-cutout" clipPathUnits="objectBoundingBox"><path clip-rule="evenodd" fill-rule="evenodd" transform="scale(0.00078125 0.001172332943)" d="M184 614 Q380 625 640 629 Q900 633 1045 628 Q1065 624 1081 624 Q1091 624 1095 630 L1091 639 L1090 710 L1090 853 L190 853 L190 710 L187 630 Z M485 740 L795 740 Q816 740 802 761 L702 853 L578 853 L478 761 Q464 740 485 740 Z M365 853 L459 762 Q465 755 472 763 L553 853 Z M915 853 L821 762 Q815 755 808 763 L727 853 Z"/></clipPath></defs></svg>
