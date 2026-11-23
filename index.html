@@ -206,6 +206,9 @@ html,body,#rr-crate-preview,#rr-crate-preview *{touch-action:pan-x pan-y}html{-w
 /* Slightly compressed paper corners with small, uneven exposed-fibre marks. */
 #rr-crate-preview .rr-record .rr-face,#rr-crate-preview .rr-held-record .rr-face{border-radius:.65% .42% .72% .5%;overflow:hidden}
 #rr-crate-preview .rr-face::before{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;opacity:.68;background:radial-gradient(ellipse 2.3% 1.15% at 0 0,rgba(213,202,179,.9),rgba(204,193,172,.48) 38%,transparent 76%),radial-gradient(ellipse 1.5% 2.1% at 100% 0,rgba(216,207,188,.8),rgba(204,193,172,.35) 34%,transparent 78%),radial-gradient(ellipse 2.1% 1.3% at 100% 100%,rgba(213,202,179,.86),rgba(204,193,172,.38) 38%,transparent 78%),radial-gradient(ellipse 1.3% 2% at 0 100%,rgba(213,202,179,.75),rgba(204,193,172,.30) 35%,transparent 80%)}
+
+/* Clip the scene without creating hidden scroll containers that move on focus. */
+#rr-crate-preview,#rr-crate-preview .rr-scene-crop{overflow:clip;overflow-anchor:none}
 </style><script src="no-zoom.js?v=1" defer></script></head><body>
 <div id="rr-crate-preview">
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><clipPath id="rr-crate-front-cutout" clipPathUnits="objectBoundingBox"><path clip-rule="evenodd" fill-rule="evenodd" transform="scale(0.00078125 0.001172332943)" d="M184 614 Q380 625 640 629 Q900 633 1045 628 Q1065 624 1081 624 Q1091 624 1095 630 L1091 639 L1090 710 L1090 853 L190 853 L190 710 L187 630 Z M485 740 L795 740 Q816 740 802 761 L702 853 L578 853 L478 761 Q464 740 485 740 Z M365 853 L459 762 Q465 755 472 763 L553 853 Z M915 853 L821 762 Q815 755 808 763 L727 853 Z"/></clipPath></defs></svg>
@@ -296,6 +299,11 @@ const buttons=names.map((name,i)=>{
   b.appendChild(inner);b.addEventListener('click',()=>{if(coverMoving)return;if(selected===i)moveCover(true);else selectRecord(i)});const slot=document.createElement('div');slot.className='rr-slot';slot.appendChild(b);stack.appendChild(slot);return b;
 });
 const wall=root.querySelector('.rr-wall-shadows');
+// Pointer selection keeps focus accessible without scrolling to the whole sleeve.
+buttons.forEach(button=>button.addEventListener('mousedown',event=>{
+  if(event.button!==0)return;
+  event.preventDefault();button.focus({preventScroll:true});
+}));
 const shadows=buttons.map(b=>{
   const slot=document.createElement('div');slot.className='rr-slot';
   const shadow=document.createElement('div');shadow.className='rr-record rr-wall-shadow';
