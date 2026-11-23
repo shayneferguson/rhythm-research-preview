@@ -210,57 +210,41 @@ html,body,#rr-crate-preview,#rr-crate-preview *{touch-action:pan-x pan-y}html{-w
 /* Clip the scene without creating hidden scroll containers that move on focus. */
 #rr-crate-preview,#rr-crate-preview .rr-scene-crop{overflow:clip;overflow-anchor:none}
 
-/* Full-height photographed crate: one room, with a separate foreground occluder. */
-html,body{background:#aaa8a7}
-#rr-crate-preview{max-width:1440px;margin:0 auto;background:#aaa8a7;color:#171918}
-#rr-crate-preview .rr-hero{position:relative;isolation:isolate}
-#rr-crate-preview .rr-scene-crop,#rr-crate-preview[data-cover-open="true"] .rr-scene-crop{height:auto;aspect-ratio:2 / 3;padding:0;isolation:isolate}
-#rr-crate-preview .rr-room-plate,#rr-crate-preview .rr-front-plate{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;object-fit:fill}
-#rr-crate-preview .rr-room-plate{z-index:0}
-#rr-crate-preview .rr-front-plate{z-index:2;clip-path:polygon(0 56.35%,100% 56.35%,100% 100%,0 100%)}
-#rr-crate-preview .rr-scene,#rr-crate-preview[data-cover-open="true"] .rr-scene{width:121.4%;left:-10.7%;top:16.87%;margin:0;aspect-ratio:1.50563;transform:none;z-index:1}
-#rr-crate-preview .rr-base,#rr-crate-preview .rr-rail,#rr-crate-preview .rr-crate-back-edge,#rr-crate-preview .rr-crate-edge-softening,#rr-crate-preview .rr-rim-highlight-fade,#rr-crate-preview .rr-rim-contact-shadow,#rr-crate-preview .rr-scene::before{display:none}
-#rr-crate-preview .rr-cover-view{height:56.5%;bottom:auto}
-#rr-crate-preview .rr-header,#rr-crate-preview[data-cover-open="true"] .rr-header{position:absolute;inset:0 0 auto;padding:30px 7%;z-index:60;border:0;color:#171918;pointer-events:none}
-#rr-crate-preview .rr-wordmark>span{color:#171918}
-#rr-crate-preview .rr-edition{color:#393d3a;margin:0}
-#rr-crate-preview .rr-intro{position:absolute;inset:115px 0 auto;padding:20px 7%;z-index:55;align-items:start;pointer-events:none}
-#rr-crate-preview .rr-intro h1{color:#171918;font-size:clamp(36px,5.6vw,72px)}
-#rr-crate-preview .rr-intro .rr-eyebrow,#rr-crate-preview .rr-picker{color:#373c37}
-#rr-crate-preview .rr-picker{pointer-events:auto;width:200px;min-width:0;max-width:220px}
-#rr-crate-preview[data-record-open="true"] .rr-intro>div{opacity:0;visibility:hidden}
-#rr-crate-preview .rr-player{padding:28px 7%;background:transparent}
-#rr-crate-preview .rr-selected{max-width:60%}
-#rr-crate-preview .rr-selected .rr-eyebrow{color:#313c28}
-#rr-crate-preview .rr-selected p,#rr-crate-preview .rr-now-playing,#rr-crate-preview .rr-audio-note,#rr-crate-preview .rr-time{color:#303831}
-#rr-crate-preview .rr-audio{margin:0 7% 24px}
-#rr-crate-preview .rr-transport{padding:0 7% 24px}
-#rr-crate-preview footer{padding:20px 7%;border-color:#838781;color:#303831}
+/* Keep the approved opening coordinates; only reveal more crate below the rim. */
+html,body{background:#b2b1b0}
+#rr-crate-preview{background:#b2b1b0}
+#rr-crate-preview .rr-scene-crop,#rr-crate-preview[data-cover-open="true"] .rr-scene-crop{padding-bottom:81.77%;isolation:isolate}
+#rr-crate-preview .rr-cover-view{height:68.79%;bottom:auto}
+#rr-crate-preview .rr-front-extension{position:absolute;inset:0;width:100%;height:100%;z-index:53;pointer-events:none}
+/* Original front remains above the extension. Its lower apertures are replaced by the new open handle. */
+#rr-crate-preview .rr-rail:not(.rr-rail-mirror){mask-image:linear-gradient(#000 0 81.8%,transparent 82.2%);-webkit-mask-image:linear-gradient(#000 0 81.8%,transparent 82.2%)}
+#rr-crate-preview .rr-crate-console{position:relative;width:96.2%;margin:0 auto;isolation:isolate;color:#f5f7f4;overflow:clip}
+#rr-crate-preview .rr-console-surface{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+#rr-crate-preview .rr-console-content{padding:28px 3.5% 24px;background:linear-gradient(90deg,transparent,rgba(8,10,9,.22) 15%,rgba(8,10,9,.22) 85%,transparent)}
+#rr-crate-preview .rr-console-content>.rr-picker{display:block;max-width:320px;margin:0 36px 8px;color:#d2d6d0;letter-spacing:2px}
+#rr-crate-preview .rr-console-content>.rr-picker select{display:block;margin-top:10px}
+#rr-crate-preview .rr-player{background:transparent}
+#rr-crate-preview .rr-selected{min-width:0;flex:1}
+#rr-crate-preview .rr-selected h2{min-height:2.4em;line-height:1.2}
+#rr-crate-preview .rr-selected p{min-height:2.8em;line-height:1.4}
+#rr-crate-preview footer{border:0}
+#rr-crate-preview .rr-actions button,#rr-crate-preview select,#rr-crate-preview .rr-pause{background:rgba(23,28,26,.88)}
+#rr-crate-preview .rr-actions .rr-listen{background:var(--rr-lime)}
 @media(max-width:767px){
- #rr-crate-preview .rr-header,#rr-crate-preview[data-cover-open="true"] .rr-header{padding:18px 7%}
- #rr-crate-preview .rr-wordmark{font-size:26px;letter-spacing:-4px}
- #rr-crate-preview .rr-wordmark small{font-size:8px;letter-spacing:1.5px;margin-left:14px}
- #rr-crate-preview .rr-edition{display:none}
- #rr-crate-preview .rr-intro{inset:65px 0 auto;padding:14px 7%;display:block}
- #rr-crate-preview .rr-intro h1{font-size:clamp(32px,7vw,48px);letter-spacing:-1.5px}
- #rr-crate-preview .rr-intro .rr-eyebrow{font-size:8px;margin-bottom:8px}
- #rr-crate-preview .rr-picker{position:absolute;top:-45px;right:7%;width:44%;font-size:8px;gap:4px}
- #rr-crate-preview .rr-picker select{font-size:11px;padding:8px;min-height:36px}
+ #rr-crate-preview .rr-console-content{padding:24px 4%}
+ #rr-crate-preview .rr-console-content>.rr-picker{max-width:none;margin:0 20px 8px;width:auto}
  #rr-crate-preview .rr-player{flex-direction:column}
- #rr-crate-preview .rr-selected{max-width:none;width:100%}
- #rr-crate-preview .rr-actions{max-width:none}
+ #rr-crate-preview .rr-actions{width:100%;max-width:none}
 }
-
-
-/* Fade the floor gently into the surrounding grey page. */
-#rr-crate-preview .rr-scene-crop::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4%;z-index:3;pointer-events:none;background:linear-gradient(transparent,#aaa8a7)}
+@media(max-width:767px){#rr-crate-preview .rr-header,#rr-crate-preview .rr-intro{background:#080a09}}
+#rr-crate-preview .rr-scene-crop::after{content:"";position:absolute;inset:84% 0 0;z-index:54;pointer-events:none;background:linear-gradient(transparent,#b2b1b0 55%);mask-image:linear-gradient(to right,#000 1.6%,transparent 2%,transparent 97.6%,#000 98%)}
 </style><script src="no-zoom.js?v=1" defer></script></head><body>
 <div id="rr-crate-preview">
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><clipPath id="rr-crate-front-cutout" clipPathUnits="objectBoundingBox"><path clip-rule="evenodd" fill-rule="evenodd" transform="scale(0.00078125 0.001172332943)" d="M184 614 Q380 625 640 629 Q900 633 1045 628 Q1065 624 1081 624 Q1091 624 1095 630 L1091 639 L1090 710 L1090 853 L190 853 L190 710 L187 630 Z M485 740 L795 740 Q816 740 802 761 L702 853 L578 853 L478 761 Q464 740 485 740 Z M365 853 L459 762 Q465 755 472 763 L553 853 Z M915 853 L821 762 Q815 755 808 763 L727 853 Z"/></clipPath></defs></svg>
   <div class="rr-hero">
   <header class="rr-header"><div class="rr-wordmark">R<span>R</span><small>RHYTHM<br>RESEARCH</small></div><span class="rr-edition">INDEPENDENT SOUND · TORONTO</span></header>
-  <section class="rr-intro"><div><p class="rr-eyebrow">DIG SOMETHING UP.</p><h1>The Remix<br><em>Collection.</em></h1></div><label class="rr-picker">PULL A RECORD<select aria-label="Choose a record"><option value="-1">Browse the crate</option><option value="4">05 — Front sleeve</option><option value="0">01 — After Hours</option><option value="1">02 — Paper Trails</option><option value="2">03 — Side Streets</option><option value="3">04 — Dust & Echoes</option></select></label></section>
-  <div class="rr-scene-crop"><img class="rr-room-plate" src="remix-assets/crate-extended-v1.png" alt="Black record crate with its complete handle and worn front, against a soft grey wall"><img class="rr-front-plate" src="remix-assets/crate-extended-v1.png" alt="" aria-hidden="true"><section class="rr-cover-view" aria-label="Record cover close-up" hidden><div class="rr-held-record"></div><p class="rr-cover-caption">Front cover</p></section><div class="rr-scene" aria-label="Photographed record crate with sixteen selectable sleeves">
+  <section class="rr-intro"><div><p class="rr-eyebrow">DIG SOMETHING UP.</p><h1>The Remix<br><em>Collection.</em></h1></div></section>
+  <div class="rr-scene-crop"><svg class="rr-front-extension" viewBox="0 0 1000 817.7" aria-hidden="true"><defs><mask id="rr-open-handle" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="818"><defs><linearGradient id="rr-extension-blend" x1="0" y1="555" x2="0" y2="582" gradientUnits="userSpaceOnUse"><stop stop-color="black"/><stop offset="1" stop-color="white"/></linearGradient></defs><rect x="19" y="555" width="958" height="264" fill="url(#rr-extension-blend)"/><path d="M355 974 Q348 975 357 986 L465 1106 Q478 1118 496 1118 L530 1118 Q549 1118 562 1103 L670 986 Q683 973 669 973 Z M332 1006 Q338 1002 345 1010 L432 1105 Q440 1115 427 1117 L271 1117 Q250 1117 248 1095 Q247 1084 258 1074 Z M690 1006 Q697 1002 703 1010 L774 1080 Q788 1095 779 1107 Q774 1117 757 1117 L602 1117 Q591 1117 600 1106 Z" transform="translate(-63 -439) scale(1.0927734375)" fill="black" stroke="black" stroke-width="9" stroke-linejoin="round"/></mask></defs><image href="remix-assets/crate-extended-v1.png" x="-63" y="-439" width="1119" height="1678.5" mask="url(#rr-open-handle)"/></svg><section class="rr-cover-view" aria-label="Record cover close-up" hidden><div class="rr-held-record"></div><p class="rr-cover-caption">Front cover</p></section><div class="rr-scene" aria-label="Photographed record crate with sixteen selectable sleeves">
     <img class="rr-base" src="remix-assets/crate-restored-v2.png" alt="Your black crate with an empty interior beneath the interactive sleeves">
     <img class="rr-crate-back-edge" src="remix-assets/crate-restored-v2.png" alt="" aria-hidden="true">
     <div class="rr-rim-contact-shadow" aria-hidden="true"></div><div class="rr-wall-shadows" aria-hidden="true"></div><div class="rr-records"></div>
@@ -269,9 +253,10 @@ html,body{background:#aaa8a7}
     <img class="rr-crate-edge-softening" src="remix-assets/crate-restored-v2.png" alt="" aria-hidden="true">
     <span class="rr-rim-highlight-fade" aria-hidden="true"></span>
   </div></div></div>
+<div class="rr-crate-console"><svg class="rr-console-surface" viewBox="74 1150 880 303" preserveAspectRatio="none" aria-hidden="true"><image href="remix-assets/crate-extended-v1.png" width="1024" height="1536"/></svg><div class="rr-console-content"><label class="rr-picker">PULL A RECORD<select aria-label="Choose a record"><option value="-1">Browse the crate</option><option value="4">05 — Front sleeve</option><option value="0">01 — After Hours</option><option value="1">02 — Paper Trails</option><option value="2">03 — Side Streets</option><option value="3">04 — Dust & Echoes</option></select></label>
   <section class="rr-player"><div class="rr-selected" aria-live="polite"><span class="rr-eyebrow">IN THE CRATE</span><h2>16 records in the crate</h2><p>Choose a record to take a closer look.</p></div><div class="rr-actions"><div class="rr-browse"><button type="button" class="rr-prev">← Previous</button><button type="button" class="rr-next">Next →</button></div><button type="button" class="rr-view-cover" disabled>View cover ↗</button><button type="button" class="rr-listen">Listen ▶</button><button class="rr-flip" disabled>View back ↻</button><button class="rr-return" disabled>Return to crate ↓</button></div></section>
   <div class="rr-audio" aria-live="polite"><button type="button" class="rr-stop" disabled aria-label="Return listening record to stack">■</button><span class="rr-now-playing">Choose a record, then Listen</span><span class="rr-audio-note">Audio available on records 1–12</span></div>
-  <div class="rr-transport"><button type="button" class="rr-pause" disabled aria-label="Pause audio">Pause</button><input class="rr-seek" type="range" min="0" max="204.5" step="0.1" value="0" aria-label="Playback position" disabled><span class="rr-time">0:00 / 3:24</span></div><audio class="rr-track" preload="none" src="remix-audio/suffocate-v9.mp3"></audio><footer><span>RHYTHM RESEARCH</span><span>BRING BACK THE REMIX.</span></footer>
+  <div class="rr-transport"><button type="button" class="rr-pause" disabled aria-label="Pause audio">Pause</button><input class="rr-seek" type="range" min="0" max="204.5" step="0.1" value="0" aria-label="Playback position" disabled><span class="rr-time">0:00 / 3:24</span></div><audio class="rr-track" preload="none" src="remix-audio/suffocate-v9.mp3"></audio><footer><span>RHYTHM RESEARCH</span><span>BRING BACK THE REMIX.</span></footer></div></div>
 </div>
 
 <script>
