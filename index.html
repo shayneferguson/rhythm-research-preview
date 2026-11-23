@@ -451,6 +451,27 @@ html.rr-revealing .rr-loading-screen{opacity:0;pointer-events:none}
 <script>
 (()=>{
 const root=document.getElementById('rr-crate-preview');
+
+// Delay only the existing open/flip action so a second tap can play in its user gesture.
+let sleeveTap=null,sleeveTapTimer=0;
+function clearSleeveTap(){clearTimeout(sleeveTapTimer);sleeveTapTimer=0;sleeveTap=null;}
+function tapSleeve(event,index,singleAction,selectImmediately=false){
+ if(coverMoving)return;
+ if(event.detail===0){clearSleeveTap();singleAction();return;}
+ const now=performance.now();
+ if(sleeveTap&&sleeveTap.index===index&&now-sleeveTap.time<=350){
+  clearSleeveTap();
+  if(audioTracks[index]){
+   // A playing sleeve stays playing; a paused sleeve resumes.
+   if(!(audioStarted&&audioIndex===index&&!audio.paused&&!audio.ended))playRecord(index);
+  }else singleAction();
+  return;
+ }
+ clearSleeveTap();sleeveTap={index,time:now};
+ if(selectImmediately)singleAction();
+ sleeveTapTimer=setTimeout(()=>{sleeveTap=null;sleeveTapTimer=0;if(!selectImmediately&&!coverMoving)singleAction();},350);
+}
+
 // Keep visible focus for keyboard users without outlining a sleeve after a tap.
 root.addEventListener('pointerdown',()=>{root.dataset.input='pointer';},true);
 root.addEventListener('touchstart',()=>{root.dataset.input='pointer';},{passive:true,capture:true});
@@ -521,7 +542,7 @@ const buttons=names.map((name,i)=>{
     }
     inner.appendChild(f);
   });
-  b.appendChild(inner);b.addEventListener('click',()=>{if(coverMoving)return;if(selected===i)moveCover(true);else selectRecord(i)});const slot=document.createElement('div');slot.className='rr-slot';slot.appendChild(b);stack.appendChild(slot);return b;
+  b.appendChild(inner);b.addEventListener('click',event=>{const selecting=selected!==i;tapSleeve(event,i,()=>{if(selecting)selectRecord(i);else moveCover(true);},selecting)});const slot=document.createElement('div');slot.className='rr-slot';slot.appendChild(b);stack.appendChild(slot);return b;
 });
 const wall=root.querySelector('.rr-wall-shadows');
 // Pointer selection keeps focus accessible without scrolling to the whole sleeve.
@@ -1027,19 +1048,19 @@ mouseScene.addEventListener('pointerup',event=>{
   if(gesture.axis==='vertical')return;
   if(Math.abs(dx)<36||Math.abs(dx)<Math.abs(dy)*1.3)return;
   // Suppress the compatibility click so a swipe never also opens or flips a cover.
-  suppressSwipeClickUntil=performance.now()+600;
+  clearSleeveTap();suppressSwipeClickUntil=performance.now()+600;
   if(performance.now()-gesture.started>1200||coverMoving)return;
   browse(dx<0?1:-1);
 });
-window.addEventListener('pointercancel',()=>{sleeveSwipe=null;});
-window.addEventListener('blur',()=>{sleeveSwipe=null;});
+window.addEventListener('pointercancel',()=>{sleeveSwipe=null;clearSleeveTap();});
+window.addEventListener('blur',()=>{sleeveSwipe=null;clearSleeveTap();});
 root.addEventListener('click',event=>{
   if(event.detail!==0&&performance.now()<suppressSwipeClickUntil&&mouseScene.contains(event.target)){
     event.preventDefault();event.stopImmediatePropagation();
   }
 },true);
 
-held.addEventListener('click',e=>{e.stopPropagation();if(coverOpen&&!coverMoving)toggleFlip();});
+held.addEventListener('click',e=>{e.stopPropagation();if(coverOpen)tapSleeve(e,selected,()=>toggleFlip());});
 root.addEventListener('click',e=>{
   if(!coverOpen||held.contains(e.target))return;
   if(e.target.closest('button,select,input,a,label,summary')&&!e.target.closest('.rr-record'))return;
