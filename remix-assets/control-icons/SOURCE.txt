@@ -1,0 +1,3 @@
+Original Record Room shared UI icons. Coolicons Line / Regular, 24 x 24.
+Source: /Volumes/LaCie/The Record Room/Shared UI/sound-icons
+Original SVG geometry preserved. MIT license included.

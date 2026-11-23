@@ -378,6 +378,21 @@ html,body{margin:0;width:100%}
  #rr-crate-preview .rr-song-info small{font-size:9px}
 }
 
+
+/* Original Record Room Coolicons Line / Regular, unchanged 24 × 24 assets. */
+#rr-crate-preview .rr-control-icon{display:inline-block;flex:0 0 24px;width:24px;height:24px;background:currentColor;mask:var(--rr-control-icon) center / contain no-repeat;-webkit-mask:var(--rr-control-icon) center / contain no-repeat;pointer-events:none}
+#rr-crate-preview .rr-deck-controls button{position:relative}
+#rr-crate-preview .rr-deck-controls .rr-skip-label{position:absolute;bottom:0;font-size:8px;line-height:10px;letter-spacing:0;color:currentColor}
+#rr-crate-preview .rr-dig-tools summary{display:flex;gap:9px;align-items:center;list-style:none;min-height:44px}
+#rr-crate-preview .rr-dig-tools summary::-webkit-details-marker{display:none}
+#rr-crate-preview .rr-dig-tools summary .rr-control-icon:last-child{margin-left:auto;transition:transform .2s}
+#rr-crate-preview .rr-dig-tools[open] summary .rr-control-icon:last-child{transform:rotate(180deg)}
+#rr-crate-preview .rr-dig-tools .rr-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#rr-crate-preview .rr-dig-tools .rr-browse{display:contents}
+#rr-crate-preview .rr-dig-tools .rr-actions>button,#rr-crate-preview .rr-dig-tools .rr-browse button{grid-column:auto;grid-row:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px 4px;min-height:66px;font-size:10px;line-height:1.25}
+#rr-crate-preview .rr-dig-tools .rr-stop{display:flex;align-items:center;justify-content:center;gap:8px}
+#rr-crate-preview .rr-song-number .rr-control-icon{width:16px;height:16px}
+
 </style><script src="no-zoom.js?v=1" defer></script></head><body>
 <div id="rr-crate-preview">
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><clipPath id="rr-crate-front-cutout" clipPathUnits="objectBoundingBox"><path clip-rule="evenodd" fill-rule="evenodd" transform="scale(0.00078125 0.001172332943)" d="M184 614 Q380 625 640 629 Q900 633 1045 628 Q1065 624 1081 624 Q1091 624 1095 630 L1091 639 L1090 710 L1090 853 L190 853 L190 710 L187 630 Z M485 740 L795 740 Q816 740 802 761 L702 853 L578 853 L478 761 Q464 740 485 740 Z M365 853 L459 762 Q465 755 472 763 L553 853 Z M915 853 L821 762 Q815 755 808 763 L727 853 Z"/></clipPath></defs></svg>
@@ -1005,12 +1020,21 @@ root.querySelector('.rr-console-content').prepend(playerRoom);
 const deck=playerRoom.querySelector('.rr-deck'),deckPlay=playerRoom.querySelector('.rr-deck-play');
 deck.insertBefore(root.querySelector('.rr-transport'),playerRoom.querySelector('.rr-deck-controls'));
 const digTools=document.createElement('details');digTools.className='rr-dig-tools';digTools.innerHTML='<summary>Crate controls</summary>';digTools.append(root.querySelector('.rr-player'));stop.textContent='Return playing record to crate';digTools.append(stop);deck.append(digTools);
-const icon=path=>'<svg viewBox="0 0 24 24" aria-hidden="true">'+path+'</svg>';
-const playIcon=icon('<path d="M7 3v18l15-9z"/>'),pauseIcon=icon('<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>');
-playerRoom.querySelector('.rr-track-prev').innerHTML=icon('<path d="M5 5h2v14H5zm3 7 11-7v14z"/>');
-playerRoom.querySelector('.rr-track-next').innerHTML=icon('<path d="M17 5h2v14h-2zM5 5l11 7-11 7z"/>');
-playerRoom.querySelector('.rr-rewind').innerHTML=icon('<path d="M5 7h7v2H2V0h2v5a10 10 0 1 1-2 13l1.7-1A8 8 0 1 0 5 7z"/><text x="7" y="16" font-size="8" font-family="Arial">10</text>');
-playerRoom.querySelector('.rr-forward').innerHTML=icon('<path d="M19 7h-7v2h10V0h-2v5a10 10 0 1 0 2 13l-1.7-1A8 8 0 1 1 19 7z"/><text x="7" y="16" font-size="8" font-family="Arial">10</text>');
+const roomIcon=name=>'<span class="rr-control-icon" aria-hidden="true" style="--rr-control-icon:url(remix-assets/control-icons/'+name+'.svg)"></span>';
+const playIcon=roomIcon('play'),pauseIcon=roomIcon('pause');
+playerRoom.querySelector('.rr-track-prev').innerHTML=roomIcon('skip-back');
+playerRoom.querySelector('.rr-track-next').innerHTML=roomIcon('skip-forward');
+playerRoom.querySelector('.rr-rewind').innerHTML=roomIcon('undo')+'<span class="rr-skip-label" aria-hidden="true">10</span>';
+playerRoom.querySelector('.rr-forward').innerHTML=roomIcon('redo')+'<span class="rr-skip-label" aria-hidden="true">10</span>';
+digTools.querySelector('summary').innerHTML=roomIcon('settings')+'<span>Crate controls</span>'+roomIcon('chevron-down');
+function syncCrateIcons(){
+ const controls=[[prev,'chevron-left','Previous sleeve'],[next,'chevron-right','Next sleeve'],[viewCover,coverOpen?'download':'expand',coverOpen?'Return cover':'View cover'],[listen,'headphones',selected>=0&&!audioTracks[selected]?'Coming soon':'Listen'],[flip,'flip-horizontal',flipped?'View front':'View back'],[back,'download','Return sleeve'],[stop,'stop','Return playing record to crate']];
+ for(const [button,icon,label] of controls){
+  button.setAttribute('aria-label',label);button.title=label;
+  const markup=roomIcon(icon)+'<span>'+label+'</span>';
+  if(button.innerHTML!==markup)button.innerHTML=markup;
+ }
+}
 const trackIds=Object.keys(audioTracks).map(Number),playlistButtons=[];
 function trackParts(i){const parts=names[i].split(' — ');return {artist:parts[0],title:parts.slice(1).join(' — ')||names[i]};}
 trackIds.forEach(i=>{
@@ -1023,6 +1047,7 @@ trackIds.forEach(i=>{
 });
 function playerIndex(){return audioStarted?audioIndex:listening>=0&&audioTracks[listening]?listening:audioTracks[selected]?selected:0;}
 function syncPlayer(){
+ syncCrateIcons();
  const i=playerIndex(),parts=trackParts(i),playing=audioStarted&&!audio.paused&&!audio.ended;
  const image=playerRoom.querySelector('.rr-player-art'),src=buttons[i].querySelector('.rr-front img').src;
  if(image.src!==src){image.src=src;image.alt=names[i]+' album artwork';}
@@ -1035,7 +1060,7 @@ function syncPlayer(){
  seek.style.setProperty('--rr-progress',(duration?current/duration*100:0)+'%');
  playerRoom.querySelector('.rr-deck-status').textContent=audioError||(coverMoving?'Moving your record…':playing?'Playing from the crate':audioStarted?'Take your time. Your place is saved.':'Pick a track below, or dig through the sleeves above.');
  playerRoom.setAttribute('aria-busy',String(coverMoving));
- playlistButtons.forEach((b,n)=>{const active=trackIds[n]===i;b.setAttribute('aria-current',String(active));b.querySelector('.rr-song-number').textContent=active&&playing?'♫':String(trackIds[n]+1).padStart(2,'0');b.disabled=coverMoving;});
+ playlistButtons.forEach((b,n)=>{const active=trackIds[n]===i;b.setAttribute('aria-current',String(active));b.querySelector('.rr-song-number').innerHTML=active&&playing?roomIcon('music-note'):String(trackIds[n]+1).padStart(2,'0');b.disabled=coverMoving;});
  playerRoom.querySelectorAll('.rr-deck-controls button').forEach(b=>b.disabled=coverMoving);
  playerRoom.querySelector('.rr-rewind').disabled=coverMoving||!audioStarted;playerRoom.querySelector('.rr-forward').disabled=coverMoving||!audioStarted;
 }
