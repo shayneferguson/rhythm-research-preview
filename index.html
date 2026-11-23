@@ -220,7 +220,7 @@ html,body{background:#b2b1b0}
 #rr-crate-preview .rr-rail:not(.rr-rail-mirror){mask-image:linear-gradient(#000 0 81.8%,transparent 82.2%);-webkit-mask-image:linear-gradient(#000 0 81.8%,transparent 82.2%)}
 #rr-crate-preview .rr-crate-console{position:relative;width:96.2%;margin:0 auto;isolation:isolate;color:#f5f7f4;overflow:clip}
 #rr-crate-preview .rr-console-surface{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
-#rr-crate-preview .rr-console-content{padding:28px 3.5% 24px;background:linear-gradient(90deg,transparent,rgba(8,10,9,.22) 15%,rgba(8,10,9,.22) 85%,transparent)}
+#rr-crate-preview .rr-console-content{padding:28px 3.5% 24px;background:transparent}
 #rr-crate-preview .rr-console-content>.rr-picker{display:block;max-width:320px;margin:0 36px 8px;color:#d2d6d0;letter-spacing:2px}
 #rr-crate-preview .rr-console-content>.rr-picker select{display:block;margin-top:10px}
 #rr-crate-preview .rr-player{background:transparent}
@@ -292,7 +292,7 @@ html,body{background:#b2b1b0}
 #rr-crate-preview .rr-scene-crop{overflow:visible;clip-path:inset(-200vh 0 0);overflow-anchor:none}
 #rr-crate-preview .rr-slot.rr-listening-slot{clip-path:polygon(0 -200%,100% -200%,100% 71.8%,85.3% 71.8%,85.3% 100%,14.8% 100%,14.8% 71.8%,0 71.8%)}
 #rr-crate-preview .rr-wall-shadows{clip-path:polygon(0 -200%,100% -200%,100% 100%,85.6% 100%,85.6% 73.4%,73.6% 62.3%,24.4% 62.3%,14.4% 73.4%,14.4% 100%,0 100%)}
-#rr-crate-preview .rr-dig-tools{grid-column:1/-1;margin-top:18px;border-top:1px solid #ffffff12;padding-top:12px}
+#rr-crate-preview .rr-dig-tools{grid-column:1/-1;margin-top:18px;border-top:0;padding-top:12px}
 #rr-crate-preview .rr-dig-tools summary{color:#aab5ab;font-size:10px;letter-spacing:1px;cursor:pointer;min-height:32px;line-height:32px}
 #rr-crate-preview .rr-dig-tools .rr-actions{grid-template-columns:repeat(4,minmax(0,1fr))}
 #rr-crate-preview .rr-dig-tools .rr-stop{width:100%;margin-top:10px;padding:12px;border:1px solid #ffffff1c;border-radius:5px;background:transparent;color:#b5bfb6;font-size:10px;min-height:44px}
@@ -304,8 +304,8 @@ html,body{margin:0;width:100%}
 #rr-crate-preview .rr-crate-console{width:102%;margin-left:-1%;margin-right:-1%}
 #rr-crate-preview .rr-console-content{padding:14px clamp(20px,5vw,80px) 8px}
 #rr-crate-preview .rr-console-content>.rr-picker,#rr-crate-preview .rr-console-content>.rr-selected,#rr-crate-preview .rr-audio{display:none}
-#rr-crate-preview .rr-listening-room{border:1px solid #ffffff17;border-radius:16px;background:linear-gradient(145deg,#262c28ed,#101412f5 70%);box-shadow:0 16px 44px #0005;overflow:hidden}
-#rr-crate-preview .rr-room-top{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-bottom:1px solid #ffffff12;font-size:10px;letter-spacing:2px;color:#abb4ac}
+#rr-crate-preview .rr-listening-room{border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+#rr-crate-preview .rr-room-top{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-bottom:0;font-size:10px;letter-spacing:2px;color:#abb4ac}
 #rr-crate-preview .rr-room-top strong{color:#e9efe6;font-size:10px;font-weight:500}
 #rr-crate-preview .rr-room-light{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--rr-lime);margin-right:8px;box-shadow:0 0 12px #c5f35455}
 #rr-crate-preview .rr-room-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}
@@ -332,7 +332,7 @@ html,body{margin:0;width:100%}
 #rr-crate-preview .rr-deck-controls button:hover{background:#ffffff10}
 #rr-crate-preview .rr-deck-controls .rr-deck-play:hover{background:#d5ff79}
 #rr-crate-preview .rr-deck-status{min-height:16px;margin-top:16px;font-size:10px;color:#9ca69d;text-align:center;line-height:1.5}
-#rr-crate-preview .rr-playlist-panel{border-left:1px solid #ffffff12;padding:28px 20px;min-width:0}
+#rr-crate-preview .rr-playlist-panel{border-left:0;padding:28px 20px;min-width:0}
 #rr-crate-preview .rr-playlist-header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:0 8px 18px}
 #rr-crate-preview .rr-playlist-header h3{font-size:15px;font-weight:500;margin:0;letter-spacing:-.3px}
 #rr-crate-preview .rr-playlist-header span{font-size:10px;color:#99a39a;white-space:nowrap}
@@ -355,7 +355,7 @@ html,body{margin:0;width:100%}
 @media(min-width:1100px){#rr-crate-preview .rr-room-grid{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}#rr-crate-preview .rr-deck{padding:34px 42px}#rr-crate-preview .rr-playlist-panel{padding:30px}}
 @media(max-width:767px){
  #rr-crate-preview .rr-console-content{padding:10px 18px 4px}
- #rr-crate-preview .rr-listening-room{border-radius:12px}
+ #rr-crate-preview .rr-listening-room{border-radius:0}
  #rr-crate-preview .rr-room-top{padding:14px 16px;font-size:8px;letter-spacing:1.5px}
  #rr-crate-preview .rr-room-top strong{font-size:8px}
  #rr-crate-preview .rr-room-grid{display:block}
@@ -369,7 +369,7 @@ html,body{margin:0;width:100%}
  #rr-crate-preview .rr-deck-controls{margin-top:12px;max-width:300px}
  #rr-crate-preview .rr-deck-controls .rr-deck-play{width:58px;height:58px;padding:18px}
  #rr-crate-preview .rr-deck-status{margin-top:10px;font-size:9px}
- #rr-crate-preview .rr-playlist-panel{border-left:0;border-top:1px solid #ffffff12;padding:20px 8px 12px}
+ #rr-crate-preview .rr-playlist-panel{border-left:0;border-top:0;padding:20px 8px 12px}
  #rr-crate-preview .rr-playlist-header{padding:0 8px 14px}
  #rr-crate-preview .rr-playlist-header h3{font-size:13px}
  #rr-crate-preview .rr-playlist-item{gap:9px;grid-template-columns:18px 40px minmax(0,1fr) 32px;padding:9px 7px;min-height:60px}
