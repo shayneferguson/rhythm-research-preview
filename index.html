@@ -254,6 +254,36 @@ html,body{background:#b2b1b0}
  #rr-crate-preview .rr-header,#rr-crate-preview .rr-intro{background:none;border:0}
 }
 @media(max-width:767px){#rr-crate-preview .rr-base{mask-image:linear-gradient(transparent 17.4%,#000 21%);-webkit-mask-image:linear-gradient(transparent 17.4%,#000 21%)}}
+
+/* Pointer interaction has no focus ring; keyboard navigation remains visible. */
+#rr-crate-preview button:focus,#rr-crate-preview select:focus,#rr-crate-preview input:focus{outline:none}
+#rr-crate-preview[data-input="keyboard"] button:focus-visible,#rr-crate-preview[data-input="keyboard"] select:focus-visible,#rr-crate-preview[data-input="keyboard"] input:focus-visible{outline:3px solid var(--rr-lime);outline-offset:4px}
+/* Reach browsing actions immediately below the handle, ahead of track details. */
+#rr-crate-preview .rr-console-content{padding:12px 3.5% 8px}
+#rr-crate-preview .rr-player{padding:0 20px 12px;display:block}
+#rr-crate-preview .rr-actions{max-width:none;width:100%;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+#rr-crate-preview .rr-actions .rr-browse{grid-column:span 2}
+#rr-crate-preview .rr-actions .rr-view-cover{grid-column:auto}
+#rr-crate-preview .rr-actions>button,#rr-crate-preview .rr-browse button{min-width:0;min-height:44px;padding:8px;font-size:12px}
+#rr-crate-preview .rr-console-content>.rr-picker{margin:4px 20px 12px;max-width:none;width:auto}
+#rr-crate-preview .rr-console-content>.rr-picker select{margin-top:6px}
+#rr-crate-preview .rr-console-content>.rr-selected{margin:16px 20px}
+#rr-crate-preview .rr-selected h2{min-height:0}
+#rr-crate-preview .rr-selected p{min-height:0}
+/* Only the middle panel grows. The photographed bottom rail stays at its native ratio. */
+#rr-crate-preview .rr-console-surface{height:calc(100% - 6.887vw)}
+#rr-crate-preview .rr-console-bottom{display:block;width:100%;height:auto;aspect-ratio:880 / 63;pointer-events:none}
+@media(max-width:767px){
+ #rr-crate-preview .rr-console-content{padding:10px 3% 4px}
+ #rr-crate-preview .rr-player{padding:0 10px 10px}
+ #rr-crate-preview .rr-actions{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+ #rr-crate-preview .rr-actions .rr-browse{grid-column:span 2}
+ #rr-crate-preview .rr-actions .rr-view-cover{grid-row:2;grid-column:1 / 3}
+ #rr-crate-preview .rr-actions .rr-flip{grid-row:2;grid-column:3 / 5}
+ #rr-crate-preview .rr-actions>button{min-height:44px;font-size:11px}
+ #rr-crate-preview .rr-console-content>.rr-picker{margin:0 10px 12px}
+ #rr-crate-preview .rr-console-content>.rr-selected{margin:12px 10px}
+}
 </style><script src="no-zoom.js?v=1" defer></script></head><body>
 <div id="rr-crate-preview">
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><clipPath id="rr-crate-front-cutout" clipPathUnits="objectBoundingBox"><path clip-rule="evenodd" fill-rule="evenodd" transform="scale(0.00078125 0.001172332943)" d="M184 614 Q380 625 640 629 Q900 633 1045 628 Q1065 624 1081 624 Q1091 624 1095 630 L1091 639 L1090 710 L1090 853 L190 853 L190 710 L187 630 Z M485 740 L795 740 Q816 740 802 761 L702 853 L578 853 L478 761 Q464 740 485 740 Z M365 853 L459 762 Q465 755 472 763 L553 853 Z M915 853 L821 762 Q815 755 808 763 L727 853 Z"/></clipPath></defs></svg>
@@ -269,10 +299,10 @@ html,body{background:#b2b1b0}
     <img class="rr-crate-edge-softening" src="remix-assets/crate-restored-v2.png" alt="" aria-hidden="true">
     <span class="rr-rim-highlight-fade" aria-hidden="true"></span>
   </div></div></div>
-<div class="rr-crate-console"><svg class="rr-console-surface" viewBox="74 1150 880 303" preserveAspectRatio="none" aria-hidden="true"><image href="remix-assets/crate-extended-v1.png" width="1024" height="1536"/></svg><div class="rr-console-content"><label class="rr-picker">PULL A RECORD<select aria-label="Choose a record"><option value="-1">Browse the crate</option><option value="4">05 — Front sleeve</option><option value="0">01 — After Hours</option><option value="1">02 — Paper Trails</option><option value="2">03 — Side Streets</option><option value="3">04 — Dust & Echoes</option></select></label>
-  <section class="rr-player"><div class="rr-selected" aria-live="polite"><span class="rr-eyebrow">IN THE CRATE</span><h2>16 records in the crate</h2><p>Choose a record to take a closer look.</p></div><div class="rr-actions"><div class="rr-browse"><button type="button" class="rr-prev">← Previous</button><button type="button" class="rr-next">Next →</button></div><button type="button" class="rr-view-cover" disabled>View cover ↗</button><button type="button" class="rr-listen">Listen ▶</button><button class="rr-flip" disabled>View back ↻</button><button class="rr-return" disabled>Return to crate ↓</button></div></section>
+<div class="rr-crate-console"><svg class="rr-console-surface" viewBox="74 1150 880 240" preserveAspectRatio="none" aria-hidden="true"><image href="remix-assets/crate-extended-v1.png" width="1024" height="1536"/></svg><div class="rr-console-content">
+  <section class="rr-player"><div class="rr-actions"><div class="rr-browse"><button type="button" class="rr-prev">← Previous</button><button type="button" class="rr-next">Next →</button></div><button type="button" class="rr-view-cover" disabled>View cover ↗</button><button type="button" class="rr-listen">Listen ▶</button><button class="rr-flip" disabled>View back ↻</button><button class="rr-return" disabled>Return to crate ↓</button></div></section><label class="rr-picker">PULL A RECORD<select aria-label="Choose a record"><option value="-1">Browse the crate</option><option value="4">05 — Front sleeve</option><option value="0">01 — After Hours</option><option value="1">02 — Paper Trails</option><option value="2">03 — Side Streets</option><option value="3">04 — Dust & Echoes</option></select></label><div class="rr-selected" aria-live="polite"><span class="rr-eyebrow">IN THE CRATE</span><h2>16 records in the crate</h2><p>Choose a record to take a closer look.</p></div>
   <div class="rr-audio" aria-live="polite"><button type="button" class="rr-stop" disabled aria-label="Return listening record to stack">■</button><span class="rr-now-playing">Choose a record, then Listen</span><span class="rr-audio-note">Audio available on records 1–12</span></div>
-  <div class="rr-transport"><button type="button" class="rr-pause" disabled aria-label="Pause audio">Pause</button><input class="rr-seek" type="range" min="0" max="204.5" step="0.1" value="0" aria-label="Playback position" disabled><span class="rr-time">0:00 / 3:24</span></div><audio class="rr-track" preload="none" src="remix-audio/suffocate-v9.mp3"></audio><footer><span>RHYTHM RESEARCH</span><span>BRING BACK THE REMIX.</span></footer></div></div>
+  <div class="rr-transport"><button type="button" class="rr-pause" disabled aria-label="Pause audio">Pause</button><input class="rr-seek" type="range" min="0" max="204.5" step="0.1" value="0" aria-label="Playback position" disabled><span class="rr-time">0:00 / 3:24</span></div><audio class="rr-track" preload="none" src="remix-audio/suffocate-v9.mp3"></audio><footer><span>RHYTHM RESEARCH</span><span>BRING BACK THE REMIX.</span></footer></div><svg class="rr-console-bottom" viewBox="74 1390 880 63" aria-hidden="true"><image href="remix-assets/crate-extended-v1.png" width="1024" height="1536"/></svg></div>
 </div>
 
 <script>
