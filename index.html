@@ -1009,9 +1009,7 @@ let wheelSum=0,lastWheelAt=0,lastWheelStep=-Infinity;
 mouseScene.addEventListener('wheel',e=>{
   if(e.ctrlKey||e.metaKey||!window.matchMedia('(hover: hover) and (pointer: fine)').matches)return;
   if(coverOpen||coverMoving)return;
-  // Vertical wheel/trackpad motion always scrolls the page.
-  if(Math.abs(e.deltaY)>=Math.abs(e.deltaX)){wheelSum=0;return;}
-  const delta=e.deltaX;
+  const delta=Math.abs(e.deltaY)>=Math.abs(e.deltaX)?e.deltaY:e.deltaX;
   if(!delta)return;
   const index=selected>=0?selected:browseIndex;
   if(delta<0&&browseTarget(-1)<0)return;
