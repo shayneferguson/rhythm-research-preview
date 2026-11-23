@@ -211,7 +211,7 @@ html,body,#rr-crate-preview,#rr-crate-preview *{touch-action:pan-x pan-y}html{-w
 #rr-crate-preview,#rr-crate-preview .rr-scene-crop{overflow:clip;overflow-anchor:none}
 
 /* Keep the approved opening coordinates; only reveal more crate below the rim. */
-html,body{background:#b2b1b0}
+html,body{background:#b2b1b0;overscroll-behavior-y:none}
 #rr-crate-preview{background:#b2b1b0}
 #rr-crate-preview .rr-scene-crop,#rr-crate-preview[data-cover-open="true"] .rr-scene-crop{padding-bottom:81.77%;isolation:isolate}
 #rr-crate-preview .rr-cover-view{height:68.79%;bottom:auto}
@@ -1009,7 +1009,9 @@ let wheelSum=0,lastWheelAt=0,lastWheelStep=-Infinity;
 mouseScene.addEventListener('wheel',e=>{
   if(e.ctrlKey||e.metaKey||!window.matchMedia('(hover: hover) and (pointer: fine)').matches)return;
   if(coverOpen||coverMoving)return;
-  const delta=Math.abs(e.deltaY)>=Math.abs(e.deltaX)?e.deltaY:e.deltaX;
+  // Vertical wheel/trackpad motion always scrolls the page.
+  if(Math.abs(e.deltaY)>=Math.abs(e.deltaX)){wheelSum=0;return;}
+  const delta=e.deltaX;
   if(!delta)return;
   const index=selected>=0?selected:browseIndex;
   if(delta<0&&browseTarget(-1)<0)return;
