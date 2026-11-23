@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"><title>Rhythm Research — The Remix Collection</title><meta name="description" content="Bring back the remix. Dig through the Rhythm Research record crate."><style>html,body{margin:0;background:#080a09}
+<html lang="en"><head><script>document.documentElement.classList.add("rr-loading");</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"><title>Rhythm Research — The Remix Collection</title><meta name="description" content="Bring back the remix. Dig through the Rhythm Research record crate."><style>html,body{margin:0;background:#080a09}
 
 #rr-crate-preview{--rr-accent:#ff6b2c;background:#080a09;color:#f5f7f4;font-family:Arial,Helvetica,sans-serif;overflow:hidden}#rr-crate-preview *{box-sizing:border-box}#rr-crate-preview button,#rr-crate-preview select{font:inherit}#rr-crate-preview button:focus-visible,#rr-crate-preview select:focus-visible{outline:3px solid var(--rr-accent);outline-offset:4px}#rr-crate-preview .rr-header{display:flex;align-items:center;justify-content:space-between;padding:26px 36px;border-bottom:1px solid #303630;gap:20px}#rr-crate-preview .rr-wordmark{display:flex;align-items:center;font-size:34px;font-weight:900;letter-spacing:-6px}#rr-crate-preview .rr-wordmark>span{color:var(--rr-accent)}#rr-crate-preview small{font-size:10px;line-height:1.3;letter-spacing:2px;margin-left:20px;font-weight:500}#rr-crate-preview .rr-edition{font-size:10px;letter-spacing:2px;color:#a9b1ac;margin-right:64px}#rr-crate-preview .rr-intro{display:flex;justify-content:space-between;align-items:end;padding:34px 36px 25px;gap:20px}#rr-crate-preview p,#rr-crate-preview h1,#rr-crate-preview h2{margin:0}#rr-crate-preview .rr-eyebrow{font-size:10px;letter-spacing:2px;color:var(--rr-accent);display:block;margin-bottom:10px}#rr-crate-preview h1{font-size:clamp(38px,6vw,72px);line-height:.95;letter-spacing:-3px;font-weight:500}#rr-crate-preview h1 em{font-family:Georgia,serif;font-weight:400}#rr-crate-preview .rr-picker{font-size:10px;letter-spacing:2px;color:#a9b1ac;display:grid;gap:10px;min-width:200px}#rr-crate-preview select{background:#171c1a;color:#f5f7f4;border:1px solid #41483f;border-radius:0;padding:12px;width:100%;font-size:14px;letter-spacing:0}#rr-crate-preview .rr-scene{position:relative;aspect-ratio:1.5;overflow:hidden;background:#282b27;isolation:isolate}#rr-crate-preview .rr-base,#rr-crate-preview .rr-rail{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}#rr-crate-preview .rr-base{z-index:0}#rr-crate-preview .rr-rail{z-index:20;clip-path:polygon(0 71%,100% 71%,100% 100%,0 100%)}#rr-crate-preview .rr-record{position:absolute;width:43%;aspect-ratio:1;left:28.5%;bottom:-11%;padding:0;border:0;background:transparent;perspective:1200px;transition:bottom .8s cubic-bezier(.22,.8,.22,1),transform .8s, left .8s;transform:translateY(calc(var(--i)*-13px)) rotate(calc((var(--i) - 1.5)*-1deg));z-index:calc(9 - var(--i));color:#101510;text-align:left}#rr-crate-preview .rr-record:hover:not(.rr-active){transform:translateY(calc(var(--i)*-13px - 12px)) rotate(-2deg)}#rr-crate-preview .rr-record.rr-active{bottom:29%;left:28.5%;transform:rotate(-3deg);z-index:15}#rr-crate-preview .rr-inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .65s}#rr-crate-preview .rr-flipped .rr-inner{transform:rotateY(180deg)}#rr-crate-preview .rr-face{position:absolute;inset:0;backface-visibility:hidden;overflow:hidden;background:#deddd0;background-size:166% 115%;background-position:51% 53%;box-shadow:0 8px 20px #0006;border:1px solid #bcb9aa}#rr-crate-preview .rr-back{transform:rotateY(180deg);padding:12%;display:flex;flex-direction:column;justify-content:space-between}#rr-crate-preview .rr-art{position:absolute;inset:7%;border:1px solid #182217;display:flex;flex-direction:column;justify-content:space-between;padding:6%;background:#ff6b2cd9;mix-blend-mode:multiply}#rr-crate-preview .rr-art small{margin:0;font-size:clamp(8px,1vw,11px);letter-spacing:1px}#rr-crate-preview .rr-art strong{font-size:clamp(24px,4.5vw,56px);line-height:.9;letter-spacing:-2px;font-weight:500;overflow-wrap:anywhere}#rr-crate-preview .rr-art .rr-number{align-self:end;font-size:clamp(22px,4vw,52px);font-family:Georgia,serif;font-style:italic}#rr-crate-preview .rr-record:nth-child(2) .rr-art{background:#ddd5b8e8}#rr-crate-preview .rr-record:nth-child(2) strong{font-family:Georgia,serif;font-style:italic}#rr-crate-preview .rr-record:nth-child(3) .rr-art{background:#a5b4a0e8}#rr-crate-preview .rr-record:nth-child(4) .rr-art{background:#ded8cce8}#rr-crate-preview .rr-back strong{font-family:Georgia,serif;font-size:clamp(20px,3vw,34px);line-height:1}#rr-crate-preview .rr-back p{font-size:clamp(10px,1.5vw,14px);line-height:1.6}#rr-crate-preview .rr-back small{margin:0;font-size:9px;letter-spacing:1px}#rr-crate-preview .rr-hint{position:absolute;bottom:4%;left:0;right:0;text-align:center;color:#f5f7f4;z-index:30;font-size:10px;letter-spacing:2px;text-shadow:0 1px 4px #000}#rr-crate-preview .rr-player{padding:26px 36px;display:flex;align-items:center;justify-content:space-between;gap:20px}#rr-crate-preview h2{font-size:22px;letter-spacing:-.5px;font-weight:400}#rr-crate-preview .rr-selected p{font-size:12px;color:#a9b1ac;margin-top:6px}#rr-crate-preview .rr-actions{display:flex;gap:8px;flex-wrap:wrap}#rr-crate-preview .rr-actions button{background:#202623;border:1px solid #41483f;color:#f5f7f4;padding:11px 14px;font-size:12px;min-height:44px}#rr-crate-preview button:disabled{opacity:.4}#rr-crate-preview .rr-audio{display:flex;align-items:center;gap:14px;margin:0 36px 28px;font-size:11px;color:#a9b1ac}#rr-crate-preview .rr-audio button{background:var(--rr-accent);color:#080a09;border:0;width:44px;height:44px;border-radius:50%;flex-shrink:0}#rr-crate-preview .rr-track{height:2px;background:#41483f;flex:1}#rr-crate-preview footer{display:flex;justify-content:space-between;gap:15px;border-top:1px solid #303630;padding:20px 36px;color:#a9b1ac;font-size:9px;letter-spacing:2px}@media(max-width:550px){#rr-crate-preview .rr-header{padding:20px}#rr-crate-preview .rr-edition{display:none}#rr-crate-preview .rr-intro{padding:26px 20px;align-items:start;flex-direction:column}#rr-crate-preview .rr-picker{width:100%}#rr-crate-preview .rr-player{padding:22px 20px;align-items:start;flex-direction:column}#rr-crate-preview .rr-audio{margin:0 20px 24px;gap:9px}#rr-crate-preview footer{padding:18px 20px;font-size:8px}#rr-crate-preview .rr-record{width:49%;left:25.5%}#rr-crate-preview .rr-record.rr-active{left:25.5%;bottom:25%}#rr-crate-preview .rr-art strong{font-size:27px}#rr-crate-preview .rr-record{transform:translateY(calc(var(--i)*-10px))}#rr-crate-preview .rr-hint{font-size:8px;letter-spacing:1px}#rr-crate-preview .rr-back{padding:8%}#rr-crate-preview .rr-back p{line-height:1.2;font-size:10px}#rr-crate-preview .rr-back small{font-size:8px}}@media(prefers-reduced-motion:reduce){#rr-crate-preview *{transition:none!important}}
 #rr-crate-preview .rr-record{width:60%;left:var(--rr-slot-x);bottom:-57%;z-index:calc(40 - var(--i));transform:translateY(calc(var(--i)*-.6%)) rotate(var(--rr-rest-tilt));transition:bottom .7s cubic-bezier(.22,.8,.22,1),transform .7s}
@@ -415,7 +415,20 @@ html,body{margin:0;width:100%}
  #rr-crate-preview .rr-scene-crop,#rr-crate-preview[data-cover-open="true"] .rr-scene-crop{margin-top:-35px}
 }
 
-</style><script src="no-zoom.js?v=1" defer></script></head><body>
+
+/* Keep the scene out of the first paint until its layered artwork is decoded. */
+.rr-loading-screen{display:none}
+html.rr-loading #rr-crate-preview{visibility:hidden;pointer-events:none}
+html.rr-loading .rr-loading-screen{position:fixed;inset:0;z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:#bcbcb9;color:#303330;font:12px Arial,Helvetica,sans-serif;letter-spacing:.14em;text-align:center;padding:24px;box-sizing:border-box;transition:opacity .28s ease}
+.rr-loading-screen img{width:36px;height:auto}
+.rr-loading-screen p{margin:0}
+.rr-loading-screen button{background:none;border:1px solid #303330;color:#303330;padding:12px 20px;font:inherit;cursor:pointer}
+.rr-loading-pulse{width:5px;height:5px;background:#ff6b2c;border-radius:50%;animation:rr-loading-pulse 1s ease-in-out infinite alternate}
+@keyframes rr-loading-pulse{to{opacity:.25}}
+html.rr-revealing #rr-crate-preview{visibility:visible;pointer-events:auto}
+html.rr-revealing .rr-loading-screen{opacity:0;pointer-events:none}
+@media(prefers-reduced-motion:reduce){.rr-loading-pulse{animation:none}html.rr-loading .rr-loading-screen{transition:none}}
+</style><script src="no-zoom.js?v=1" defer></script></head><body><div class="rr-loading-screen" role="status" aria-live="polite"><img src="remix-assets/rr-monogram-two-tone.svg" alt="Rhythm Research"><span class="rr-loading-pulse" aria-hidden="true"></span><p>OPENING THE CRATE</p><button type="button" hidden onclick="location.reload()">Try again</button></div>
 <div id="rr-crate-preview">
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><clipPath id="rr-crate-front-cutout" clipPathUnits="objectBoundingBox"><path clip-rule="evenodd" fill-rule="evenodd" transform="scale(0.00078125 0.001172332943)" d="M184 614 Q380 625 640 629 Q900 633 1045 628 Q1065 624 1081 624 Q1091 624 1095 630 L1091 639 L1090 710 L1090 853 L190 853 L190 710 L187 630 Z M485 740 L795 740 Q816 740 802 761 L702 853 L578 853 L478 761 Q464 740 485 740 Z M365 853 L459 762 Q465 755 472 763 L553 853 Z M915 853 L821 762 Q815 755 808 763 L727 853 Z"/></clipPath></defs></svg>
   <div class="rr-hero">
@@ -1109,4 +1122,35 @@ restore(window.openai?.widgetState);syncAudio();window.addEventListener('openai:
 
 </script>
 
+
+<script>
+(async()=>{
+ const page=document.documentElement,root=document.getElementById('rr-crate-preview'),screen=document.querySelector('.rr-loading-screen');
+ root.inert=true;
+ let timeout;
+ try{
+  const urls=new Set(['remix-assets/room-wall.svg']);
+  root.querySelectorAll('.rr-scene img,.rr-header img,svg image').forEach(el=>{
+   const url=el.currentSrc||el.getAttribute('src')||el.getAttribute('href');
+   if(url)urls.add(url);
+  });
+  const ready=Promise.all([...urls].map(url=>new Promise((resolve,reject)=>{
+   const image=new Image();
+   image.onload=()=>{if(image.decode)image.decode().then(resolve,reject);else resolve();};
+   image.onerror=()=>reject(new Error('Crate image unavailable'));
+   image.src=url;
+  })));
+  await Promise.race([ready,new Promise((_,reject)=>{timeout=setTimeout(()=>reject(new Error('Loading timed out')),15000);})]);
+  clearTimeout(timeout);
+  await new Promise(resolve=>{const fallback=setTimeout(resolve,120);requestAnimationFrame(()=>requestAnimationFrame(()=>{clearTimeout(fallback);resolve();}));});
+  root.inert=false;page.classList.add('rr-revealing');
+  setTimeout(()=>{page.classList.remove('rr-loading','rr-revealing');screen.remove();},300);
+ }catch(error){
+  clearTimeout(timeout);
+  screen.querySelector('p').textContent='The crate couldn’t load. Please try again.';
+  screen.querySelector('.rr-loading-pulse').hidden=true;
+  screen.querySelector('button').hidden=false;
+ }
+})();
+</script>
 </body></html>
