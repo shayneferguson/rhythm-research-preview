@@ -292,6 +292,92 @@ html,body{background:#b2b1b0}
 #rr-crate-preview .rr-scene-crop{overflow:visible;clip-path:inset(-200vh 0 0);overflow-anchor:none}
 #rr-crate-preview .rr-slot.rr-listening-slot{clip-path:polygon(0 -200%,100% -200%,100% 71.8%,85.3% 71.8%,85.3% 100%,14.8% 100%,14.8% 71.8%,0 71.8%)}
 #rr-crate-preview .rr-wall-shadows{clip-path:polygon(0 -200%,100% -200%,100% 100%,85.6% 100%,85.6% 73.4%,73.6% 62.3%,24.4% 62.3%,14.4% 73.4%,14.4% 100%,0 100%)}
+#rr-crate-preview .rr-dig-tools{grid-column:1/-1;margin-top:18px;border-top:1px solid #ffffff12;padding-top:12px}
+#rr-crate-preview .rr-dig-tools summary{color:#aab5ab;font-size:10px;letter-spacing:1px;cursor:pointer;min-height:32px;line-height:32px}
+#rr-crate-preview .rr-dig-tools .rr-actions{grid-template-columns:repeat(4,minmax(0,1fr))}
+#rr-crate-preview .rr-dig-tools .rr-stop{width:100%;margin-top:10px;padding:12px;border:1px solid #ffffff1c;border-radius:5px;background:transparent;color:#b5bfb6;font-size:10px;min-height:44px}
+/* Full-bleed crate: crop the side rails at the viewport, not the artwork. */
+html,body{margin:0;width:100%}
+#rr-crate-preview{width:100%;max-width:none;margin:0;overflow:clip}
+#rr-crate-preview .rr-scene-crop,#rr-crate-preview[data-cover-open="true"] .rr-scene-crop{width:106%;margin-left:-3%;padding-bottom:86.6762%}
+#rr-crate-preview .rr-scene-crop::after{display:none}
+#rr-crate-preview .rr-crate-console{width:102%;margin-left:-1%;margin-right:-1%}
+#rr-crate-preview .rr-console-content{padding:14px clamp(20px,5vw,80px) 8px}
+#rr-crate-preview .rr-console-content>.rr-picker,#rr-crate-preview .rr-console-content>.rr-selected,#rr-crate-preview .rr-audio{display:none}
+#rr-crate-preview .rr-listening-room{border:1px solid #ffffff17;border-radius:16px;background:linear-gradient(145deg,#262c28ed,#101412f5 70%);box-shadow:0 16px 44px #0005;overflow:hidden}
+#rr-crate-preview .rr-room-top{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-bottom:1px solid #ffffff12;font-size:10px;letter-spacing:2px;color:#abb4ac}
+#rr-crate-preview .rr-room-top strong{color:#e9efe6;font-size:10px;font-weight:500}
+#rr-crate-preview .rr-room-light{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--rr-lime);margin-right:8px;box-shadow:0 0 12px #c5f35455}
+#rr-crate-preview .rr-room-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}
+#rr-crate-preview .rr-deck{padding:28px;min-width:0}
+#rr-crate-preview .rr-artwork-frame{position:relative;aspect-ratio:1;max-width:360px;margin:0 auto 24px;background:#111512;border-radius:8px;overflow:hidden;box-shadow:0 12px 26px #0006}
+#rr-crate-preview .rr-player-art{display:block;width:100%;height:100%;object-fit:cover}
+#rr-crate-preview .rr-artwork-frame:after{content:"";position:absolute;inset:0;border:1px solid #ffffff15;border-radius:inherit;pointer-events:none}
+#rr-crate-preview .rr-deck-kicker{font-size:9px;letter-spacing:2px;color:var(--rr-lime);margin-bottom:9px}
+#rr-crate-preview .rr-deck-title{font-size:clamp(23px,2.4vw,34px);font-weight:500;letter-spacing:-1px;line-height:1.1;overflow-wrap:anywhere}
+#rr-crate-preview .rr-deck-artist{margin-top:8px;color:#afb8b0;font-size:13px;line-height:1.4}
+#rr-crate-preview .rr-transport{display:flex;flex-direction:column;gap:0;padding:16px 0 0;min-height:0}
+#rr-crate-preview .rr-transport .rr-pause{display:none}
+#rr-crate-preview .rr-seek{width:100%;flex:none;appearance:none;-webkit-appearance:none;height:28px;background:transparent;margin:0;cursor:pointer;touch-action:pan-y}
+#rr-crate-preview .rr-seek::-webkit-slider-runnable-track{height:3px;border-radius:3px;background:linear-gradient(to right,var(--rr-lime) var(--rr-progress,0%),#454d45 var(--rr-progress,0%))}
+#rr-crate-preview .rr-seek::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:var(--rr-lime);margin-top:-4px}
+#rr-crate-preview .rr-seek::-moz-range-track{height:3px;background:#454d45}
+#rr-crate-preview .rr-seek::-moz-range-progress{background:var(--rr-lime);height:3px}
+#rr-crate-preview .rr-seek::-moz-range-thumb{width:11px;height:11px;border:0;background:var(--rr-lime)}
+#rr-crate-preview .rr-time{width:100%;font-size:10px;letter-spacing:.5px;display:flex;justify-content:space-between}
+#rr-crate-preview .rr-deck-controls{display:flex;align-items:center;justify-content:space-between;max-width:350px;margin:16px auto 0;gap:8px}
+#rr-crate-preview .rr-deck-controls button{display:grid;place-items:center;background:transparent;color:#dce3da;border:0;width:44px;height:44px;border-radius:50%;cursor:pointer;padding:10px}
+#rr-crate-preview .rr-deck-controls .rr-deck-play{width:64px;height:64px;background:var(--rr-lime);color:#16200c;box-shadow:0 0 30px #c5f35416;padding:21px}
+#rr-crate-preview .rr-deck-controls svg{width:22px;height:22px;display:block;fill:currentColor}
+#rr-crate-preview .rr-deck-controls button:hover{background:#ffffff10}
+#rr-crate-preview .rr-deck-controls .rr-deck-play:hover{background:#d5ff79}
+#rr-crate-preview .rr-deck-status{min-height:16px;margin-top:16px;font-size:10px;color:#9ca69d;text-align:center;line-height:1.5}
+#rr-crate-preview .rr-playlist-panel{border-left:1px solid #ffffff12;padding:28px 20px;min-width:0}
+#rr-crate-preview .rr-playlist-header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:0 8px 18px}
+#rr-crate-preview .rr-playlist-header h3{font-size:15px;font-weight:500;margin:0;letter-spacing:-.3px}
+#rr-crate-preview .rr-playlist-header span{font-size:10px;color:#99a39a;white-space:nowrap}
+#rr-crate-preview .rr-playlist{list-style:none;margin:0;padding:0;display:grid;gap:3px}
+#rr-crate-preview .rr-playlist-item{width:100%;display:grid;grid-template-columns:22px 44px minmax(0,1fr) 36px;gap:12px;align-items:center;text-align:left;border:1px solid transparent;border-radius:8px;padding:10px 8px;background:transparent;color:#e7ece4;cursor:pointer;min-height:64px}
+#rr-crate-preview .rr-playlist-item:hover{background:#ffffff07}
+#rr-crate-preview .rr-playlist-item[aria-current="true"]{background:#c5f3540c;border-color:#c5f35424}
+#rr-crate-preview .rr-playlist-item img{width:44px;height:44px;object-fit:cover;border-radius:3px}
+#rr-crate-preview .rr-song-number{font-size:10px;color:#778477;font-variant-numeric:tabular-nums;text-align:center}
+#rr-crate-preview .rr-playlist-item[aria-current="true"] .rr-song-number{color:var(--rr-lime)}
+#rr-crate-preview .rr-song-info{min-width:0;display:grid;gap:5px}
+#rr-crate-preview .rr-song-info strong{font-size:12px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#rr-crate-preview .rr-song-info small{font-size:10px;color:#9ba69c;margin:0;letter-spacing:0;font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#rr-crate-preview .rr-song-duration{font-size:10px;color:#8b988e;text-align:right;font-variant-numeric:tabular-nums}
+#rr-crate-preview .rr-player{padding:18px 0 0}
+#rr-crate-preview .rr-actions{gap:6px}
+#rr-crate-preview .rr-actions>button,#rr-crate-preview .rr-browse button{font-size:10px;background:#151a16c9;border:1px solid #ffffff1c;border-radius:5px;color:#b5bfb6;min-height:44px}
+#rr-crate-preview .rr-actions .rr-listen{background:#c5f35412;color:var(--rr-lime);border-color:#c5f35435}
+#rr-crate-preview footer{padding:22px 0 10px;color:#879286;font-size:8px}
+@media(min-width:1100px){#rr-crate-preview .rr-room-grid{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}#rr-crate-preview .rr-deck{padding:34px 42px}#rr-crate-preview .rr-playlist-panel{padding:30px}}
+@media(max-width:767px){
+ #rr-crate-preview .rr-console-content{padding:10px 18px 4px}
+ #rr-crate-preview .rr-listening-room{border-radius:12px}
+ #rr-crate-preview .rr-room-top{padding:14px 16px;font-size:8px;letter-spacing:1.5px}
+ #rr-crate-preview .rr-room-top strong{font-size:8px}
+ #rr-crate-preview .rr-room-grid{display:block}
+ #rr-crate-preview .rr-deck{padding:18px 16px 16px;display:grid;grid-template-columns:100px minmax(0,1fr);gap:0 16px;align-items:center}
+ #rr-crate-preview .rr-artwork-frame{width:100%;margin:0;grid-column:1;grid-row:1;max-width:none;border-radius:5px}
+ #rr-crate-preview .rr-deck-copy{grid-column:2;grid-row:1}
+ #rr-crate-preview .rr-deck-kicker{font-size:8px;letter-spacing:1.3px;margin-bottom:8px}
+ #rr-crate-preview .rr-deck-title{font-size:24px;letter-spacing:-.6px}
+ #rr-crate-preview .rr-deck-artist{font-size:11px;margin-top:6px}
+ #rr-crate-preview .rr-transport,#rr-crate-preview .rr-deck-controls,#rr-crate-preview .rr-deck-status{grid-column:1/-1;width:100%}
+ #rr-crate-preview .rr-deck-controls{margin-top:12px;max-width:300px}
+ #rr-crate-preview .rr-deck-controls .rr-deck-play{width:58px;height:58px;padding:18px}
+ #rr-crate-preview .rr-deck-status{margin-top:10px;font-size:9px}
+ #rr-crate-preview .rr-playlist-panel{border-left:0;border-top:1px solid #ffffff12;padding:20px 8px 12px}
+ #rr-crate-preview .rr-playlist-header{padding:0 8px 14px}
+ #rr-crate-preview .rr-playlist-header h3{font-size:13px}
+ #rr-crate-preview .rr-playlist-item{gap:9px;grid-template-columns:18px 40px minmax(0,1fr) 32px;padding:9px 7px;min-height:60px}
+ #rr-crate-preview .rr-playlist-item img{width:40px;height:40px}
+ #rr-crate-preview .rr-song-info strong{font-size:11px}
+ #rr-crate-preview .rr-song-info small{font-size:9px}
+}
+
 </style><script src="no-zoom.js?v=1" defer></script></head><body>
 <div id="rr-crate-preview">
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><clipPath id="rr-crate-front-cutout" clipPathUnits="objectBoundingBox"><path clip-rule="evenodd" fill-rule="evenodd" transform="scale(0.00078125 0.001172332943)" d="M184 614 Q380 625 640 629 Q900 633 1045 628 Q1065 624 1081 624 Q1091 624 1095 630 L1091 639 L1090 710 L1090 853 L190 853 L190 710 L187 630 Z M485 740 L795 740 Q816 740 802 761 L702 853 L578 853 L478 761 Q464 740 485 740 Z M365 853 L459 762 Q465 755 472 763 L553 853 Z M915 853 L821 762 Q815 755 808 763 L727 853 Z"/></clipPath></defs></svg>
@@ -332,6 +418,7 @@ function syncAudio(){
   seek.disabled=!audioStarted;pauseAudio.disabled=!audioStarted;
   pauseAudio.textContent=audio.ended?'Replay':audio.paused?'Resume':'Pause';pauseAudio.setAttribute('aria-label',audio.ended?'Replay audio':audio.paused?'Resume audio':'Pause audio');
   audioNote.textContent=audioError||(audioStarted?(audio.ended?'Finished':audio.paused?'Paused':'Playing')+' · '+audioTracks[audioIndex].title:'Audio available on records 1–12');
+  syncPlayer();
 }
 function stopAudio(){audio.pause();audio.currentTime=0;audioStarted=false;audioError='';syncAudio();}
 for(const event of ['timeupdate','durationchange','play','pause','ended','loadedmetadata'])audio.addEventListener(event,syncAudio);
@@ -524,6 +611,7 @@ function render(){
   root.querySelector('.rr-selected .rr-eyebrow').textContent=selected<0?(browseIndex>=0?String(browseIndex+1).padStart(2,'0')+' / 16':'THE COLLECTION'):String(selected+1).padStart(2,'0')+' / 16';
   root.querySelector('.rr-selected p').textContent=selected<0?(browseIndex<0?'Choose a sleeve or browse with Next.':'Place saved · Continue with Next or Previous.'):selected===listening?'Parked at the back · keep browsing':(selected===2?'Fine China Remix v2 · '+(flipped?'Back':'Front'):selected>=2&&selected<16&&!flipped?'Cover artwork · Textured front':selected===1&&!flipped?'Red artwork · Textured front':selected===0&&!flipped?'Suffocate artwork · Textured front':'Cover artwork · Textured '+(flipped?'back':'front'));
   syncCoverVideo();
+  syncPlayer();
   if(!coverMoving){settlingScene=false;if(pendingAudioRecovery&&!startingAudio&&!recoveringAudio)queueMicrotask(recoverAudioFailure);}
 }
 function save(){if(window.openai?.setWidgetState)window.openai.setWidgetState({modelContent:{selectedRecord:selected<0?null:names[selected],listeningRecord:listening<0?null:names[listening],audioConnected:true,side:flipped?'back':'front',recordCount:16},privateContent:{version:5,selected,flipped,listening,browseIndex,coverOpen}}).catch(()=>{});}
@@ -777,14 +865,20 @@ async function listenFromCover(park){
   coverMoving=false;controls.forEach(c=>c.disabled=false);render();save();
 }
 viewCover.addEventListener('click',()=>moveCover(!coverOpen));
-listen.addEventListener('click',async()=>{
-  if(coverMoving||!audioTracks[selected]||selected===listening)return;
+listen.addEventListener('click',()=>playRecord(selected));
+async function playRecord(target){
+  if(coverMoving||!audioTracks[target])return;
+  if(target===listening&&audioStarted){pauseAudio.click();return;}
   coverMoving=true;startingAudio=true;const coverFadeOut=syncCoverVideo();audioError='';
-  if(audioIndex!==selected){audioIndex=selected;audio.src=audioTracks[selected].src;audio.currentTime=0;}
+  if(audioIndex!==target){audioIndex=target;audio.src=audioTracks[target].src;audio.currentTime=0;}
+  syncPlayer();
   try{await audio.play();audioStarted=true;syncAudio();await coverFadeOut;startingAudio=false;}
-  catch(e){startingAudio=false;audioError='Playback could not start. Press Listen to try again.';coverMoving=false;await recoverAudioFailure();return;}
+  catch(e){startingAudio=false;audioError='Playback could not start. Press Play to try again.';coverMoving=false;await recoverAudioFailure();return;}
   coverMoving=false;
-  const target=selected,swapping=listening>=0;
+  if(target===listening){render();return;}
+  if(coverOpen&&selected!==target)await moveCover(false);
+  choose(target);
+  const swapping=listening>=0;
   if(coverOpen&&flipped){
     coverMoving=true;syncCoverVideo();
     const inner=held.querySelector('.rr-inner'),pose=getComputedStyle(inner).transform;
@@ -815,7 +909,7 @@ listen.addEventListener('click',async()=>{
     coverMoving=false;controls.forEach(c=>c.disabled=false);park();
     if(lift)lift.cancel();if(shade)shade.cancel();
   }
-});
+}
 stop.addEventListener('click',async()=>{if(coverMoving)return;stopAudio();await returnPlaying();save();});
 picker.addEventListener('change',()=>selectRecord(Number(picker.value)));flip.addEventListener('click',toggleFlip);back.addEventListener('click',()=>{if(coverOpen)moveCover(false);else choose(-1);});
 function browseTarget(direction){
@@ -899,10 +993,60 @@ root.addEventListener('click',event=>{
 held.addEventListener('click',e=>{e.stopPropagation();if(coverOpen&&!coverMoving)toggleFlip();});
 root.addEventListener('click',e=>{
   if(!coverOpen||held.contains(e.target))return;
-  if(e.target.closest('button,select,input,a,label')&&!e.target.closest('.rr-record'))return;
+  if(e.target.closest('button,select,input,a,label,summary')&&!e.target.closest('.rr-record'))return;
   e.preventDefault();e.stopPropagation();
   if(!coverMoving)moveCover(false);
 },true);
+
+// One player and one audio element for both the playlist and the physical crate.
+const playerRoom=document.createElement('section');playerRoom.className='rr-listening-room';playerRoom.setAttribute('aria-label','Remix collection audio player');
+playerRoom.innerHTML=`<div class="rr-room-top"><strong><i class="rr-room-light"></i>RHYTHM RESEARCH</strong><span>THE LISTENING ROOM</span></div><div class="rr-room-grid"><div class="rr-deck"><div class="rr-artwork-frame"><img class="rr-player-art" alt=""></div><div class="rr-deck-copy"><div class="rr-deck-kicker">READY WHEN YOU ARE</div><h2 class="rr-deck-title"></h2><p class="rr-deck-artist"></p></div><div class="rr-deck-controls"><button type="button" class="rr-track-prev" aria-label="Previous track"></button><button type="button" class="rr-rewind" aria-label="Skip back 10 seconds"></button><button type="button" class="rr-deck-play" aria-label="Play track"></button><button type="button" class="rr-forward" aria-label="Skip forward 10 seconds"></button><button type="button" class="rr-track-next" aria-label="Next track"></button></div><p class="rr-deck-status" role="status"></p></div><div class="rr-playlist-panel"><div class="rr-playlist-header"><h3>The Remix Collection</h3><span>12 tracks</span></div><ol class="rr-playlist" aria-label="Remix playlist"></ol></div></div>`;
+root.querySelector('.rr-console-content').prepend(playerRoom);
+const deck=playerRoom.querySelector('.rr-deck'),deckPlay=playerRoom.querySelector('.rr-deck-play');
+deck.insertBefore(root.querySelector('.rr-transport'),playerRoom.querySelector('.rr-deck-controls'));
+const digTools=document.createElement('details');digTools.className='rr-dig-tools';digTools.innerHTML='<summary>Crate controls</summary>';digTools.append(root.querySelector('.rr-player'));stop.textContent='Return playing record to crate';digTools.append(stop);deck.append(digTools);
+const icon=path=>'<svg viewBox="0 0 24 24" aria-hidden="true">'+path+'</svg>';
+const playIcon=icon('<path d="M7 3v18l15-9z"/>'),pauseIcon=icon('<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>');
+playerRoom.querySelector('.rr-track-prev').innerHTML=icon('<path d="M5 5h2v14H5zm3 7 11-7v14z"/>');
+playerRoom.querySelector('.rr-track-next').innerHTML=icon('<path d="M17 5h2v14h-2zM5 5l11 7-11 7z"/>');
+playerRoom.querySelector('.rr-rewind').innerHTML=icon('<path d="M5 7h7v2H2V0h2v5a10 10 0 1 1-2 13l1.7-1A8 8 0 1 0 5 7z"/><text x="7" y="16" font-size="8" font-family="Arial">10</text>');
+playerRoom.querySelector('.rr-forward').innerHTML=icon('<path d="M19 7h-7v2h10V0h-2v5a10 10 0 1 0 2 13l-1.7-1A8 8 0 1 1 19 7z"/><text x="7" y="16" font-size="8" font-family="Arial">10</text>');
+const trackIds=Object.keys(audioTracks).map(Number),playlistButtons=[];
+function trackParts(i){const parts=names[i].split(' — ');return {artist:parts[0],title:parts.slice(1).join(' — ')||names[i]};}
+trackIds.forEach(i=>{
+ const item=document.createElement('li'),button=document.createElement('button'),parts=trackParts(i);
+ button.type='button';button.className='rr-playlist-item';button.dataset.track=i;button.setAttribute('aria-label','Play '+names[i]);
+ const image=buttons[i].querySelector('.rr-front img');
+ button.innerHTML='<span class="rr-song-number"></span><img alt="" loading="lazy"><span class="rr-song-info"><strong></strong><small></small></span><span class="rr-song-duration"></span>';
+ button.querySelector('img').src=image.src;button.querySelector('strong').textContent=parts.title;button.querySelector('small').textContent=parts.artist;button.querySelector('.rr-song-duration').textContent=stamp(audioTracks[i].duration);
+ button.addEventListener('click',()=>playRecord(i));item.append(button);playerRoom.querySelector('.rr-playlist').append(item);playlistButtons.push(button);
+});
+function playerIndex(){return audioStarted?audioIndex:listening>=0&&audioTracks[listening]?listening:audioTracks[selected]?selected:0;}
+function syncPlayer(){
+ const i=playerIndex(),parts=trackParts(i),playing=audioStarted&&!audio.paused&&!audio.ended;
+ const image=playerRoom.querySelector('.rr-player-art'),src=buttons[i].querySelector('.rr-front img').src;
+ if(image.src!==src){image.src=src;image.alt=names[i]+' album artwork';}
+ playerRoom.querySelector('.rr-deck-title').textContent=parts.title;
+ playerRoom.querySelector('.rr-deck-artist').textContent=parts.artist;
+ playerRoom.querySelector('.rr-deck-kicker').textContent=playing?'NOW PLAYING':audioStarted?'ON PAUSE':'PRESS PLAY · '+String(i+1).padStart(2,'0');
+ deckPlay.innerHTML=playing?pauseIcon:playIcon;deckPlay.setAttribute('aria-label',playing?'Pause '+names[i]:'Play '+names[i]);
+ const duration=audioStarted?(Number.isFinite(audio.duration)?audio.duration:audioTracks[i].duration):audioTracks[i].duration,current=audioStarted?audio.currentTime:0;
+ audioTime.replaceChildren(Object.assign(document.createElement('span'),{textContent:stamp(current)}),Object.assign(document.createElement('span'),{textContent:stamp(duration)}));
+ seek.style.setProperty('--rr-progress',(duration?current/duration*100:0)+'%');
+ playerRoom.querySelector('.rr-deck-status').textContent=audioError||(coverMoving?'Moving your record…':playing?'Playing from the crate':audioStarted?'Take your time. Your place is saved.':'Pick a track below, or dig through the sleeves above.');
+ playerRoom.setAttribute('aria-busy',String(coverMoving));
+ playlistButtons.forEach((b,n)=>{const active=trackIds[n]===i;b.setAttribute('aria-current',String(active));b.querySelector('.rr-song-number').textContent=active&&playing?'♫':String(trackIds[n]+1).padStart(2,'0');b.disabled=coverMoving;});
+ playerRoom.querySelectorAll('.rr-deck-controls button').forEach(b=>b.disabled=coverMoving);
+ playerRoom.querySelector('.rr-rewind').disabled=coverMoving||!audioStarted;playerRoom.querySelector('.rr-forward').disabled=coverMoving||!audioStarted;
+}
+deckPlay.addEventListener('click',()=>{if(coverMoving)return;if(audioStarted)pauseAudio.click();else playRecord(playerIndex());});
+function stepTrack(direction){if(coverMoving)return;const at=trackIds.indexOf(playerIndex());playRecord(trackIds[(at+direction+trackIds.length)%trackIds.length]);}
+playerRoom.querySelector('.rr-track-prev').addEventListener('click',()=>stepTrack(-1));
+playerRoom.querySelector('.rr-track-next').addEventListener('click',()=>stepTrack(1));
+for(const [selector,delta] of [['.rr-rewind',-10],['.rr-forward',10]])playerRoom.querySelector(selector).addEventListener('click',()=>{if(audioStarted&&Number.isFinite(audio.duration)){audio.currentTime=Math.min(audio.duration,Math.max(0,audio.currentTime+delta));syncAudio();}});
+audio.addEventListener('ended',()=>{if(!coverMoving)stepTrack(1);});
+// Keep playlist busy state aligned with crate controls through every animation phase.
+new MutationObserver(syncPlayer).observe(next,{attributes:true,attributeFilter:['disabled']});
 
 function restore(s){
   if(coverMoving)return;
