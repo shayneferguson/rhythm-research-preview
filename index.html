@@ -284,6 +284,9 @@ html,body{background:#b2b1b0}
  #rr-crate-preview .rr-console-content>.rr-picker{margin:0 10px 12px}
  #rr-crate-preview .rr-console-content>.rr-selected{margin:12px 10px}
 }
+
+/* Give horizontal sleeve gestures to the crate while keeping native vertical scrolling. */
+#rr-crate-preview .rr-records .rr-record,#rr-crate-preview .rr-records .rr-record *,#rr-crate-preview .rr-held-record,#rr-crate-preview .rr-held-record *{touch-action:pan-y}
 </style><script src="no-zoom.js?v=1" defer></script></head><body>
 <div id="rr-crate-preview">
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><clipPath id="rr-crate-front-cutout" clipPathUnits="objectBoundingBox"><path clip-rule="evenodd" fill-rule="evenodd" transform="scale(0.00078125 0.001172332943)" d="M184 614 Q380 625 640 629 Q900 633 1045 628 Q1065 624 1081 624 Q1091 624 1095 630 L1091 639 L1090 710 L1090 853 L190 853 L190 710 L187 630 Z M485 740 L795 740 Q816 740 802 761 L702 853 L578 853 L478 761 Q464 740 485 740 Z M365 853 L459 762 Q465 755 472 763 L553 853 Z M915 853 L821 762 Q815 755 808 763 L727 853 Z"/></clipPath></defs></svg>
@@ -850,6 +853,44 @@ mouseScene.addEventListener('wheel',e=>{
   const direction=Math.sign(wheelSum);wheelSum=0;lastWheelStep=now;
   browse(direction);
 },{passive:false});
+
+// One horizontal touch gesture browses one sleeve. Vertical gestures remain page scrolling.
+let sleeveSwipe=null,suppressSwipeClickUntil=0;
+mouseScene.addEventListener('pointerdown',event=>{
+  if(event.pointerType!=='touch')return;
+  if(sleeveSwipe||!event.isPrimary){sleeveSwipe=null;return;}
+  if(coverMoving||!event.target.closest('.rr-records .rr-record,.rr-held-record'))return;
+  sleeveSwipe={id:event.pointerId,x:event.clientX,y:event.clientY,started:performance.now(),axis:null};
+});
+window.addEventListener('pointerdown',event=>{
+  if(sleeveSwipe&&event.pointerId!==sleeveSwipe.id)sleeveSwipe=null;
+});
+mouseScene.addEventListener('pointermove',event=>{
+  if(!sleeveSwipe||event.pointerId!==sleeveSwipe.id)return;
+  const dx=event.clientX-sleeveSwipe.x,dy=event.clientY-sleeveSwipe.y;
+  if(!sleeveSwipe.axis&&Math.max(Math.abs(dx),Math.abs(dy))>10){
+    sleeveSwipe.axis=Math.abs(dx)>Math.abs(dy)*1.3?'horizontal':'vertical';
+  }
+});
+mouseScene.addEventListener('pointerup',event=>{
+  if(!sleeveSwipe||event.pointerId!==sleeveSwipe.id)return;
+  const gesture=sleeveSwipe;sleeveSwipe=null;
+  const dx=event.clientX-gesture.x,dy=event.clientY-gesture.y;
+  if(gesture.axis==='vertical')return;
+  if(Math.abs(dx)<36||Math.abs(dx)<Math.abs(dy)*1.3)return;
+  // Suppress the compatibility click so a swipe never also opens or flips a cover.
+  suppressSwipeClickUntil=performance.now()+600;
+  if(performance.now()-gesture.started>1200||coverMoving)return;
+  browse(dx<0?1:-1);
+});
+window.addEventListener('pointercancel',()=>{sleeveSwipe=null;});
+window.addEventListener('blur',()=>{sleeveSwipe=null;});
+root.addEventListener('click',event=>{
+  if(event.detail!==0&&performance.now()<suppressSwipeClickUntil&&mouseScene.contains(event.target)){
+    event.preventDefault();event.stopImmediatePropagation();
+  }
+},true);
+
 held.addEventListener('click',e=>{e.stopPropagation();if(coverOpen&&!coverMoving)toggleFlip();});
 root.addEventListener('click',e=>{
   if(!coverOpen||held.contains(e.target))return;
