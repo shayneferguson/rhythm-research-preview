@@ -469,6 +469,8 @@ html.rr-revealing .rr-loading-screen{opacity:0;pointer-events:none}
 
 /* The waveform is the visible seek control; retain timing below it. */
 #rr-crate-preview .rr-waveform canvas.rr-scrubbing{cursor:grabbing}
+#rr-crate-preview .rr-waveform canvas:focus{outline:none}
+#rr-crate-preview[data-input="keyboard"] .rr-waveform canvas:focus{outline:2px solid #d9d9d9;outline-offset:4px}
 #rr-crate-preview .rr-transport .rr-seek{display:none}
 /* Compact controls retain full-size touch targets. */
 #rr-crate-preview .rr-waveform{height:64px;margin-top:18px}
