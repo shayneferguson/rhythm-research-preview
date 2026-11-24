@@ -468,8 +468,8 @@ html.rr-revealing .rr-loading-screen{opacity:0;pointer-events:none}
 @media(prefers-reduced-motion:reduce){#rr-crate-preview .rr-tone-meter>i{transition:none}}
 
 /* Compact controls retain full-size touch targets. */
-#rr-crate-preview .rr-waveform{height:44px;margin-top:8px}
-#rr-crate-preview .rr-waveform canvas{height:30px}
+#rr-crate-preview .rr-waveform{height:64px;margin-top:8px}
+#rr-crate-preview .rr-waveform canvas{height:48px;cursor:pointer;touch-action:pan-y}
 #rr-crate-preview .rr-transport{padding-top:6px}
 #rr-crate-preview .rr-deck-controls{margin-top:8px;max-width:280px;gap:4px}
 #rr-crate-preview .rr-deck-controls .rr-deck-play{width:50px;height:50px;padding:0}
@@ -499,7 +499,7 @@ html.rr-revealing .rr-loading-screen{opacity:0;pointer-events:none}
   <div class="rr-transport"><button type="button" class="rr-pause" disabled aria-label="Pause audio">Pause</button><input class="rr-seek" type="range" min="0" max="204.5" step="0.1" value="0" aria-label="Playback position" disabled><span class="rr-time">0:00 / 3:24</span></div><audio class="rr-track" preload="none" src="remix-audio/suffocate-v9.mp3"></audio><footer><span>RHYTHM RESEARCH</span><span>BRING BACK THE REMIX.</span></footer></div><svg class="rr-console-bottom" viewBox="74 1390 880 63" aria-hidden="true"><image href="remix-assets/crate-extended-v1.png" width="1024" height="1536"/></svg></div>
 </div>
 
-<script src="assets/rr-audio-processing.js?v=20261123-grey1"></script>
+<script src="assets/rr-audio-processing.js?v=20261123-trackwave1"></script>
 <script>
 (()=>{
 const root=document.getElementById('rr-crate-preview');

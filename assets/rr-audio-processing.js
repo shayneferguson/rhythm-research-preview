@@ -8,9 +8,19 @@ window.RRAudioPlayer={create(audio,deck,tools){
  let graph=null,bypassed=false,unavailable=!Context,frame=0,visible=true,meterVisible=true;
  const motion=matchMedia('(prefers-reduced-motion: reduce)');
  const scope=document.createElement('div');scope.className='rr-waveform';
- scope.innerHTML='<canvas aria-hidden="true"></canvas><span class="rr-wave-label">LIVE WAVEFORM</span>';
+ scope.innerHTML='<canvas tabindex="0" role="slider" aria-label="Track waveform, seek playback" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></canvas><span class="rr-wave-label">TRACK WAVEFORM</span>';
  deck.insertBefore(scope,deck.querySelector('.rr-transport'));
  const canvas=scope.querySelector('canvas'),pen=canvas.getContext('2d');
+ let waveformData={},waveformFailed=false;
+ fetch('assets/track-waveforms.json?v=1').then(r=>{if(!r.ok)throw Error('Waveforms unavailable');return r.json();}).then(data=>{waveformData=data;refresh();}).catch(()=>{waveformFailed=true;refresh();});
+ function currentWaveform(){const src=audio.getAttribute('src')||'';return waveformData[src.split('/').pop().split('?')[0]];}
+ function seekWave(fraction){if(Number.isFinite(audio.duration)&&audio.duration>0){audio.currentTime=Math.max(0,Math.min(1,fraction))*audio.duration;refresh();}}
+ let pointerStart=null;
+ canvas.addEventListener('pointerdown',e=>{pointerStart={x:e.clientX,y:e.clientY};});
+ canvas.addEventListener('pointercancel',()=>{pointerStart=null;});
+ canvas.addEventListener('pointerup',e=>{if(pointerStart&&Math.hypot(e.clientX-pointerStart.x,e.clientY-pointerStart.y)<10){const rect=canvas.getBoundingClientRect();seekWave((e.clientX-rect.left)/rect.width);}pointerStart=null;});
+ canvas.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key)||!Number.isFinite(audio.duration))return;e.preventDefault();seekWave(e.key==='Home'?0:e.key==='End'?1:(audio.currentTime+(e.key==='ArrowRight'?5:-5))/audio.duration);});
+
  const panel=document.createElement('section');panel.className='rr-tone';panel.setAttribute('aria-label','Audio processing');
  panel.innerHTML='<div class="rr-tone-heading"><span>TONE &amp; LEVEL</span><div><button type="button" class="rr-tone-bypass" aria-pressed="false">Bypass EQ</button><button type="button" class="rr-tone-reset">Reset</button></div></div><div class="rr-tone-sliders">'+Object.keys(values).map(key=>`<label class="rr-tone-control"><span>${key[0].toUpperCase()+key.slice(1)}<output>${key==='output'?'100%':'0 dB'}</output></span><input type="range" aria-orientation="vertical" aria-label="${key[0].toUpperCase()+key.slice(1)}" data-tone="${key}" min="${key==='output'||key==='boost'?0:-6}" max="${key==='output'?100:6}" step="${key==='output'?1:0.5}" value="${values[key]}"></label>`).join('')+'</div><p class="rr-tone-note" role="status"></p>';
  tools.append(panel);
@@ -20,8 +30,8 @@ window.RRAudioPlayer={create(audio,deck,tools){
   for(const input of inputs){const key=input.dataset.tone,v=values[key],label=key==='output'?v+'%':(v>0?'+':'')+v+' dB';input.value=v;input.setAttribute('aria-valuetext',label);input.previousElementSibling.querySelector('output').textContent=label;input.disabled=unavailable||(bypassed&&['bass','mid','treble'].includes(key));}
   bypass.setAttribute('aria-pressed',String(bypassed));bypass.disabled=unavailable;
   panel.querySelector('.rr-tone-reset').disabled=unavailable;
-  note.textContent=unavailable?'Tone controls and waveform are unavailable in this browser.':bypassed?'EQ bypassed · output and boost stay active.':'';
-  scope.querySelector('.rr-wave-label').textContent=unavailable?'WAVEFORM UNAVAILABLE':'LIVE WAVEFORM';
+  note.textContent=unavailable?'Tone controls are unavailable in this browser.':bypassed?'EQ bypassed · output and boost stay active.':'';
+  
  }
  function smooth(param,value){const now=graph.context.currentTime;param.cancelScheduledValues(now);param.setTargetAtTime(value,now,.025);}
  function apply(){
@@ -61,14 +71,22 @@ window.RRAudioPlayer={create(audio,deck,tools){
   if(canvas.width!==Math.round(width*dpr)||canvas.height!==Math.round(height*dpr)){canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);}
   pen.setTransform(dpr,0,0,dpr,0,0);pen.clearRect(0,0,width,height);
   const active=graph?.analyser&&graph.context.state==='running'&&!audio.paused&&!audio.ended&&!document.hidden&&(visible||meterVisible);
-  pen.strokeStyle=active?'#999999':'#99999966';pen.lineWidth=1.5;pen.lineJoin='round';pen.beginPath();
-  if(active){
-   graph.analyser.getFloatTimeDomainData(graph.data);
-   // A real time-domain trace, downsampled to one point per CSS pixel.
-   const points=Math.max(2,Math.floor(width));
-   for(let x=0;x<points;x++){const sample=graph.data[Math.floor(x*(graph.data.length-1)/(points-1))];const y=height/2-Math.max(-1,Math.min(1,sample))*height*.44;x?pen.lineTo(x,y):pen.moveTo(x,y);}
-  }else{pen.moveTo(0,height/2);pen.lineTo(width,height/2);}
-  pen.stroke();
+  const wave=currentWaveform(),duration=Number.isFinite(audio.duration)?audio.duration:wave?.duration||0;
+  const progress=duration?Math.max(0,Math.min(1,audio.currentTime/duration)):0;
+  canvas.setAttribute('aria-valuenow',String(Math.round(progress*100)));
+  canvas.setAttribute('aria-valuetext',Math.floor(audio.currentTime||0)+' seconds of '+Math.floor(duration)+' seconds');
+  scope.querySelector('.rr-wave-label').textContent=wave?'TRACK WAVEFORM · TAP TO SEEK':waveformFailed?'WAVEFORM UNAVAILABLE':'LOADING WAVEFORM';
+  if(wave){
+   const columns=Math.max(1,Math.floor(width/2)),peaks=wave.peaks;
+   for(let x=0;x<columns;x++){
+    const from=Math.floor(x*peaks.length/columns),to=Math.max(from+1,Math.floor((x+1)*peaks.length/columns));let lo=0,hi=0;
+    for(let i=from;i<Math.min(to,peaks.length);i++){lo=Math.min(lo,peaks[i][0]);hi=Math.max(hi,peaks[i][1]);}
+    pen.fillStyle=x/columns<progress?'#eeeeee':'#777777';
+    const top=height/2-Math.min(1,hi)*height*.46,bottom=height/2-Math.max(-1,lo)*height*.46;
+    pen.fillRect(x*width/columns,top,Math.max(1,width/columns-0.5),Math.max(1,bottom-top));
+   }
+   pen.fillStyle='#ffffff';pen.fillRect(Math.min(width-1,progress*width),0,1,height);
+  }
   panel.querySelectorAll('.rr-tone-meter').forEach((meter,i)=>{
    let level=0,peak=0;
    if(active){const data=graph.meterData[i];graph.meters[i].getFloatTimeDomainData(data);let sum=0;for(const sample of data){sum+=sample*sample;peak=Math.max(peak,Math.abs(sample));}level=Math.max(0,Math.min(1,(20*Math.log10(Math.sqrt(sum/data.length)||1e-6)+60)/60));peak=Math.max(0,Math.min(1,(20*Math.log10(peak||1e-6)+60)/60));graph.peaks[i]=Math.max(peak,graph.peaks[i]-.008);}
@@ -81,7 +99,7 @@ window.RRAudioPlayer={create(audio,deck,tools){
  inputs.forEach(input=>input.addEventListener('input',()=>{values[input.dataset.tone]=Number(input.value);apply();render();refresh();}));
  bypass.addEventListener('click',()=>{bypassed=!bypassed;apply();render();refresh();});
  panel.querySelector('.rr-tone-reset').addEventListener('click',()=>{Object.assign(values,{bass:0,mid:0,treble:0,output:100,boost:0});bypassed=false;apply();render();refresh();});
- for(const event of ['play','playing','pause','ended','emptied','seeked','timeupdate'])audio.addEventListener(event,refresh);
+ for(const event of ['play','playing','pause','ended','emptied','loadstart','loadedmetadata','durationchange','seeked','timeupdate'])audio.addEventListener(event,refresh);
  document.addEventListener('visibilitychange',()=>{refresh();if(!document.hidden&&graph&&!audio.paused&&graph.context.state!=='running')graph.context.resume().catch(()=>{});});motion.addEventListener('change',refresh);
  if(window.ResizeObserver)new ResizeObserver(refresh).observe(canvas);
  if(window.IntersectionObserver){const observer=new IntersectionObserver(entries=>{for(const entry of entries){if(entry.target===scope)visible=entry.isIntersecting;else meterVisible=entry.isIntersecting;}refresh();});observer.observe(scope);observer.observe(panel);}
