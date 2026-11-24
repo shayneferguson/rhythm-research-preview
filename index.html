@@ -272,7 +272,7 @@ html,body{background:#ffffff;overscroll-behavior-y:none}
 #rr-crate-preview .rr-selected h2{min-height:0}
 #rr-crate-preview .rr-selected p{min-height:0}
 /* Only the middle panel grows. The photographed bottom rail stays at its native ratio. */
-#rr-crate-preview .rr-console-surface{height:calc(100% - 6.887vw + 2px);background-image:url("remix-assets/crate-original-blended-v3.svg");background-size:100% 100%;background-repeat:no-repeat;background-position:center top;background-color:#171717}
+#rr-crate-preview .rr-console-surface{height:calc(100% - 6.887vw + 2px);background-image:url("remix-assets/crate-original-blended-v4.svg");background-size:100% 100%;background-repeat:no-repeat;background-position:center top;background-color:#171717}
 #rr-crate-preview .rr-console-bottom{display:block;width:100%;height:auto;aspect-ratio:880 / 63;pointer-events:none}
 @media(max-width:767px){
  #rr-crate-preview .rr-console-content{padding:10px 3% 4px}
@@ -303,6 +303,10 @@ html,body{margin:0;width:100%}
 #rr-crate-preview .rr-scene-crop,#rr-crate-preview[data-cover-open="true"] .rr-scene-crop{width:106%;margin-left:-3%;padding-bottom:86.6762%}
 #rr-crate-preview .rr-scene-crop::after{display:none}
 #rr-crate-preview .rr-crate-console{width:102%;margin-left:-1%;margin-right:-1%}
+/* Overlap the photographed join by nine source pixels and feather the upper edge. */
+#rr-crate-preview .rr-scene-crop{z-index:1}
+#rr-crate-preview .rr-front-extension{mask-image:linear-gradient(#000 calc(100% - 1.04318vw),transparent 100%);-webkit-mask-image:linear-gradient(#000 calc(100% - 1.04318vw),transparent 100%)}
+#rr-crate-preview .rr-crate-console{z-index:0;margin-top:-1.04318vw;padding-top:1.04318vw}
 #rr-crate-preview .rr-console-content{padding:14px clamp(20px,5vw,80px) 8px}
 #rr-crate-preview .rr-console-content>.rr-picker,#rr-crate-preview .rr-console-content>.rr-selected,#rr-crate-preview .rr-audio{display:none}
 #rr-crate-preview .rr-listening-room{border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
@@ -1267,7 +1271,7 @@ restore(window.openai?.widgetState);syncAudio();window.addEventListener('openai:
  root.inert=true;
  let timeout;
  try{
-  const urls=new Set(['remix-assets/crate-original-blended-v3.svg','remix-assets/room-recreated-v2.jpg','remix-assets/crate-front-composite.svg','remix-assets/crate-edge-mask.svg','remix-assets/crate-front-edge-mask.svg']);
+  const urls=new Set(['remix-assets/crate-original-blended-v4.svg','remix-assets/room-recreated-v2.jpg','remix-assets/crate-front-composite.svg','remix-assets/crate-edge-mask.svg','remix-assets/crate-front-edge-mask.svg']);
   root.querySelectorAll('.rr-scene img,.rr-header img,svg image').forEach(el=>{
    const url=el.currentSrc||el.getAttribute('src')||el.getAttribute('href');
    if(url)urls.add(url);
