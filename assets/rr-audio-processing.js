@@ -61,7 +61,7 @@ window.RRAudioPlayer={create(audio,deck,tools){
   if(canvas.width!==Math.round(width*dpr)||canvas.height!==Math.round(height*dpr)){canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);}
   pen.setTransform(dpr,0,0,dpr,0,0);pen.clearRect(0,0,width,height);
   const active=graph?.analyser&&graph.context.state==='running'&&!audio.paused&&!audio.ended&&!document.hidden&&(visible||meterVisible);
-  pen.strokeStyle=active?'#b85c38':'#b85c3866';pen.lineWidth=1.5;pen.lineJoin='round';pen.beginPath();
+  pen.strokeStyle=active?'#999999':'#99999966';pen.lineWidth=1.5;pen.lineJoin='round';pen.beginPath();
   if(active){
    graph.analyser.getFloatTimeDomainData(graph.data);
    // A real time-domain trace, downsampled to one point per CSS pixel.
