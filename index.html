@@ -467,6 +467,8 @@ html.rr-revealing .rr-loading-screen{opacity:0;pointer-events:none}
 #rr-crate-preview .rr-tone-meter>b{display:block;position:absolute;left:0;right:0;height:2px;background:#f6f6f6;opacity:0}
 @media(prefers-reduced-motion:reduce){#rr-crate-preview .rr-tone-meter>i{transition:none}}
 
+/* Prevent accidental text selection throughout the listening experience. */
+html,body,body *{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 /* The waveform is the visible seek control; retain timing below it. */
 #rr-crate-preview .rr-waveform canvas.rr-scrubbing{cursor:grabbing}
 #rr-crate-preview .rr-waveform canvas:focus{outline:none}
