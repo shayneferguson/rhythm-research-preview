@@ -1067,6 +1067,10 @@ next.addEventListener('click',()=>browse(1));
 const mouseScene=root.querySelector('.rr-scene-crop');
 let wheelSum=0,lastWheelAt=0,lastWheelStep=-Infinity;
 mouseScene.addEventListener('wheel',e=>{
+  const sleeve=e.target.closest?.('.rr-records .rr-record');
+  const sceneBounds=root.querySelector('.rr-scene').getBoundingClientRect();
+  // The transparent crate layers must not turn the crate front into a wheel target.
+  if(!sleeve||e.clientY>=sceneBounds.top+sceneBounds.height*.718){wheelSum=0;lastWheelAt=0;return;}
   if(e.ctrlKey||e.metaKey||!window.matchMedia('(hover: hover) and (pointer: fine)').matches)return;
   if(coverOpen||coverMoving)return;
   const delta=Math.abs(e.deltaY)>=Math.abs(e.deltaX)?e.deltaY:e.deltaX;
