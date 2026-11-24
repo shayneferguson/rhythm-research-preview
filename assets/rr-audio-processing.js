@@ -31,7 +31,7 @@ window.RRAudioPlayer={create(audio,deck,tools){
   bypass.setAttribute('aria-pressed',String(bypassed));bypass.disabled=unavailable;
   panel.querySelector('.rr-tone-reset').disabled=unavailable;
   note.textContent=unavailable?'Tone controls are unavailable in this browser.':bypassed?'EQ bypassed · output and boost stay active.':'';
-  
+
  }
  function smooth(param,value){const now=graph.context.currentTime;param.cancelScheduledValues(now);param.setTargetAtTime(value,now,.025);}
  function apply(){
