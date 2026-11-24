@@ -38,10 +38,12 @@ window.RRAudioPlayer={create(audio,deck,tools){
    const treble=context.createBiquadFilter();treble.type='highshelf';treble.frequency.value=8000;
    const level=context.createGain(),analyser=context.createAnalyser();analyser.fftSize=2048;
    bass.connect(mid);mid.connect(treble);treble.connect(level);level.connect(analyser);analyser.connect(context.destination);
-   const meters=['lowpass','bandpass','highpass'].map((type,i)=>{const filter=context.createBiquadFilter();filter.type=type;filter.frequency.value=[250,1000,4000][i];filter.Q.value=.7;const meter=context.createAnalyser();meter.fftSize=1024;level.connect(filter);filter.connect(meter);return meter;});
+   const meterSink=context.createGain();meterSink.gain.value=0;meterSink.connect(context.destination);
+   const meters=['lowpass','bandpass','highpass'].map((type,i)=>{const filter=context.createBiquadFilter();filter.type=type;filter.frequency.value=[250,1000,4000][i];filter.Q.value=.7;const meter=context.createAnalyser();meter.fftSize=1024;level.connect(filter);filter.connect(meter);meter.connect(meterSink);return meter;});
    meters.push(analyser);
    source=context.createMediaElementSource(audio);source.connect(bass);
-   graph={context,source,bass,mid,treble,level,analyser,meters,meterData:meters.map(n=>new Float32Array(n.fftSize)),peaks:[0,0,0,0],data:new Float32Array(analyser.fftSize)};apply();
+   context.addEventListener('statechange',refresh);
+   graph={context,source,bass,mid,treble,level,analyser,meterSink,meters,meterData:meters.map(n=>new Float32Array(n.fftSize)),peaks:[0,0,0,0],data:new Float32Array(analyser.fftSize)};apply();
   }catch(error){
    // If rerouting already happened, retain a direct audible path.
    if(source){source.disconnect();source.connect(context.destination);graph={context,source};}
