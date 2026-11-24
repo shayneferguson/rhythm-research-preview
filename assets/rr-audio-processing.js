@@ -22,14 +22,28 @@ window.RRAudioPlayer={create(audio,deck,tools){
   refresh();
  }
  audio.addEventListener('loadedmetadata',()=>{if(queuedSeek?.src===audio.getAttribute('src')){const position=queuedSeek.position;queuedSeek=null;seekWave(position);}else queuedSeek=null;});
- function seekPointer(e){const rect=canvas.getBoundingClientRect();if(rect.width)seekWave((e.clientX-rect.left)/rect.width);}
- function finishDrag(e){if(e.pointerId!==dragPointer)return;dragPointer=null;canvas.classList.remove('rr-scrubbing');if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);}
+ let dragStart=null,dragging=false;
+ function seekPointer(e){const rect=canvas.getBoundingClientRect();if(rect.width)seekWave(dragStart.position+(e.clientX-dragStart.x)/rect.width);}
+ function finishDrag(e){if(e.pointerId!==dragPointer)return;dragPointer=null;dragStart=null;dragging=false;canvas.classList.remove('rr-scrubbing');if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);}
  canvas.addEventListener('pointerdown',e=>{
   if(!e.isPrimary||e.button!==0||dragPointer!==null)return;
-  e.preventDefault();dragPointer=e.pointerId;canvas.setPointerCapture(e.pointerId);canvas.classList.add('rr-scrubbing');canvas.focus({preventScroll:true});seekPointer(e);
+  const rect=canvas.getBoundingClientRect(),duration=Number.isFinite(audio.duration)?audio.duration:currentWaveform()?.duration||0;
+  const position=queuedSeek?.src===audio.getAttribute('src')?queuedSeek.position:duration?audio.currentTime/duration:0;
+  // Only the playhead has a drag target. Touching the waveform never seeks.
+  if(Math.abs(e.clientX-(rect.left+position*rect.width))>12)return;
+  dragPointer=e.pointerId;dragStart={x:e.clientX,y:e.clientY,position};dragging=false;canvas.setPointerCapture(e.pointerId);
  });
- canvas.addEventListener('pointermove',e=>{if(e.pointerId===dragPointer){e.preventDefault();seekPointer(e);}});
- canvas.addEventListener('pointerup',e=>{if(e.pointerId===dragPointer){seekPointer(e);finishDrag(e);}});
+ canvas.addEventListener('pointermove',e=>{
+  if(e.pointerId!==dragPointer)return;
+  const dx=Math.abs(e.clientX-dragStart.x),dy=Math.abs(e.clientY-dragStart.y);
+  if(!dragging){
+   if(dy>6&&dy>=dx){finishDrag(e);return;}
+   if(dx<6||dx<=dy)return;
+   dragging=true;canvas.classList.add('rr-scrubbing');canvas.focus({preventScroll:true});
+  }
+  e.preventDefault();seekPointer(e);
+ });
+ canvas.addEventListener('pointerup',e=>{if(e.pointerId===dragPointer){if(dragging)seekPointer(e);finishDrag(e);}});
  canvas.addEventListener('pointercancel',finishDrag);
  canvas.addEventListener('lostpointercapture',finishDrag);
  canvas.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key)||!Number.isFinite(audio.duration))return;e.preventDefault();seekWave(e.key==='Home'?0:e.key==='End'?1:(audio.currentTime+(e.key==='ArrowRight'?1:-1)*(e.shiftKey ? 0.1 : 5))/audio.duration);});
@@ -88,7 +102,7 @@ window.RRAudioPlayer={create(audio,deck,tools){
   const progress=queuedSeek?.src===audio.getAttribute('src')?queuedSeek.position:duration?Math.max(0,Math.min(1,audio.currentTime/duration)):0;
   canvas.setAttribute('aria-valuenow',String(Math.round(progress*100)));
   canvas.setAttribute('aria-valuetext',Math.floor(audio.currentTime||0)+' seconds of '+Math.floor(duration)+' seconds');
-  scope.querySelector('.rr-wave-label').textContent=wave?'TRACK WAVEFORM · DRAG TO SEEK':waveformFailed?'WAVEFORM UNAVAILABLE':'LOADING WAVEFORM';
+  scope.querySelector('.rr-wave-label').textContent=wave?'DRAG THE PLAYHEAD TO SEEK':waveformFailed?'WAVEFORM UNAVAILABLE':'LOADING WAVEFORM';
   if(wave){
    const columns=Math.max(1,Math.floor(width/2)),peaks=wave.peaks;
    for(let x=0;x<columns;x++){
