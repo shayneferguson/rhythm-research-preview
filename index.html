@@ -211,8 +211,8 @@ html,body,#rr-crate-preview,#rr-crate-preview *{touch-action:pan-x pan-y}html{-w
 #rr-crate-preview,#rr-crate-preview .rr-scene-crop{overflow:clip;overflow-anchor:none}
 
 /* Keep the approved opening coordinates; only reveal more crate below the rim. */
-html,body{background:#b2b1b0;overscroll-behavior-y:none}
-#rr-crate-preview{background:#b2b1b0}
+html,body{background:#cbb99b;overscroll-behavior-y:none}
+#rr-crate-preview{background:#cbb99b}
 #rr-crate-preview .rr-scene-crop,#rr-crate-preview[data-cover-open="true"] .rr-scene-crop{padding-bottom:81.77%;isolation:isolate}
 #rr-crate-preview .rr-cover-view{height:68.79%;bottom:auto}
 #rr-crate-preview .rr-front-extension{position:absolute;top:0;left:0;width:100%;height:auto;aspect-ratio:1000 / 817.7;display:block;z-index:53;pointer-events:none}
@@ -243,18 +243,18 @@ html,body{background:#b2b1b0;overscroll-behavior-y:none}
 #rr-crate-preview .rr-record:focus{outline:none}
 #rr-crate-preview[data-input="keyboard"] .rr-record:focus-visible{outline:3px solid var(--rr-accent);outline-offset:4px}
 @media(max-width:767px){
- #rr-crate-preview .rr-hero{background:#b9b7b8}
+ #rr-crate-preview .rr-hero{background:#cbb99b}
  #rr-crate-preview .rr-header,#rr-crate-preview .rr-intro{background:transparent;color:#171918;border:0}
  #rr-crate-preview .rr-wordmark>span,#rr-crate-preview .rr-intro .rr-eyebrow{color:#283027}
 }
 
 /* Extend the photographed wall upward behind the mobile typography. */
 @media(max-width:767px){
- #rr-crate-preview .rr-hero{background-image:url("remix-assets/room-wall.svg");background-size:100% 100%;background-position:center top;background-repeat:no-repeat}
+ #rr-crate-preview .rr-hero{background-image:url("remix-assets/room-distressed-v1.jpg");background-size:100% 100%;background-position:center top;background-repeat:no-repeat}
  #rr-crate-preview .rr-header,#rr-crate-preview .rr-intro{background:none;border:0}
 }
 #rr-crate-preview .rr-base{mask-image:none;-webkit-mask-image:none}
-#rr-crate-preview .rr-hero{background-image:url("remix-assets/room-wall.svg");background-size:100% 100%;background-position:center top;background-repeat:no-repeat}
+#rr-crate-preview .rr-hero{background-image:url("remix-assets/room-distressed-v1.jpg");background-size:100% 100%;background-position:center top;background-repeat:no-repeat}
 
 /* Pointer interaction has no focus ring; keyboard navigation remains visible. */
 #rr-crate-preview button:focus,#rr-crate-preview select:focus,#rr-crate-preview input:focus{outline:none}
@@ -423,7 +423,7 @@ html,body{margin:0;width:100%}
 /* Keep the scene out of the first paint until its layered artwork is decoded. */
 .rr-loading-screen{display:none}
 html.rr-loading #rr-crate-preview{visibility:hidden;pointer-events:none}
-html.rr-loading .rr-loading-screen{position:fixed;inset:0;z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:#bcbcb9;color:#303330;font:12px Inter,Arial,Helvetica,sans-serif;letter-spacing:.14em;text-align:center;padding:24px;box-sizing:border-box;transition:opacity .28s ease}
+html.rr-loading .rr-loading-screen{position:fixed;inset:0;z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:#cbb99b url("remix-assets/room-distressed-v1.jpg") center/cover no-repeat;color:#303330;font:12px Inter,Arial,Helvetica,sans-serif;letter-spacing:.14em;text-align:center;padding:24px;box-sizing:border-box;transition:opacity .28s ease}
 .rr-loading-screen img{width:36px;height:auto}
 .rr-loading-screen p{margin:0}
 .rr-loading-screen button{background:none;border:1px solid #303330;color:#303330;padding:12px 20px;font:inherit;cursor:pointer}
@@ -1243,7 +1243,7 @@ restore(window.openai?.widgetState);syncAudio();window.addEventListener('openai:
  root.inert=true;
  let timeout;
  try{
-  const urls=new Set(['remix-assets/room-wall.svg','remix-assets/crate-front-composite.svg','remix-assets/crate-edge-mask.svg','remix-assets/crate-front-edge-mask.svg']);
+  const urls=new Set(['remix-assets/room-distressed-v1.jpg','remix-assets/crate-front-composite.svg','remix-assets/crate-edge-mask.svg','remix-assets/crate-front-edge-mask.svg']);
   root.querySelectorAll('.rr-scene img,.rr-header img,svg image').forEach(el=>{
    const url=el.currentSrc||el.getAttribute('src')||el.getAttribute('href');
    if(url)urls.add(url);
