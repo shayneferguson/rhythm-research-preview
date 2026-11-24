@@ -772,7 +772,7 @@ async function moveCover(open,after){
   const resting='translate(0px,0px) perspective(1100px) rotateX(42deg) rotateZ(-1.2deg)';
   const tucked='translate('+dx+'px,'+dy+'px) perspective(1100px) rotateX(0deg) rotateZ('+angle+'deg)';
   const stackTop=Math.min(...buttons.filter((b,i)=>i!==selected&&i!==listening).map(b=>b.getBoundingClientRect().top));
-  const clearBottom=Math.min(stackTop-Math.max(16,w*.04)-w*.35,host.top+host.height*.65);
+  const clearBottom=Math.min(stackTop-Math.max(16,w*.04)-w*.08,host.top+host.height*.65);
   const lift=Math.max(30,slot.bottom-clearBottom);
   const lifted='translate('+dx+'px,'+(dy-lift)+'px) perspective(1100px) rotateX(0deg) rotateZ('+angle+'deg)';
   const forward='translate(0px,'+(clearBottom-host.bottom)+'px) perspective(1100px) rotateX(0deg) rotateZ(-1.2deg)';
@@ -849,8 +849,10 @@ async function returnPlaying(){
   try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
     const stackTop=Math.min(...buttons.filter(card=>card!==b).map(card=>card.getBoundingClientRect().top));
     const gap=Math.max(16,n*.04);
-    const lift=Math.max(startBounds.bottom,b.getBoundingClientRect().bottom)-stackTop+gap+n*.35,top=new DOMMatrix().translate(0,-lift);
-    const frames=[{transform:start.toString(),offset:0},{transform:top.multiply(start).toString(),offset:.32},{transform:top.multiply(end).toString(),offset:.72},{transform:end.toString(),offset:1}].map(f=>({...f,easing:'cubic-bezier(.42,0,.58,1)'}));
+    const clearance=stackTop-gap-n*.08;
+    const startLift=new DOMMatrix().translate(0,-Math.max(0,startBounds.bottom-clearance));
+    const endLift=new DOMMatrix().translate(0,-Math.max(0,b.getBoundingClientRect().bottom-clearance));
+    const frames=[{transform:start.toString(),offset:0},{transform:startLift.multiply(start).toString(),offset:.32},{transform:endLift.multiply(end).toString(),offset:.72},{transform:end.toString(),offset:1}].map(f=>({...f,easing:'cubic-bezier(.42,0,.58,1)'}));
     const layer=b.parentElement,depth=layer.style.zIndex;
     layer.style.zIndex='10';
     try{
@@ -889,7 +891,7 @@ async function listenFromStack(park){
     const x=parent.left+card.offsetLeft,y=parent.top+card.offsetTop;
     const stackTop=Math.min(...buttons.filter(b=>b!==card).map(b=>b.getBoundingClientRect().top));
     const gap=Math.max(16,width*.04);
-    const lift=Math.max(24,card.getBoundingClientRect().bottom-stackTop+gap+width*.35);
+    const lift=Math.max(24,card.getBoundingClientRect().bottom-stackTop+gap+width*.08);
     const raised='translateY('+(-lift)+'px) '+pose;
     const timing={duration:1100,easing:'cubic-bezier(.25,.55,.25,1)',fill:'both'};
     flight=sceneAnimate(card,[{transform:pose},{transform:raised}],timing);
@@ -906,7 +908,7 @@ async function listenFromStack(park){
     const settle={duration:1300,easing:'cubic-bezier(.25,.55,.25,1)',fill:'both'};
     // Rotate and move to the rear only while fully above the stack, then descend vertically.
     const endPose=getComputedStyle(card).transform;
-    const rearLift=Math.max(24,card.getBoundingClientRect().bottom-stackTop+gap+width*.35);
+    const rearLift=Math.max(24,card.getBoundingClientRect().bottom-stackTop+gap+width*.08);
     const aboveRear='translateY('+(-rearLift)+'px) '+endPose;
     const landingFrames=[{transform:start.toString(),offset:0},{transform:aboveRear,offset:.45},{transform:endPose,offset:1}];
     landing=sceneAnimate(card,landingFrames,settle);
