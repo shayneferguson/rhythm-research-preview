@@ -1,5 +1,8 @@
 /* Playback-only tone controls; the original audio files remain untouched. */
 window.RRAudioPlayer={create(audio,deck,tools){
+ // Declare music playback before creating Web Audio (Safari/iOS).
+ function playbackSession(){try{if(navigator.audioSession)navigator.audioSession.type='playback';}catch(e){}}
+ playbackSession();
  const Context=window.AudioContext||window.webkitAudioContext;
  const values={bass:0,mid:0,treble:0,output:100};
  let graph=null,bypassed=false,unavailable=!Context,frame=0,visible=true,meterVisible=true;
@@ -78,12 +81,12 @@ window.RRAudioPlayer={create(audio,deck,tools){
  bypass.addEventListener('click',()=>{bypassed=!bypassed;apply();render();refresh();});
  panel.querySelector('.rr-tone-reset').addEventListener('click',()=>{Object.assign(values,{bass:0,mid:0,treble:0,output:100});bypassed=false;apply();render();refresh();});
  for(const event of ['play','playing','pause','ended','emptied','seeked','timeupdate'])audio.addEventListener(event,refresh);
- document.addEventListener('visibilitychange',refresh);motion.addEventListener('change',refresh);
+ document.addEventListener('visibilitychange',()=>{refresh();if(!document.hidden&&graph&&!audio.paused&&graph.context.state!=='running')graph.context.resume().catch(()=>{});});motion.addEventListener('change',refresh);
  if(window.ResizeObserver)new ResizeObserver(refresh).observe(canvas);
  if(window.IntersectionObserver){const observer=new IntersectionObserver(entries=>{for(const entry of entries){if(entry.target===scope)visible=entry.isIntersecting;else meterVisible=entry.isIntersecting;}refresh();});observer.observe(scope);observer.observe(panel);}
  render();refresh();
  return {play(){
-  init();
+  playbackSession();init();
   // Start both in the original tap/click gesture, including Safari's resume path.
   const resume=graph&&graph.context.state!=='running'?graph.context.resume():Promise.resolve();
   const playing=audio.play();
