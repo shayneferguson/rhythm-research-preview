@@ -277,7 +277,7 @@ html,body{background:#ffffff;overscroll-behavior-y:none}
 @media(max-width:767px){
  #rr-crate-preview .rr-console-content{padding:10px 3% 4px}
  #rr-crate-preview .rr-player{padding:0 10px 10px}
- #rr-crate-preview .rr-actions{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+ #rr-crate-preview .rr-actions{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
  #rr-crate-preview .rr-actions .rr-browse{grid-column:span 2}
  #rr-crate-preview .rr-actions .rr-view-cover{grid-row:2;grid-column:1 / 3}
  #rr-crate-preview .rr-actions .rr-flip{grid-row:2;grid-column:3 / 5}
@@ -295,7 +295,7 @@ html,body{background:#ffffff;overscroll-behavior-y:none}
 #rr-crate-preview .rr-wall-shadows{clip-path:polygon(0 -200%,100% -200%,100% 100%,85.6% 100%,85.6% 73.4%,73.6% 62.3%,24.4% 62.3%,14.4% 73.4%,14.4% 100%,0 100%)}
 #rr-crate-preview .rr-dig-tools{grid-column:1/-1;margin-top:18px;border-top:0;padding-top:12px}
 #rr-crate-preview .rr-dig-tools summary{color:#aab5ab;font-size:10px;letter-spacing:1px;cursor:pointer;min-height:32px;line-height:32px}
-#rr-crate-preview .rr-dig-tools .rr-actions{grid-template-columns:repeat(4,minmax(0,1fr))}
+#rr-crate-preview .rr-dig-tools .rr-actions{grid-template-columns:repeat(5,minmax(0,1fr))}
 #rr-crate-preview .rr-dig-tools .rr-stop{width:100%;margin-top:10px;padding:12px;border:1px solid #ffffff1c;border-radius:5px;background:transparent;color:#b5bfb6;font-size:10px;min-height:44px}
 /* Full-bleed crate: crop the side rails at the viewport, not the artwork. */
 html,body{margin:0;width:100%}
@@ -448,7 +448,7 @@ html.rr-revealing .rr-loading-screen{opacity:0;pointer-events:none}
 #rr-crate-preview .rr-tone-heading button{min-height:44px;padding:0;background:transparent;border:0;color:#c5ccc6;font-size:10px;cursor:pointer}
 #rr-crate-preview .rr-tone-heading button[aria-pressed=true]{color:var(--rr-accent)}
 /* Vertical mixer faders: native range interaction and keyboard support. */
-#rr-crate-preview .rr-tone-sliders{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding-top:10px}
+#rr-crate-preview .rr-tone-sliders{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding-top:10px}
 #rr-crate-preview .rr-tone-control{position:relative;min-width:0;display:block;color:#dce3da;font-size:11px;text-align:center}
 #rr-crate-preview .rr-tone-control>span{display:flex;flex-direction:column;align-items:center;gap:8px}
 #rr-crate-preview .rr-tone-control output{color:var(--rr-accent);font-size:11px;font-variant-numeric:tabular-nums;min-width:48px;line-height:24px;background:#080a0966;border-radius:2px}
@@ -499,7 +499,7 @@ html.rr-revealing .rr-loading-screen{opacity:0;pointer-events:none}
   <div class="rr-transport"><button type="button" class="rr-pause" disabled aria-label="Pause audio">Pause</button><input class="rr-seek" type="range" min="0" max="204.5" step="0.1" value="0" aria-label="Playback position" disabled><span class="rr-time">0:00 / 3:24</span></div><audio class="rr-track" preload="none" src="remix-audio/suffocate-v9.mp3"></audio><footer><span>RHYTHM RESEARCH</span><span>BRING BACK THE REMIX.</span></footer></div><svg class="rr-console-bottom" viewBox="74 1390 880 63" aria-hidden="true"><image href="remix-assets/crate-extended-v1.png" width="1024" height="1536"/></svg></div>
 </div>
 
-<script src="assets/rr-audio-processing.js?v=20261123-rustmeters1"></script>
+<script src="assets/rr-audio-processing.js?v=20261123-boost1"></script>
 <script>
 (()=>{
 const root=document.getElementById('rr-crate-preview');

@@ -4,7 +4,7 @@ window.RRAudioPlayer={create(audio,deck,tools){
  function playbackSession(){try{if(navigator.audioSession)navigator.audioSession.type='playback';}catch(e){}}
  playbackSession();
  const Context=window.AudioContext||window.webkitAudioContext;
- const values={bass:0,mid:0,treble:0,output:100};
+ const values={bass:0,mid:0,treble:0,output:100,boost:0};
  let graph=null,bypassed=false,unavailable=!Context,frame=0,visible=true,meterVisible=true;
  const motion=matchMedia('(prefers-reduced-motion: reduce)');
  const scope=document.createElement('div');scope.className='rr-waveform';
@@ -12,15 +12,15 @@ window.RRAudioPlayer={create(audio,deck,tools){
  deck.insertBefore(scope,deck.querySelector('.rr-transport'));
  const canvas=scope.querySelector('canvas'),pen=canvas.getContext('2d');
  const panel=document.createElement('section');panel.className='rr-tone';panel.setAttribute('aria-label','Audio processing');
- panel.innerHTML='<div class="rr-tone-heading"><span>TONE &amp; LEVEL</span><div><button type="button" class="rr-tone-bypass" aria-pressed="false">Bypass EQ</button><button type="button" class="rr-tone-reset">Reset</button></div></div><div class="rr-tone-sliders">'+Object.keys(values).map(key=>`<label class="rr-tone-control"><span>${key[0].toUpperCase()+key.slice(1)}<output>${key==='output'?'100%':'0 dB'}</output></span><input type="range" aria-orientation="vertical" aria-label="${key[0].toUpperCase()+key.slice(1)}" data-tone="${key}" min="${key==='output'?0:-6}" max="${key==='output'?100:6}" step="${key==='output'?1:0.5}" value="${values[key]}"></label>`).join('')+'</div><p class="rr-tone-note" role="status"></p>';
+ panel.innerHTML='<div class="rr-tone-heading"><span>TONE &amp; LEVEL</span><div><button type="button" class="rr-tone-bypass" aria-pressed="false">Bypass EQ</button><button type="button" class="rr-tone-reset">Reset</button></div></div><div class="rr-tone-sliders">'+Object.keys(values).map(key=>`<label class="rr-tone-control"><span>${key[0].toUpperCase()+key.slice(1)}<output>${key==='output'?'100%':'0 dB'}</output></span><input type="range" aria-orientation="vertical" aria-label="${key[0].toUpperCase()+key.slice(1)}" data-tone="${key}" min="${key==='output'||key==='boost'?0:-6}" max="${key==='output'?100:6}" step="${key==='output'?1:0.5}" value="${values[key]}"></label>`).join('')+'</div><p class="rr-tone-note" role="status"></p>';
  tools.append(panel);
  panel.querySelectorAll(".rr-tone-control").forEach(label=>label.insertAdjacentHTML("beforeend",'<i class="rr-tone-meter" aria-hidden="true"><i></i><b></b></i>'));
  const inputs=[...panel.querySelectorAll('input')],bypass=panel.querySelector('.rr-tone-bypass'),note=panel.querySelector('.rr-tone-note');
  function render(){
-  for(const input of inputs){const key=input.dataset.tone,v=values[key],label=key==='output'?v+'%':(v>0?'+':'')+v+' dB';input.value=v;input.setAttribute('aria-valuetext',label);input.previousElementSibling.querySelector('output').textContent=label;input.disabled=unavailable||(bypassed&&key!=='output');}
+  for(const input of inputs){const key=input.dataset.tone,v=values[key],label=key==='output'?v+'%':(v>0?'+':'')+v+' dB';input.value=v;input.setAttribute('aria-valuetext',label);input.previousElementSibling.querySelector('output').textContent=label;input.disabled=unavailable||(bypassed&&['bass','mid','treble'].includes(key));}
   bypass.setAttribute('aria-pressed',String(bypassed));bypass.disabled=unavailable;
   panel.querySelector('.rr-tone-reset').disabled=unavailable;
-  note.textContent=unavailable?'Tone controls and waveform are unavailable in this browser.':bypassed?'EQ bypassed · output level stays active.':'';
+  note.textContent=unavailable?'Tone controls and waveform are unavailable in this browser.':bypassed?'EQ bypassed · output and boost stay active.':'';
   scope.querySelector('.rr-wave-label').textContent=unavailable?'WAVEFORM UNAVAILABLE':'LIVE WAVEFORM';
  }
  function smooth(param,value){const now=graph.context.currentTime;param.cancelScheduledValues(now);param.setTargetAtTime(value,now,.025);}
@@ -30,6 +30,7 @@ window.RRAudioPlayer={create(audio,deck,tools){
   // Reserve headroom for boosts, without a compressor changing the music's dynamics.
   const boost=bypassed?0:['bass','mid','treble'].reduce((sum,key)=>sum+Math.max(0,values[key]),0);
   smooth(graph.level.gain,(values.output/100)*Math.pow(10,-boost/20));
+  smooth(graph.boostGain.gain,Math.pow(10,values.boost/20));
  }
  function init(){
   if(graph||unavailable)return;
@@ -39,14 +40,14 @@ window.RRAudioPlayer={create(audio,deck,tools){
    const bass=context.createBiquadFilter();bass.type='lowshelf';bass.frequency.value=120;
    const mid=context.createBiquadFilter();mid.type='peaking';mid.frequency.value=1000;mid.Q.value=.7;
    const treble=context.createBiquadFilter();treble.type='highshelf';treble.frequency.value=8000;
-   const level=context.createGain(),analyser=context.createAnalyser();analyser.fftSize=2048;
-   bass.connect(mid);mid.connect(treble);treble.connect(level);level.connect(analyser);analyser.connect(context.destination);
+   const level=context.createGain(),boostGain=context.createGain(),outputMeter=context.createAnalyser(),analyser=context.createAnalyser();analyser.fftSize=2048;outputMeter.fftSize=1024;
+   bass.connect(mid);mid.connect(treble);treble.connect(level);level.connect(boostGain);boostGain.connect(analyser);analyser.connect(context.destination);
    const meterSink=context.createGain();meterSink.gain.value=0;meterSink.connect(context.destination);
    const meters=['lowpass','bandpass','highpass'].map((type,i)=>{const filter=context.createBiquadFilter();filter.type=type;filter.frequency.value=[250,1000,4000][i];filter.Q.value=.7;const meter=context.createAnalyser();meter.fftSize=1024;level.connect(filter);filter.connect(meter);meter.connect(meterSink);return meter;});
-   meters.push(analyser);
+   level.connect(outputMeter);outputMeter.connect(meterSink);meters.push(outputMeter,analyser);
    source=context.createMediaElementSource(audio);source.connect(bass);
    context.addEventListener('statechange',refresh);
-   graph={context,source,bass,mid,treble,level,analyser,meterSink,meters,meterData:meters.map(n=>new Float32Array(n.fftSize)),peaks:[0,0,0,0],data:new Float32Array(analyser.fftSize)};apply();
+   graph={context,source,bass,mid,treble,level,boostGain,analyser,meterSink,meters,meterData:meters.map(n=>new Float32Array(n.fftSize)),peaks:[0,0,0,0,0],data:new Float32Array(analyser.fftSize)};apply();
   }catch(error){
    // If rerouting already happened, retain a direct audible path.
    if(source){source.disconnect();source.connect(context.destination);graph={context,source};}
@@ -79,7 +80,7 @@ window.RRAudioPlayer={create(audio,deck,tools){
  function refresh(){cancelAnimationFrame(frame);frame=0;draw();}
  inputs.forEach(input=>input.addEventListener('input',()=>{values[input.dataset.tone]=Number(input.value);apply();render();refresh();}));
  bypass.addEventListener('click',()=>{bypassed=!bypassed;apply();render();refresh();});
- panel.querySelector('.rr-tone-reset').addEventListener('click',()=>{Object.assign(values,{bass:0,mid:0,treble:0,output:100});bypassed=false;apply();render();refresh();});
+ panel.querySelector('.rr-tone-reset').addEventListener('click',()=>{Object.assign(values,{bass:0,mid:0,treble:0,output:100,boost:0});bypassed=false;apply();render();refresh();});
  for(const event of ['play','playing','pause','ended','emptied','seeked','timeupdate'])audio.addEventListener(event,refresh);
  document.addEventListener('visibilitychange',()=>{refresh();if(!document.hidden&&graph&&!audio.paused&&graph.context.state!=='running')graph.context.resume().catch(()=>{});});motion.addEventListener('change',refresh);
  if(window.ResizeObserver)new ResizeObserver(refresh).observe(canvas);
