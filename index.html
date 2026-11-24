@@ -772,7 +772,7 @@ async function moveCover(open,after){
   const resting='translate(0px,0px) perspective(1100px) rotateX(42deg) rotateZ(-1.2deg)';
   const tucked='translate('+dx+'px,'+dy+'px) perspective(1100px) rotateX(0deg) rotateZ('+angle+'deg)';
   const stackTop=Math.min(...buttons.filter((b,i)=>i!==selected&&i!==listening).map(b=>b.getBoundingClientRect().top));
-  const clearBottom=Math.min(stackTop-10,host.top+host.height*.65);
+  const clearBottom=Math.min(stackTop-Math.max(16,w*.04)-w*.35,host.top+host.height*.65);
   const lift=Math.max(30,slot.bottom-clearBottom);
   const lifted='translate('+dx+'px,'+(dy-lift)+'px) perspective(1100px) rotateX(0deg) rotateZ('+angle+'deg)';
   const forward='translate(0px,'+(clearBottom-host.bottom)+'px) perspective(1100px) rotateX(0deg) rotateZ(-1.2deg)';
@@ -820,11 +820,23 @@ async function moveCover(open,after){
     requestAnimationFrame(()=>{card.style.transition=landingTransition;if(shadowTransition!==undefined)cardShadow.style.transition=shadowTransition;});
   }
 }
+async function settleSleeveSelection(index){
+  choose(index);
+  coverMoving=true;syncPlayer();
+  try{
+    // Finish the vertical selection movement before starting any flight.
+    void stack.offsetWidth;
+    const movements=buttons.flatMap(card=>card.getAnimations());
+    await Promise.allSettled(movements.map(motion=>motion.finished));
+  }finally{coverMoving=false;syncPlayer();}
+}
 async function returnPlaying(){
   if(listening<0)return;
+  if(coverOpen)await moveCover(false);
+  if(selected>=0)await settleSleeveSelection(-1);
   coverMoving=true;syncCoverVideo();
   const b=buttons[listening],s=shadows[listening],cs=getComputedStyle(b);
-  const x=b.offsetLeft,y=b.offsetTop,w=b.offsetWidth,m=cs.transform;
+  const x=b.offsetLeft,y=b.offsetTop,w=b.offsetWidth,m=cs.transform,startBounds=b.getBoundingClientRect();
   const controls=[viewCover,flip,back,prev,next,listen,picker,stop];
   const old=[b.style.transition,s.style.transition,b.style.transformOrigin,s.style.transformOrigin,b.style.zIndex];
   b.style.transition=s.style.transition='none';
@@ -835,7 +847,9 @@ async function returnPlaying(){
   b.style.transformOrigin=s.style.transformOrigin='0 0';
   let a,z;
   try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    const lift=Math.max(45,n*.52),top=new DOMMatrix().translate(0,-lift);
+    const stackTop=Math.min(...buttons.filter(card=>card!==b).map(card=>card.getBoundingClientRect().top));
+    const gap=Math.max(16,n*.04);
+    const lift=Math.max(startBounds.bottom,b.getBoundingClientRect().bottom)-stackTop+gap+n*.35,top=new DOMMatrix().translate(0,-lift);
     const frames=[{transform:start.toString(),offset:0},{transform:top.multiply(start).toString(),offset:.32},{transform:top.multiply(end).toString(),offset:.72},{transform:end.toString(),offset:1}].map(f=>({...f,easing:'cubic-bezier(.42,0,.58,1)'}));
     const layer=b.parentElement,depth=layer.style.zIndex;
     layer.style.zIndex='10';
@@ -874,7 +888,8 @@ async function listenFromStack(park){
     const width=card.offsetWidth,parent=card.parentElement.getBoundingClientRect();
     const x=parent.left+card.offsetLeft,y=parent.top+card.offsetTop;
     const stackTop=Math.min(...buttons.filter(b=>b!==card).map(b=>b.getBoundingClientRect().top));
-    const lift=Math.max(24,card.getBoundingClientRect().bottom-stackTop+12);
+    const gap=Math.max(16,width*.04);
+    const lift=Math.max(24,card.getBoundingClientRect().bottom-stackTop+gap+width*.35);
     const raised='translateY('+(-lift)+'px) '+pose;
     const timing={duration:1100,easing:'cubic-bezier(.25,.55,.25,1)',fill:'both'};
     flight=sceneAnimate(card,[{transform:pose},{transform:raised}],timing);
@@ -889,8 +904,13 @@ async function listenFromStack(park){
     const start=new DOMMatrix().translate(x-dest.left-card.offsetLeft,y-dest.top-card.offsetTop-lift)
       .translate(origin[0],origin[1]).multiply(new DOMMatrix(pose)).translate(-origin[0],-origin[1]).scale(width/card.offsetWidth);
     const settle={duration:1300,easing:'cubic-bezier(.25,.55,.25,1)',fill:'both'};
-    landing=sceneAnimate(card,[{transform:start.toString()},{transform:getComputedStyle(card).transform}],settle);
-    shadowLanding=sceneAnimate(shade,[{transform:start.toString()},{transform:getComputedStyle(shade).transform}],settle);
+    // Rotate and move to the rear only while fully above the stack, then descend vertically.
+    const endPose=getComputedStyle(card).transform;
+    const rearLift=Math.max(24,card.getBoundingClientRect().bottom-stackTop+gap+width*.35);
+    const aboveRear='translateY('+(-rearLift)+'px) '+endPose;
+    const landingFrames=[{transform:start.toString(),offset:0},{transform:aboveRear,offset:.45},{transform:endPose,offset:1}];
+    landing=sceneAnimate(card,landingFrames,settle);
+    shadowLanding=sceneAnimate(shade,landingFrames,settle);
     landing.startTime=shadowLanding.startTime=document.timeline.currentTime;
     await Promise.all([landing.finished,shadowLanding.finished]);
   }finally{
@@ -949,39 +969,13 @@ async function playRecord(target){
   catch(e){startingAudio=false;audioError='Playback could not start. Press Play to try again.';coverMoving=false;await recoverAudioFailure();return;}
   coverMoving=false;
   if(target===listening){render();return;}
-  if(coverOpen&&selected!==target)await moveCover(false);
-  choose(target);
-  const swapping=listening>=0;
-  if(coverOpen&&flipped){
-    coverMoving=true;syncCoverVideo();
-    const inner=held.querySelector('.rr-inner'),pose=getComputedStyle(inner).transform;
-    flipped=false;render();
-    const locked=[viewCover,flip,back,prev,next,listen,picker,stop];locked.forEach(c=>c.disabled=true);
-    let turn;
-    try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      turn=sceneAnimate(inner,[{transform:pose},{transform:'perspective(1200px) rotateY(0deg)'}],{duration:1200,easing:'cubic-bezier(.45,.05,.25,1)',fill:'both'});
-      await turn.finished;
-    }}finally{if(turn)turn.cancel();coverMoving=false;locked.forEach(c=>c.disabled=false);render();}
-  }
+  // One sleeve moves at a time: tuck the open cover, return the old record,
+  // then lift and park the new record through a clear overhead path.
+  if(coverOpen)await moveCover(false);
+  if(listening>=0)await returnPlaying();
+  await settleSleeveSelection(target);
   const park=()=>{listening=target;browseIndex=target;selected=-1;flipped=false;coverOpen=false;render();save();};
-  if(!swapping){if(coverOpen)await listenFromCover(park);else await listenFromStack(park);return;}
-  coverMoving=true;syncCoverVideo();
-  const incoming=coverOpen?held:buttons[target],shadow=shadows[target];
-  const controls=[viewCover,flip,back,prev,next,listen,picker,stop];controls.forEach(c=>c.disabled=true);
-  let lift,shade;
-  try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    const pose=getComputedStyle(incoming).transform;
-    const distance=Math.max(24,incoming.getBoundingClientRect().bottom-coverView.getBoundingClientRect().top+8);
-    const t={duration:1600,easing:'cubic-bezier(.42,0,.58,1)',fill:'both'};
-    lift=sceneAnimate(incoming,[{transform:pose},{transform:'translateY('+(-distance)+'px) '+pose}],t);
-    shade=sceneAnimate(shadow,[{opacity:1},{opacity:0}],t);
-    await lift.finished;
-  }
-  await returnPlaying();
-  }finally{
-    coverMoving=false;controls.forEach(c=>c.disabled=false);park();
-    if(lift)lift.cancel();if(shade)shade.cancel();
-  }
+  await listenFromStack(park);
 }
 stop.addEventListener('click',async()=>{if(coverMoving)return;stopAudio();await returnPlaying();save();});
 picker.addEventListener('change',()=>selectRecord(Number(picker.value)));flip.addEventListener('click',toggleFlip);back.addEventListener('click',()=>{if(coverOpen)moveCover(false);else choose(-1);});
