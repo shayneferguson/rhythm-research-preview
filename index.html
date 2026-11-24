@@ -858,7 +858,7 @@ async function moveCover(open,after){
   }
 }
 async function settleSleeveSelection(index){
-  choose(index);
+  if(selected!==index)choose(index);
   coverMoving=true;syncPlayer();
   try{
     // Finish the vertical selection movement before starting any flight.
@@ -964,11 +964,12 @@ async function listenFromCover(park){
   const controls=[viewCover,flip,back,prev,next,listen,picker,stop];
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let flight,landing,shadowFlight;
-  const previousListening=listening;
+  await faceFrontBeforeReturn();
   const w=held.offsetWidth,h=held.offsetHeight;
   const hx=host.left+held.offsetLeft,hy=host.top+held.offsetTop;
   const stackTop=Math.min(...buttons.filter(b=>b!==card).map(b=>b.getBoundingClientRect().top));
-  const lift=Math.max(18,host.bottom-stackTop+12);
+  const clearance=stackTop-Math.max(16,w*.04)-w*.08;
+  const lift=Math.max(18,hy+h-clearance);
   const raised='translateY('+(-lift)+'px) perspective(1100px) rotateX(0deg) rotateZ(-1.2deg)';
   controls.forEach(c=>c.disabled=true);
   try{
@@ -986,9 +987,11 @@ async function listenFromCover(park){
       const ratio=w/card.offsetWidth;
       const start=new DOMMatrix().translate(hx-cx+w/2,hy-cy+h-lift).rotate(0,0,-1.2).translate(-w/2,-h).scale(ratio);
       const end=getComputedStyle(card).transform;
-      const timing={duration:1300,delay:previousListening>=0?1200:0,easing:'cubic-bezier(.25,.55,.25,1)',fill:'both'};
-      landing=sceneAnimate(card,[{transform:start.toString()},{transform:end}],timing);
-      shadowFlight=sceneAnimate(shade,[{transform:start.toString(),opacity:.4},{transform:getComputedStyle(shade).transform,opacity:1}],timing);
+      const timing={duration:1300,easing:'cubic-bezier(.25,.55,.25,1)',fill:'both'};
+      const rearLift=Math.max(0,card.getBoundingClientRect().bottom-clearance);
+      const frames=[{transform:start.toString(),offset:0},{transform:'translateY('+(-rearLift)+'px) '+end,offset:.45},{transform:end,offset:1}];
+      landing=sceneAnimate(card,frames,timing);
+      shadowFlight=sceneAnimate(shade,frames.map((f,i)=>({...f,opacity:i===0?.4:1})),timing);
       const clock=document.timeline.currentTime;landing.startTime=clock;shadowFlight.startTime=clock;
       await Promise.all([landing.finished,shadowFlight.finished]);
     }
@@ -1008,12 +1011,14 @@ async function playRecord(target){
   catch(e){startingAudio=false;audioError='Playback could not start. Press Play to try again.';coverMoving=false;await recoverAudioFailure();return;}
   coverMoving=false;
   if(target===listening){render();return;}
-  // One sleeve moves at a time: tuck the open cover, return the old record,
-  // then lift and park the new record through a clear overhead path.
+  const park=()=>{listening=target;browseIndex=target;selected=-1;flipped=false;coverOpen=false;render();save();};
+  // An already lifted cover goes straight to playback when no other record
+  // needs returning. Do not put it away and immediately pull it out again.
+  if(coverOpen&&selected===target&&listening<0){await listenFromCover(park);return;}
+  // When replacing a playing record, retain the sequential clearance path.
   if(coverOpen)await moveCover(false);
   if(listening>=0)await returnPlaying();
   await settleSleeveSelection(target);
-  const park=()=>{listening=target;browseIndex=target;selected=-1;flipped=false;coverOpen=false;render();save();};
   await listenFromStack(park);
 }
 stop.addEventListener('click',async()=>{if(coverMoving)return;stopAudio();await returnPlaying();save();});
