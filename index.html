@@ -490,6 +490,25 @@ html,body,body *{user-select:none;-webkit-user-select:none;-webkit-touch-callout
 #rr-crate-preview .rr-tone{margin-top:8px}
 #rr-crate-preview .rr-tone-sliders{padding-top:2px}
 #rr-crate-preview .rr-tone-control input{height:84px}
+
+/* Short crate: keep the original handle/upper scene; the listening room lives on the wall. */
+#rr-crate-preview{background:#fff;background-image:linear-gradient(#ffffffb3,#ffffffb3),url("remix-assets/room-recreated-v2.jpg");background-size:cover;background-repeat:no-repeat;background-position:center top;color:#242424;--rr-accent:#333333}
+#rr-crate-preview .rr-hero{background:transparent}
+#rr-crate-preview .rr-crate-console{width:100%;margin:0;padding:0;color:#242424;background:transparent}
+#rr-crate-preview .rr-console-surface,#rr-crate-preview .rr-console-bottom{display:none}
+#rr-crate-preview .rr-console-content{padding-top:24px;padding-bottom:24px}
+#rr-crate-preview .rr-room-top,#rr-crate-preview .rr-deck-artist,#rr-crate-preview .rr-time,#rr-crate-preview .rr-deck-status,#rr-crate-preview .rr-playlist-header span,#rr-crate-preview .rr-song-info small,#rr-crate-preview .rr-song-duration,#rr-crate-preview .rr-song-number,#rr-crate-preview .rr-strip-heading,#rr-crate-preview .rr-wave-label,#rr-crate-preview .rr-tone-heading,#rr-crate-preview .rr-tone-note,#rr-crate-preview footer{color:#565656}
+#rr-crate-preview .rr-room-top strong,#rr-crate-preview .rr-deck-controls button,#rr-crate-preview .rr-playlist-item,#rr-crate-preview .rr-tone-control,#rr-crate-preview .rr-tone-heading button,#rr-crate-preview .rr-dig-tools .rr-actions>button,#rr-crate-preview .rr-dig-tools .rr-browse button{color:#242424}
+#rr-crate-preview .rr-room-light{box-shadow:none}
+#rr-crate-preview .rr-deck-controls .rr-deck-play{background:#333;color:#fff;box-shadow:none}
+#rr-crate-preview .rr-deck-controls .rr-deck-play:hover{background:#111}
+#rr-crate-preview .rr-deck-controls button:hover,#rr-crate-preview .rr-playlist-item:hover{background:#00000008}
+#rr-crate-preview .rr-playlist-item[aria-current="true"]{background:#0000000a;border-color:#00000019}
+#rr-crate-preview .rr-tone-control output{background:#00000009}
+#rr-crate-preview .rr-tone-control:before{background:repeating-linear-gradient(to top,#5558 0 1px,transparent 1px 14px)}
+#rr-crate-preview[data-input="keyboard"] .rr-waveform canvas:focus{outline-color:#333}
+#rr-crate-preview footer{border-color:#00000020}
+
 </style><script src="no-zoom.js?v=1" defer></script></head><body><div class="rr-loading-screen" role="status" aria-live="polite"><img src="remix-assets/rr-monogram-two-tone.svg?v=black-light-grey-1" alt="Rhythm Research"><span class="rr-loading-pulse" aria-hidden="true"><svg viewBox="0 0 216 48" focusable="false"><defs><path id="rr-loading-peaks" d="M0,21.61h1.5v5.07h-1.5zM2,22.01h1.5v4.27h-1.5zM4,20.57h1.5v8.92h-1.5zM6,21.15h1.5v6.69h-1.5zM8,18.24h1.5v10.56h-1.5zM10,21.61h1.5v5.00h-1.5zM12,14.34h1.5v18.84h-1.5zM14,12.91h1.5v22.93h-1.5zM16,13.00h1.5v21.76h-1.5zM18,14.24h1.5v18.52h-1.5zM20,13.51h1.5v21.72h-1.5zM22,14.31h1.5v19.26h-1.5zM24,5.89h1.5v35.71h-1.5zM26,8.83h1.5v31.64h-1.5zM28,6.56h1.5v34.22h-1.5zM30,9.59h1.5v28.57h-1.5zM32,6.54h1.5v34.27h-1.5zM34,6.88h1.5v34.38h-1.5zM36,5.76h1.5v35.33h-1.5zM38,5.94h1.5v36.24h-1.5zM40,5.69h1.5v36.54h-1.5zM42,6.85h1.5v36.61h-1.5zM44,6.77h1.5v35.74h-1.5zM46,7.96h1.5v31.45h-1.5zM48,7.62h1.5v32.41h-1.5zM50,5.66h1.5v34.50h-1.5zM52,6.69h1.5v35.54h-1.5zM54,6.10h1.5v35.49h-1.5zM56,7.11h1.5v34.34h-1.5zM58,6.04h1.5v35.79h-1.5zM60,8.13h1.5v32.51h-1.5zM62,6.51h1.5v35.95h-1.5zM64,7.84h1.5v32.80h-1.5zM66,6.17h1.5v33.93h-1.5zM68,6.34h1.5v34.71h-1.5zM70,5.68h1.5v36.52h-1.5zM72,8.60h1.5v31.00h-1.5zM74,6.68h1.5v35.64h-1.5zM76,5.89h1.5v36.33h-1.5zM78,8.46h1.5v31.70h-1.5zM80,8.53h1.5v29.30h-1.5zM82,8.05h1.5v33.66h-1.5zM84,6.17h1.5v35.08h-1.5zM86,7.63h1.5v32.14h-1.5zM88,5.67h1.5v35.40h-1.5zM90,8.37h1.5v31.72h-1.5zM92,6.92h1.5v33.14h-1.5zM94,8.13h1.5v32.33h-1.5zM96,5.66h1.5v36.61h-1.5zM98,7.05h1.5v32.74h-1.5zM100,5.79h1.5v35.02h-1.5zM102,8.37h1.5v32.47h-1.5zM104,6.41h1.5v35.03h-1.5zM106,9.58h1.5v28.18h-1.5zM108,9.23h1.5v30.73h-1.5zM110,8.92h1.5v30.90h-1.5zM112,5.94h1.5v35.26h-1.5zM114,7.01h1.5v33.72h-1.5zM116,6.42h1.5v33.99h-1.5zM118,10.41h1.5v27.76h-1.5zM120,8.93h1.5v32.31h-1.5zM122,9.08h1.5v29.86h-1.5zM124,10.18h1.5v27.18h-1.5zM126,6.13h1.5v34.96h-1.5zM128,5.96h1.5v36.41h-1.5zM130,7.23h1.5v31.83h-1.5zM132,9.08h1.5v29.90h-1.5zM134,5.62h1.5v34.97h-1.5zM136,8.88h1.5v30.07h-1.5zM138,5.54h1.5v36.44h-1.5zM140,7.88h1.5v32.16h-1.5zM142,5.71h1.5v33.70h-1.5zM144,7.37h1.5v33.18h-1.5zM146,5.63h1.5v35.31h-1.5zM148,8.26h1.5v31.48h-1.5zM150,7.11h1.5v31.91h-1.5zM152,5.81h1.5v35.92h-1.5zM154,6.20h1.5v34.44h-1.5zM156,9.83h1.5v28.51h-1.5zM158,8.55h1.5v31.16h-1.5zM160,7.57h1.5v32.27h-1.5zM162,5.95h1.5v35.88h-1.5zM164,7.33h1.5v34.78h-1.5zM166,7.57h1.5v33.53h-1.5zM168,6.14h1.5v34.03h-1.5zM170,7.45h1.5v32.44h-1.5zM172,5.23h1.5v35.51h-1.5zM174,8.38h1.5v30.57h-1.5zM176,5.67h1.5v35.27h-1.5zM178,5.84h1.5v36.33h-1.5zM180,7.32h1.5v32.80h-1.5zM182,9.29h1.5v29.10h-1.5zM184,6.62h1.5v35.48h-1.5zM186,7.20h1.5v33.01h-1.5zM188,6.96h1.5v33.17h-1.5zM190,5.49h1.5v36.33h-1.5zM192,7.23h1.5v33.11h-1.5zM194,8.98h1.5v30.39h-1.5zM196,6.80h1.5v35.73h-1.5zM198,6.59h1.5v34.31h-1.5zM200,8.56h1.5v30.29h-1.5zM202,6.49h1.5v34.25h-1.5zM204,11.25h1.5v26.29h-1.5zM206,16.44h1.5v14.54h-1.5zM208,22.07h1.5v4.10h-1.5zM210,21.55h1.5v4.79h-1.5zM212,22.02h1.5v4.40h-1.5zM214,22.37h1.5v2.78h-1.5z"/><clipPath id="rr-loading-progress"><rect class="rr-loading-reveal" width="216" height="48"/></clipPath></defs><use href="#rr-loading-peaks" fill="#999"/><use href="#rr-loading-peaks" fill="#333" clip-path="url(#rr-loading-progress)"/><rect class="rr-loading-playhead" width="1" height="48" fill="#222"/></svg></span><p>Diggin In The Crate</p><button type="button" hidden onclick="location.reload()">Try again</button></div>
 <div id="rr-crate-preview">
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><clipPath id="rr-crate-front-cutout" clipPathUnits="objectBoundingBox"><path clip-rule="evenodd" fill-rule="evenodd" transform="scale(0.00078125 0.001172332943)" d="M184 614 Q380 625 640 629 Q900 633 1045 628 Q1065 624 1081 624 Q1091 624 1095 630 L1091 639 L1090 710 L1090 853 L190 853 L190 710 L187 630 Z M485 740 L795 740 Q816 740 802 761 L702 853 L578 853 L478 761 Q464 740 485 740 Z M365 853 L459 762 Q465 755 472 763 L553 853 Z M915 853 L821 762 Q815 755 808 763 L727 853 Z"/></clipPath></defs></svg>
@@ -510,7 +529,7 @@ html,body,body *{user-select:none;-webkit-user-select:none;-webkit-touch-callout
   <div class="rr-transport"><button type="button" class="rr-pause" disabled aria-label="Pause audio">Pause</button><input class="rr-seek" type="range" min="0" max="204.5" step="0.1" value="0" aria-label="Playback position" disabled><span class="rr-time">0:00 / 3:24</span></div><audio class="rr-track" preload="none" src="remix-audio/suffocate-v9.mp3"></audio><footer><span>RHYTHM RESEARCH</span><span>BRING BACK THE REMIX.</span></footer></div><svg class="rr-console-bottom" viewBox="74 1390 880 63" aria-hidden="true"><image href="remix-assets/crate-extended-v1.png" width="1024" height="1536"/></svg></div>
 </div>
 
-<script src="assets/rr-audio-processing.js?v=20261123-handleonly1"></script>
+<script src="assets/rr-audio-processing.js?v=short-crate-1-20261123-handleonly1"></script>
 <script>
 (()=>{
 const root=document.getElementById('rr-crate-preview');
@@ -1271,7 +1290,7 @@ restore(window.openai?.widgetState);syncAudio();window.addEventListener('openai:
  root.inert=true;
  let timeout;
  try{
-  const urls=new Set(['remix-assets/crate-original-blended-v5.svg','remix-assets/room-recreated-v2.jpg','remix-assets/crate-front-composite.svg','remix-assets/crate-edge-mask.svg','remix-assets/crate-front-edge-mask.svg']);
+  const urls=new Set(['remix-assets/room-recreated-v2.jpg','remix-assets/crate-front-composite.svg','remix-assets/crate-edge-mask.svg','remix-assets/crate-front-edge-mask.svg']);
   root.querySelectorAll('.rr-scene img,.rr-header img,svg image').forEach(el=>{
    const url=el.currentSrc||el.getAttribute('src')||el.getAttribute('href');
    if(url)urls.add(url);

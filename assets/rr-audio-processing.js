@@ -108,12 +108,12 @@ window.RRAudioPlayer={create(audio,deck,tools){
    for(let x=0;x<columns;x++){
     const from=Math.floor(x*peaks.length/columns),to=Math.max(from+1,Math.floor((x+1)*peaks.length/columns));let lo=0,hi=0;
     for(let i=from;i<Math.min(to,peaks.length);i++){lo=Math.min(lo,peaks[i][0]);hi=Math.max(hi,peaks[i][1]);}
-    pen.fillStyle=x/columns<progress?'#eeeeee':'#777777';
+    pen.fillStyle=x/columns<progress?'#333333':'#999999';
     const top=height/2-Math.min(1,hi)*height*.46,bottom=height/2-Math.max(-1,lo)*height*.46;
     pen.fillRect(x*width/columns,top,Math.max(1,width/columns-0.5),Math.max(1,bottom-top));
    }
    const headX=Math.max(0,Math.min(width-2,progress*width));
-   pen.fillStyle='#ffffff';pen.fillRect(headX,0,2,height);
+   pen.fillStyle='#151515';pen.fillRect(headX,0,2,height);
    pen.fillRect(Math.max(0,Math.min(width-8,headX-3)),0,8,6);
   }
   panel.querySelectorAll('.rr-tone-meter').forEach((meter,i)=>{
