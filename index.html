@@ -250,11 +250,11 @@ html,body{background:#ffffff;overscroll-behavior-y:none}
 
 /* Extend the photographed wall upward behind the mobile typography. */
 @media(max-width:767px){
- #rr-crate-preview .rr-hero{background-image:linear-gradient(rgba(255,255,255,.7),rgba(255,255,255,.7)),url("remix-assets/room-recreated-v2.jpg");background-size:100% 100%;background-position:center top;background-repeat:no-repeat}
+ #rr-crate-preview .rr-hero{background-image:none;background-size:100% 100%;background-position:center top;background-repeat:no-repeat}
  #rr-crate-preview .rr-header,#rr-crate-preview .rr-intro{background:none;border:0}
 }
 #rr-crate-preview .rr-base{mask-image:none;-webkit-mask-image:none}
-#rr-crate-preview .rr-hero{background-image:linear-gradient(rgba(255,255,255,.7),rgba(255,255,255,.7)),url("remix-assets/room-recreated-v2.jpg");background-size:100% 100%;background-position:center top;background-repeat:no-repeat}
+#rr-crate-preview .rr-hero{background-image:none;background-size:100% 100%;background-position:center top;background-repeat:no-repeat}
 
 /* Pointer interaction has no focus ring; keyboard navigation remains visible. */
 #rr-crate-preview button:focus,#rr-crate-preview select:focus,#rr-crate-preview input:focus{outline:none}
@@ -427,7 +427,7 @@ html,body{margin:0;width:100%}
 /* Keep the scene out of the first paint until its layered artwork is decoded. */
 .rr-loading-screen{display:none}
 html.rr-loading #rr-crate-preview{visibility:hidden;pointer-events:none}
-html.rr-loading .rr-loading-screen{position:fixed;inset:0;z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:#ffffff;background-image:linear-gradient(rgba(255,255,255,.7),rgba(255,255,255,.7)),url("remix-assets/room-recreated-v2.jpg");background-position:center;background-size:cover;background-repeat:no-repeat;color:#323232;font:12px Inter,Arial,Helvetica,sans-serif;letter-spacing:.14em;text-align:center;padding:24px;box-sizing:border-box;transition:opacity .28s ease}
+html.rr-loading .rr-loading-screen{position:fixed;inset:0;z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:#ffffff;background-image:none;background-position:center;background-size:cover;background-repeat:no-repeat;color:#323232;font:12px Inter,Arial,Helvetica,sans-serif;letter-spacing:.14em;text-align:center;padding:24px;box-sizing:border-box;transition:opacity .28s ease}
 .rr-loading-screen img{width:36px;height:auto}
 .rr-loading-screen p{margin:0}
 .rr-loading-screen button{background:none;border:1px solid #323232;color:#323232;padding:12px 20px;font:inherit;cursor:pointer}
@@ -492,7 +492,7 @@ html,body,body *{user-select:none;-webkit-user-select:none;-webkit-touch-callout
 #rr-crate-preview .rr-tone-control input{height:84px}
 
 /* Short crate: keep the original handle/upper scene; the listening room lives on the wall. */
-#rr-crate-preview{background:#fff;background-image:linear-gradient(#ffffffb3,#ffffffb3),url("remix-assets/room-recreated-v2.jpg");background-size:cover;background-repeat:no-repeat;background-position:center top;color:#242424;--rr-accent:#333333}
+#rr-crate-preview{background:#fff;background-image:none;background-size:cover;background-repeat:no-repeat;background-position:center top;color:#242424;--rr-accent:#333333}
 #rr-crate-preview .rr-hero{background:transparent}
 #rr-crate-preview .rr-crate-console{width:100%;margin:0;padding:0;color:#242424;background:transparent}
 #rr-crate-preview .rr-console-surface,#rr-crate-preview .rr-console-bottom{display:none}
@@ -1290,7 +1290,7 @@ restore(window.openai?.widgetState);syncAudio();window.addEventListener('openai:
  root.inert=true;
  let timeout;
  try{
-  const urls=new Set(['remix-assets/room-recreated-v2.jpg','remix-assets/crate-front-composite.svg','remix-assets/crate-edge-mask.svg','remix-assets/crate-front-edge-mask.svg']);
+  const urls=new Set(['remix-assets/crate-front-composite.svg','remix-assets/crate-edge-mask.svg','remix-assets/crate-front-edge-mask.svg']);
   root.querySelectorAll('.rr-scene img,.rr-header img,svg image').forEach(el=>{
    const url=el.currentSrc||el.getAttribute('src')||el.getAttribute('href');
    if(url)urls.add(url);
