@@ -213,9 +213,9 @@ html,body,#rr-crate-preview,#rr-crate-preview *{touch-action:pan-x pan-y}html{-w
 /* Keep the approved opening coordinates; only reveal more crate below the rim. */
 html,body{background:#ffffff;overscroll-behavior-y:none}
 #rr-crate-preview{background:#ffffff}
-#rr-crate-preview .rr-scene-crop,#rr-crate-preview[data-cover-open="true"] .rr-scene-crop{padding-bottom:81.77%;isolation:isolate}
-#rr-crate-preview .rr-cover-view{height:68.79%;bottom:auto}
-#rr-crate-preview .rr-front-extension{position:absolute;top:0;left:0;width:100%;height:auto;aspect-ratio:1000 / 817.7;display:block;z-index:53;pointer-events:none}
+#rr-crate-preview .rr-scene-crop,#rr-crate-preview[data-cover-open="true"] .rr-scene-crop{padding-bottom:91.77%;isolation:isolate}
+#rr-crate-preview .rr-cover-view{height:61.294306%;bottom:auto}
+#rr-crate-preview .rr-front-extension{position:absolute;top:0;left:0;width:100%;height:auto;aspect-ratio:1000 / 917.7;display:block;z-index:53;pointer-events:none}
 /* Original front remains above the extension. Its lower apertures are replaced by the new open handle. */
 #rr-crate-preview .rr-rail:not(.rr-rail-mirror){mask-image:linear-gradient(#000 0 81.8%,transparent 82.2%);-webkit-mask-image:linear-gradient(#000 0 81.8%,transparent 82.2%)}
 #rr-crate-preview .rr-crate-console{position:relative;width:96.2%;margin:0 auto;isolation:isolate;color:#f6f6f6;overflow:clip}
@@ -300,7 +300,7 @@ html,body{background:#ffffff;overscroll-behavior-y:none}
 /* Full-bleed crate: crop the side rails at the viewport, not the artwork. */
 html,body{margin:0;width:100%}
 #rr-crate-preview{width:100%;max-width:none;margin:0;overflow:clip}
-#rr-crate-preview .rr-scene-crop,#rr-crate-preview[data-cover-open="true"] .rr-scene-crop{width:106%;margin-left:-3%;padding-bottom:86.6762%}
+#rr-crate-preview .rr-scene-crop,#rr-crate-preview[data-cover-open="true"] .rr-scene-crop{width:106%;margin-left:-3%;padding-bottom:97.2762%}
 #rr-crate-preview .rr-scene-crop::after{display:none}
 #rr-crate-preview .rr-crate-console{width:102%;margin-left:-1%;margin-right:-1%}
 /* Keep an opaque photographic overlap so sleeves cannot leak through the join. */
@@ -514,7 +514,7 @@ html,body,body *{user-select:none;-webkit-user-select:none;-webkit-touch-callout
   <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs><clipPath id="rr-crate-front-cutout" clipPathUnits="objectBoundingBox"><path clip-rule="evenodd" fill-rule="evenodd" transform="scale(0.00078125 0.001172332943)" d="M184 614 Q380 625 640 629 Q900 633 1045 628 Q1065 624 1081 624 Q1091 624 1095 630 L1091 639 L1090 710 L1090 853 L190 853 L190 710 L187 630 Z M485 740 L795 740 Q816 740 802 761 L702 853 L578 853 L478 761 Q464 740 485 740 Z M365 853 L459 762 Q465 755 472 763 L553 853 Z M915 853 L821 762 Q815 755 808 763 L727 853 Z"/></clipPath></defs></svg>
   <div class="rr-hero">
   <header class="rr-header"><img class="rr-brand-logo" src="remix-assets/rr-monogram-two-tone.svg?v=black-light-grey-1" alt="Rhythm Research"></header>
-  <div class="rr-scene-crop"><img class="rr-front-extension" src="remix-assets/crate-front-composite.svg" width="1000" height="817.7" alt="" aria-hidden="true" decoding="sync" fetchpriority="high"><section class="rr-cover-view" aria-label="Record cover close-up" hidden><div class="rr-held-record"></div><p class="rr-cover-caption">Front cover</p></section><div class="rr-scene" aria-label="Photographed record crate with sixteen selectable sleeves">
+  <div class="rr-scene-crop"><img class="rr-front-extension" src="remix-assets/crate-front-deeper-v1.svg" width="1000" height="917.7" alt="" aria-hidden="true" decoding="sync" fetchpriority="high"><section class="rr-cover-view" aria-label="Record cover close-up" hidden><div class="rr-held-record"></div><p class="rr-cover-caption">Front cover</p></section><div class="rr-scene" aria-label="Photographed record crate with sixteen selectable sleeves">
     <img class="rr-base" src="remix-assets/crate-body-composite.svg" alt="Your black crate with an empty interior beneath the interactive sleeves">
     <img class="rr-crate-back-edge" src="remix-assets/crate-restored-v2.png" alt="" aria-hidden="true">
     <div class="rr-rim-contact-shadow" aria-hidden="true"></div><div class="rr-wall-shadows" aria-hidden="true"></div><div class="rr-records"></div>
@@ -1290,7 +1290,7 @@ restore(window.openai?.widgetState);syncAudio();window.addEventListener('openai:
  root.inert=true;
  let timeout;
  try{
-  const urls=new Set(['remix-assets/crate-front-composite.svg','remix-assets/crate-edge-mask.svg','remix-assets/crate-front-edge-mask.svg']);
+  const urls=new Set(['remix-assets/crate-front-deeper-v1.svg','remix-assets/crate-edge-mask.svg','remix-assets/crate-front-edge-mask.svg']);
   root.querySelectorAll('.rr-scene img,.rr-header img,svg image').forEach(el=>{
    const url=el.currentSrc||el.getAttribute('src')||el.getAttribute('href');
    if(url)urls.add(url);
